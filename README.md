@@ -271,7 +271,7 @@ chmod +x codecov
 ./codecov -x "llvm-cov gcov" -Z
 ```
 
-TODO: test, document how to use the results of `llvm-cov gcov` locally with `gcovr` (https://github.com/mapbox/hey/issues/4265)
+TODO: test, document how to use the results of `llvm-cov gcov` locally with `gcovr`
 
 Troubleshooting:
 
@@ -294,7 +294,7 @@ ulimit -c unlimited
 
 After setting this, a crashing program that previously exited with just `segmentation fault`, should now report ``segmentation fault (core dumped)`. The `core dumped` part indicates that the `ulimit -c unlimited` worked and now core files are being produced. Core files are a unix way of snap-shotting program state in a way that can be queried for information. They are the raw material we can use to generate a backtrace. Now, to generate the backtrace we need to do two more things: 1) find the core file, 2) run gdb.
 
-The core file is either 1) in the current working directory of the program that crashed or 2) at a system defined location that you can view by doing `cat /proc/sys/kernel/core_pattern`. On most Mapbox api machines this location is `/tmp/logbt-coredump` as [defined here](https://github.com/mapbox/logbt/blob/2276ff1c1650bf430ea7d82d2845316863e292d8/bin/logbt#L10). See https://github.com/mapbox/ecs-cluster/issues/51#issuecomment-236017426 for more backstory.
+The core file is either 1) in the current working directory of the program that crashed or 2) at a system defined location that you can view by doing `cat /proc/sys/kernel/core_pattern`. On most Mapbox API machines this location is `/tmp/logbt-coredump` as [defined here](https://github.com/mapbox/logbt/blob/2276ff1c1650bf430ea7d82d2845316863e292d8/bin/logbt#L10).
 
 Now install and run gdb to generate a backtrace. You can do this like:
 
