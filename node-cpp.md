@@ -4,7 +4,7 @@ The following document outlines Mapbox's approach to writing native abstractions
 
 Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a bottleneck for performance. Node is single-threaded, which blocks execution. C++ on the other hand allows you to execute operations without clogging up the event loop. Passing heavy operations into C++ and subsequently into C++ workers can greatly improve the overall runtime of the code.
 
-**Native Abstractions for Node.js (NAN)**
+### Native Abstractions for Node.js (NAN)
 
 To swing between Node and C++, the Node community maintains a project called [_NAN_](https://github.com/nodejs/nan) (Native Abstractions for Node.js) that simplifies running different versions of Node and subsequently, V8. NAN is a header-only C++ library that provides a set of Macros for developing Node.js addons. Check out the [usage](https://github.com/nodejs/nan#usage) guidelines.
 
@@ -95,3 +95,16 @@ Mapnik is a C++ library, named `mapnik`. Its Node.js interface is named `node-ma
   1. What happens when you hit different binaries? Snafu!
   1. How do we prevent this @ Mapbox?
 
+## Glossary
+
+Terms
+- Node
+- V8
+- event loop
+- libuv
+- threadpool
+- worker
+- C++ bindings
+- POSIX
+- non-blocking/blocking
+- [NAN](https://github.com/mapbox/cpp/blob/node-addons/node-cpp.md#nodejs-c-addons)
