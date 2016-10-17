@@ -1,18 +1,18 @@
 # Node.js C++ Addons
 
-The following document outlines Mapbox's approach to writing native abstractions for Node.js (anecdotally referred to as _addons_).
+The following document outlines Mapbox's approach to writing C++ modules for Node.js (often referred to as _addons_).
 
 Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a bottleneck for performance. Node is single-threaded, which blocks execution. C++ on the other hand allows you to execute operations without clogging up the event loop. Passing heavy operations into C++ and subsequently into C++ workers can greatly improve the overall runtime of the code.
 
 ### Native Abstractions for Node.js (NAN)
 
-To swing between Node and C++, the Node community maintains a project called [_NAN_](https://github.com/nodejs/nan) (Native Abstractions for Node.js) that simplifies running different versions of Node and subsequently, V8. NAN is a header-only C++ library that provides a set of Macros for developing Node.js addons. Check out the [usage](https://github.com/nodejs/nan#usage) guidelines.
+To swing between Node and C++, the Node community maintains a project called [_NAN_](https://github.com/nodejs/nan) (Native Abstractions for Node.js) that simplifies running different versions of Node and, subsequently, V8. NAN is a header-only C++ library that provides a set of Macros for developing Node.js addons. Check out the [usage](https://github.com/nodejs/nan#usage) guidelines.
 
-such as node-mapnik, node-osrm, and node-osmium. More examples of how to port C++ libraries to node can be found at nodejs.org/api/addons.html. See https://nodesource.com/blog/c-add-ons-for-nodejs-v4/ for a detailed summary of the origins of Nan.
+More examples of how to port C++ libraries to node can be found at [nodejs.org/api/addons](http://nodejs.org/api/addons.html). See https://nodesource.com/blog/c-add-ons-for-nodejs-v4/ for a detailed summary of the origins of Nan.
 
 ### Why create an addon?
 
-Create an addon is a viable solution for the following reasons:
+An addon is a viable solution for the following reasons:
 
 1. To port a C++ project to Node to expose a new interface for the tool (like Mapnik & Node Mapnik)
 1. Improve performance at scale where Node becomes the bottleneck.
