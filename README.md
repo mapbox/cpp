@@ -219,7 +219,7 @@ The `llvm-profdata` tool is able to get all `.profraw` files (from one or more t
 llvm-profdata merge -output=code.profdata code-*.profraw
 ```
 
-Then With `llvm-cov` you can either a) report of summary of coverage for all tracked files, 2) display the line-by-line coverage in your terminal, or 3) display line-by-line coverage in an html file
+Then with `llvm-cov` you can either a) report of summary of coverage for all tracked files, 2) display the line-by-line coverage in your terminal, or 3) display line-by-line coverage in an html file
 
 Summary:
 
