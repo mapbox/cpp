@@ -33,15 +33,52 @@ All of the following libraries are installable in a Node.js environment, but exe
 
 ### Developing addons
 
-**Makefile**
+Developing an addon requires Node.js, NPM, and a C++ compiler.
 
-**package.json**
+* makefile: home to all of the development commands for building binaries, installing dependencies, and running tests
 
-**Generating local binaries**
+* [node-pre-gyp](https://github.com/mapbox/node-pre-gyp): a module installed via NPM, tool that allows us to install and publish addons
 
-**node-pre-gyp**
+* package.json `binary` object: sets the specific paths for bindings and remote publishing. Here's an example from @mapbox/vtinfo:
 
-**Writing & running tests**
+        "binary": {
+          "module_name": "vtinfo",
+          "module_path": "./lib/binding/",
+          "host": "https://mapbox-node-binary.s3.amazonaws.com",
+          "remote_path": "./{name}/v{version}/{configuration}/",
+          "package_name": "{node_abi}-{platform}-{arch}.tar.gz"
+        },
+
+* common.gyp: sets your default configurations for building C++ binaries
+
+* binding.gyp: sets your custom configurations for developing the library, including paths to dependencies, flags, and binding destinations       
+
+All binaries are generated with node-pre-gyp's `build` command, which detects the system architecture automatically.
+
+##### Including other C++ headers into your project
+
+C++ headers can be installed in a few ways:
+
+* Installed via Mason: use Mason to install a project, these can be installed into whichever folder you choose to host dependencies. Best practice is a `/deps` directory.
+* Installed via NPM: Publishing headers to NPM allows them to be included in addons easily, since we are already using the NPM ecosystem. Header paths will point to the `/node_modules` folder or can include dynamically with an [`include_dirs.js`](https://github.com/mapbox/protozero/blob/master/include_dirs.js) file.
+* Copied/pasted into a `/deps` directory.
+
+Depending on how a project is installed, the path to the header files will be different. These paths can be added to the `binding.gyp` file and will look like this:
+
+```javascript
+{
+  'includes': [ 'common.gypi' ],
+  'targets': [
+    {
+      'include_dirs': [
+        '<!(node -e \'require("nan")\')', // included dynamically with an include_dirs.js file
+        './node_modules/project/include/project.hpp', // pointing to node_modules directory
+        './deps/project/project.hpp' // pointing to deps directory (installed manually or with mason)
+      ]
+    }
+  ]
+}
+```
 
 ### Publishing
 
@@ -52,6 +89,16 @@ An addon can be published to NPM just like any other Node module. Unlike a stand
 Node-pre-gyp does a lot of the heavy lifting for publishing binaries, using the `node-pre-gyp publish` command.
 
 ##### Publish binaries to AWS S3 with TravisCI
+
+Check out [node-pre-gyp's docs](https://github.com/mapbox/node-pre-gyp#s3-hosting) about hosting and publishing binaries to s3.
+
+### Versioning
+
+When developing addons, versioning is extremely important. The NPM ecosystem allows modules to install different versions of modules depending on their dependencies, which works fine for javascript, but not great for binaries. **It's very important to ensure a project has only ONE version of a node addon** to prevent mismatching binaries from running simultaneously. 
+
+Here's an example project that shows the potential disasters of running two binaries, [node-cpp-snafu](https://github.com/mapbox/versioning-node-snafu).
+
+Check out or docs about [versioning a Node C++ library](https://github.com/mapbox/versioning-node-cpp).
 
 ### Miscellaneous
 
@@ -65,35 +112,6 @@ Depending on the reason why you are creating an addon library, your naming schem
 Example
 
 Mapnik is a C++ library, named `mapnik`. Its Node.js interface is named `node-mapnik`.
-
-##### Including other C++ headers into your project
-
-1. Why do we go into C++ from Node?
-  1. Performance & Scale
-  1. Library naming schemes for github repos
-1. Examples 
-  1. @ Mapbox
-    1. Node OSRM
-    1. Node Mapnik
-    1. VT Shaver
-    1. vtinfo
-  1. elsewhere?
-1. Building & Testing (for me)
-  1. Build locally and run tests that execute against binaries
-1. Publishing (for them & AWS)
-  1. NPM, but we need binaries for the C++
-  1. Why do we publish binaries?
-  1. How do we publish binaries?
-  1. How are binaries retrieved by others?
-  1. How to publish in other Node or OS versions
-1. Do it yerself
-  1. Node C++ Skeleton
-  1. node-pre-gyp
-  1. C++ glossary
-1. Including other C++ header libs into a project
-1. Versioning a Node C++ library?
-  1. What happens when you hit different binaries? Snafu!
-  1. How do we prevent this @ Mapbox?
 
 ## Glossary
 
