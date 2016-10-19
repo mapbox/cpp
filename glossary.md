@@ -10,7 +10,7 @@ All C++ code falls into the ["ahead-of-time" compilation](https://en.wikipedia.o
 
 A program that converts a C++ source code into machine code (binary) files readable by a computer. Compilers turn `.cpp` code into `.o` [object files](#object-file). 
 
-Example compilers are [clang](#clang) or [gcc](#gcc).
+Example open source compilers are [clang](#clang) or [gcc](#gcc).
 
 #### linker
 
@@ -18,19 +18,21 @@ A program that combines object files into a single [executable](#executable) or 
 
 #### object file
 
-An object file contains symbols, compiled code, external symbols, and other static data. If you are compiling three C++ files – `one.cpp`, `two.cpp`, `three.cpp` – they will be compiled into three object files – `one.o`, `two.o`, `three.o`. These can subsequently be combined by a [linker](#linker) and turned into an [executable](#executable).
+An object file contains symbols, compiled code, external symbols, and other static data. If you are compiling three C++ files – `one.cpp`, `two.cpp`, `three.cpp` – they will be compiled into three object files – `one.o`, `two.o`, `three.o`. These can subsequently be combined by a [linker](#linker) and turned into a [library](#library) or [executable](#executable).
 
 #### executable
 
-A binary file and/or program that can be run by a computer. This is the outcome of [compiling](#compiler) and [linking](#linker).
+A binary file and/or program that can be run by a computer. This is the outcome of [compiling](#compiler) and [linking](#linker). Specifically, an executable has a `main()` function or _entry point_. 
 
 #### posix
 
-A set of standards for maintaining compatability between Unix-like operating systems. *HELP: not sure how this can be explained from our workflow perspective at Mapbox*
+A set of standards for maintaining compatability between unix-like operating systems. Generally posix is synonymous with unix when it comes to what system APIs exist in C/C++ code to interface with the operating system. With minor exceptions POSIX APIs work the same on linux and osx.
 
 #### library
 
-A set of reusable C++ code that can be shared across projects. Libraries can be organized very differently, but typically contain a set of header files (static library) or pre-compiled binaries (dynamic/shared library).
+A set of reusable C++ code that can be shared across projects. Libraries can be organized very differently, but typically contain a set of header files (static library) or pre-compiled binaries (dynamic/shared library). 
+
+Opposite of an [executable](#executable), a library does not have a `main()` entry point and, instead, provide a set of functions and classes that can be called by other C/C++ libraries or executables. It must include at least a single [header file](#header) so the _calling application_ knows the definition of the interfaces provided. A library can be as static archives ([static library](#static-library)) or as a [shared library](#dynamicshared-library).
 
 #### dynamic/shared library
 
@@ -38,7 +40,7 @@ A shared library is only required at runtime, meaning it has already been [compi
 
 #### static library
 
-A static library is required at compile time, meaning all of the code in your include directory will be [compiled](#compiler) and [linked](#linker) into your final [executable](#executable). These libraries typically consist of [header files](#header) that can be included directly into source code, with the `#include "library.h"` syntax.
+A static library is not required at runtime. Instead when a precompiled static library is linked by a calling application all of its object code is linked into that calling applications executable. This step is often called "static linking". The source code of a static library looks identical to a shared library (both contain headers and .cpp files). The only difference is the way it is built.
 
 #### header
 
