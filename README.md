@@ -28,6 +28,10 @@ Find existing real-world code:
   - Compiled apps: https://github.com/search?q=org%3Amapbox+cpp
   - Header-only: https://github.com/search?utf8=%E2%9C%93&q=org%3Amapbox+hpp&type=Repositories&ref=searchresults
 
+#### Gochas
+
+ - Read this great description of how brittle the system of includes and headers are in C/C++: http://clang.llvm.org/docs/Modules.html#problems-with-the-current-model
+
 ### Standard compiler
 
 Clang++ is the primary compiler we use to build binaries (in mason) and test C++ code at Mapbox.
