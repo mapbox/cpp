@@ -109,9 +109,9 @@ A command line tool that consists of a set of bindings to V8 Javascript. These b
 Node is made up of a combination of parts:
 - V8: to interpret Javscript
 - C++ Node bindings: Expose the low-level interface to non-blocking POSIX calls
-- Threadpool: To do [file I/O](https://github.com/mapbox/cpp/blob/node-gloss/glossary.md#io) or any other blocking system call
+- Threadpool: To do [file I/O](https://github.com/mapbox/cpp/blob/master/glossary.md#io) or any other blocking system call
 - Event Loop: A main process (or main thread) that responds to an event queue: grabs the top item in the event queue, executes it, and then grabs the next item.
-- Threadpool and Event Loop Manager ([libuv](http://libuv.org/)): This library helps manage the threadpool and event loop, and helps handle asynchronous [I/O operations](https://github.com/mapbox/cpp/blob/node-gloss/glossary.md#io).
+- Threadpool and Event Loop Manager ([libuv](http://libuv.org/)): This library helps manage the threadpool and event loop, and helps handle asynchronous [I/O operations](https://github.com/mapbox/cpp/blob/master/glossary.md#io).
 
 #### V8
 
