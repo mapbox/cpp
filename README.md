@@ -22,6 +22,7 @@ When we hit bottlenecks in JS/Node.js scripts that can be solved by high concurr
 - Writing c++ cli application: https://github.com/mapbox/cpp-cli-skel
 - Effective C++ by Scott Meyers: [Amazon](https://amzn.com/0321334876)
 - Effective Modern C++ by Scott Meyers: [Amazon](https://amzn.com/1491903996)
+- Basic examples of using the compiler and linker directly [learn-c](https://github.com/springmeyer/learn-c)
 
 Find existing real-world code:
 
