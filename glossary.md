@@ -78,6 +78,20 @@ A file with the `.hpp` or `.h` file extension.
 #### custom allocator
 #### shared memory
 #### memory-mapped file
+#### memory leak
+#### memory growth
+#### memory fragmentation
+
+# Concurrency concepts
+
+#### multi-process
+#### multi-threaded
+#### single-threaded
+#### reentrant
+#### thread safety
+#### immutability
+#### thread safe by locking
+#### thread safe by design
 
 # Writing C++
 
