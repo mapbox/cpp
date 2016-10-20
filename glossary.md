@@ -103,15 +103,38 @@ A file with the `.hpp` or `.h` file extension.
 # Node.js & C++
 
 #### Node
+
+A command line tool that consists of a set of bindings to V8 Javascript. These bindings allow you to use Javascript for implementing "lower-level" operations like working with the file system, threads, and scripting servers. More specifically, Node allows you to interact with the [POSIX api](https://github.com/mapbox/cpp/blob/master/glossary.md#posix) (and POSIX-like api for Windows), using Javascript.
+
+Node is made up of a combination of parts:
+- V8: to interpret Javscript
+- C++ Node bindings: Expose the low-level interface to non-blocking POSIX calls
+- Threadpool: To do [file I/O](https://github.com/mapbox/cpp/blob/master/glossary.md#io) or any other blocking system call
+- Event Loop: A main process (or main thread) that responds to an event queue: grabs the top item in the event queue, executes it, and then grabs the next item.
+- Threadpool and Event Loop Manager ([libuv](http://libuv.org/)): This library helps manage the threadpool and event loop, and helps handle asynchronous [I/O operations](https://github.com/mapbox/cpp/blob/master/glossary.md#io).
+
 #### V8
+
+V8 is a Javascript "engine", or a Javascript interpreter. It translates Javascript into more efficient machine code (native assembly code), then executes it. V8 gives developers access to functionality (networking, DOM handling, external events, HTML5 video, canvas and data storage) needed to control the web browser, and access to server-side/system functionality within Node.js. V8 is [open source and written in C++](https://github.com/v8/v8).
+
 #### event loop
 #### libuv
+
+A library that handles threadpool, event loop, and uses the threading implementation native to the given operating system (for example: Unix uses `pthread`). It is open source, written in C, and is a standalone library most useful as a multithreading interface. Before libuv was available, developers had to manually manage and write threads based on what was provided by the operating system.
+
+Libuv stands for "lib-ultra-event".
+
+#### I/O
+
+An I/O operation that "calls out" from the process to the underlying system. For example, accessing the file system, reading/writing to memory, or sending something over the network
+
+I/O stands for "input/output".
+
 #### threadpool
 #### worker
 #### C++ bindings
-#### POSIX
 #### non-blocking/blocking
-#### [NAN](https://github.com/mapbox/cpp/blob/node-addons/node-cpp.md#nodejs-c-addons)
+#### [NAN](https://github.com/mapbox/cpp/blob/master/node-cpp.md#nodejs-c-addons)
 
 # FAQ
 
