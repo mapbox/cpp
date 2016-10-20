@@ -113,16 +113,4 @@ Example
 
 Mapnik is a C++ library, named `mapnik`. Its Node.js interface is named `node-mapnik`.
 
-## Glossary
-
-Terms
-- Node
-- V8
-- event loop
-- libuv
-- threadpool
-- worker
-- C++ bindings
-- POSIX
-- non-blocking/blocking
-- [NAN](https://github.com/mapbox/cpp/blob/node-addons/node-cpp.md#nodejs-c-addons)
+## [Glossary](https://github.com/mapbox/cpp/blob/master/glossary.md#nodejs--c)
