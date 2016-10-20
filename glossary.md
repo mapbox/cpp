@@ -70,6 +70,15 @@ A file with the `.hpp` or `.h` file extension.
 #### versioned symbols
 #### abi compatibility
 
+# Memory concepts
+
+#### allocator
+#### stack allocation
+#### heap allocation
+#### custom allocator
+#### shared memory
+#### memory-mapped file
+
 # Writing C++
 
 #### template
