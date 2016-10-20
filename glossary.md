@@ -103,15 +103,27 @@ A file with the `.hpp` or `.h` file extension.
 # Node.js & C++
 
 #### Node
+
+A command line tool that consists of a set of bindings to V8 Javascript. These bindings allow you to use Javascript for implementing "lower-level" operations like working with the file system, threads, and scripting servers. More specifically, Node allows you to interact with the [POSIX api](https://github.com/mapbox/cpp/blob/master/glossary.md#posix), using Javascript.
+
+Node is made up of a combination of parts:
+- V8: to interpret Javscript
+- Threadpool ([libeio](http://software.schmorp.de/pkg/libeio.html)): To do file I/O or any other blocking system call
+- Event Loop ([libev](http://software.schmorp.de/pkg/libev.html)): A main process (or main thread) that responds to an event queue: grabs the top item in the event queue, executes it, and then grabs the next item.
+- C++ Node bindings: Expose the low-level interface to non-blocking POSIX calls
+- Thread and Event Loop Manager ([libuv](http://libuv.org/)): This library contains libeio and libev and helps manage them.
+
 #### V8
+
+V8 is a Javascript "engine", or a Javascript interpreter. It translates Javascript into more efficient machine code (native assembly code), then executes it. V8 gives developers access to functionality (networking, DOM handling, external events, HTML5 video, canvas and data storage) needed to control the web browser, and access to server-side/system functionality within Node.js. V8 is [open source and written in C++](https://github.com/v8/v8).
+
 #### event loop
 #### libuv
 #### threadpool
 #### worker
 #### C++ bindings
-#### POSIX
 #### non-blocking/blocking
-#### [NAN](https://github.com/mapbox/cpp/blob/node-addons/node-cpp.md#nodejs-c-addons)
+#### [NAN](https://github.com/mapbox/cpp/blob/master/node-cpp.md#nodejs-c-addons)
 
 # FAQ
 
