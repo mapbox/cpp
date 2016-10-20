@@ -119,6 +119,9 @@ V8 is a Javascript "engine", or a Javascript interpreter. It translates Javascri
 
 #### event loop
 #### libuv
+
+A library that handles threadpool, event loop, and uses the threading implementation native to the given operating system (for example: Unix uses `pthread`). It is open source, written in C, and is a standalone library most useful as a multithreading interface. Before libuv was available, developers had to manually manage and write threads based on what was provided by the operating system.
+
 #### threadpool
 #### worker
 #### C++ bindings
