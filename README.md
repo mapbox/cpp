@@ -24,6 +24,7 @@ When we hit bottlenecks in JS/Node.js scripts that can be solved by high concurr
 - Effective Modern C++ by Scott Meyers: [Amazon](https://amzn.com/1491903996)
 - Basic examples of using the compiler and linker directly [learn-c](https://github.com/springmeyer/learn-c)
 - [Everything you wanted to know about move semantics](http://www.slideshare.net/ripplelabs/howard-hinnant-accu2014)
+- [Efficient Optional Values](https://akrzemi1.wordpress.com/2015/07/15/efficient-optional-values/)
 
 Find existing real-world code:
 
