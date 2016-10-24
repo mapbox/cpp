@@ -94,7 +94,7 @@ Check out [node-pre-gyp's docs](https://github.com/mapbox/node-pre-gyp#s3-hostin
 
 ### Versioning
 
-When developing addons, versioning is extremely important. The NPM ecosystem allows modules to install different versions of modules depending on their dependencies, which works fine for javascript, but not great for binaries. **It's very important to ensure a project has only ONE version of a node addon** to prevent mismatching binaries from running simultaneously. 
+When developing addons, versioning is extremely important. The NPM ecosystem allows modules to install different versions of modules depending on their dependencies, which works fine for javascript, but not great for binaries. **It's very important to ensure a project has only ONE version of a node addon** to prevent mismatching binaries from running simultaneously. This can be accomplished by making an addon a dependency of the main application, which lets NPM dedupe correctly.
 
 Here's an example project that shows the potential disasters of running two binaries, [node-cpp-snafu](https://github.com/mapbox/versioning-node-snafu).
 
