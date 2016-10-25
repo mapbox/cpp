@@ -167,7 +167,7 @@ For binaries to run properly they will need the latest libstdc++ version install
 #### Using apt-get directly
 
 ```
-sudo apt-get install -y software-properties-common python-software-properties
+sudo apt-get install -y software-properties-common python-software-properties || true
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 sudo apt-get update -y
 sudo apt-get install -y libstdc++-5-dev
