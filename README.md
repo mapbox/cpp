@@ -55,10 +55,10 @@ Recommendation: install with mason (see below).
 You can install clang++ v3.8 using [mason](https://github.com/mapbox/mason), which works the same on both OS X and Linux:
 
 ```
-CLANG_VERSION="3.8.0"
+CLANG_VERSION="3.8.1"
 git clone --depth 1 https://github.com/mapbox/mason .mason
-./.mason/mason install clang ${CLANG_VERSION}
-export PATH=$(./.mason/mason prefix clang ${CLANG_VERSION})/bin:${PATH}
+./.mason/mason install clang++ ${CLANG_VERSION}
+export PATH=$(./.mason/mason prefix clang++ ${CLANG_VERSION})/bin:${PATH}
 which clang++
 ```
 
@@ -66,7 +66,8 @@ Notes:
 
   - `export CXX=clang++-3.8` also works
 
-To compile C++ programs with this version of clang you'll need to have the libstdc++-5-dev headers available (which are provided by g++-5):
+To compile C++ programs with this version of clang you'll need to have the libstdc++ headers available. These can be fetched by installing `libstdc++-5-dev (which are a sub-package of g++)`.
+
 
 ##### clang++ via mason on travis
 
@@ -84,7 +85,7 @@ matrix:
     - os: linux
       sudo: false
       compiler: "clang-release"
-      env: CXX=clang++ CLANG_VERSION="3.8.0"
+      env: CXX=clang++ CLANG_VERSION="3.8.1"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
@@ -92,7 +93,7 @@ matrix:
     - os: linux
       sudo: false
       compiler: "clang-debug"
-      env: CXX=clang++ CLANG_VERSION="3.8.0"
+      env: CXX=clang++ CLANG_VERSION="3.8.1"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
@@ -100,16 +101,16 @@ matrix:
 
 install:
   - git clone --depth 1 https://github.com/mapbox/mason .mason
-  - ./.mason/mason install clang ${CLANG_VERSION}
-  - export PATH=$(./.mason/mason prefix clang ${CLANG_VERSION})/bin:${PATH}
+  - ./.mason/mason install clang++ ${CLANG_VERSION}
+  - export PATH=$(./.mason/mason prefix clang++ ${CLANG_VERSION})/bin:${PATH}
   - which clang++
 ```
 
-Note: Mason also provides a `clang++` v3.5.2 package. Request is by setting `CLANG_VERSION=3.5.2` above instead of `3.8.0`
+Note: Mason also provides a `clang++` v3.5.2 package. Request is by setting `CLANG_VERSION=3.5.2` above instead of `3.8.1`
 
 All the available `clang++` packages can be seen at: https://github.com/mapbox/mason/tree/master/scripts/clang
 
-Public documentation on this is also available at https://github.com/mapbox/mason/blob/master/scripts/clang/3.8.0/README.md
+Public documentation on this is also available at https://github.com/mapbox/mason/blob/master/scripts/clang/3.8.1/README.md
 
 #### OS X
 
