@@ -126,6 +126,21 @@ matrix:
       compiler: clang
 ```
 
+### Installing other llvm tools
+
+You may also wish to install other parts of llvm like llvm-cov, clang-format, or clang-tidy.
+
+You can either install the `llvm` package that contains all the llvm tools, or for faster downloads you can install individual packages.
+
+Installing clang-format via mason can be done like:
+
+```bash
+git clone --depth 1 https://github.com/mapbox/mason .mason
+./.mason/mason install clang-format 3.8.1
+export PATH=$(./.mason/mason prefix clang-format 3.8.1)/bin:${PATH}
+which clang-format
+```
+
 ### Standard C++ Library
 
 #### OS X
