@@ -41,7 +41,7 @@ struct UnevaluatedCircleProperties {
 This works well enough for a simple three-property example, but it has a few disadvantages:
 
 * We repeat the property types in three places. If we were to add a property, we'd have to update them all.
-* When you have multiple layer types, you also have to repeat the "superstructure" -- the knowledge that each layer has `Evaluated` and `Unevaluated` structs with corresponding members, and that in each case `evalute` is defined by evaluating member-wise and aggregate-constructing the result.
+* When you have multiple layer types, you also have to repeat the "superstructure" -- the knowledge that each layer has `Evaluated` and `Unevaluated` structs with corresponding members, and that in each case `evaluate` is defined by evaluating member-wise and aggregate-constructing the result.
 * These costs increase as the number of properties and layer types grow.
 
 Here's an alternative:
