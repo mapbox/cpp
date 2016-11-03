@@ -12,6 +12,7 @@ The C++ language and projects built on top of it are essential to the Mapbox pla
   - Mapbox geocoding uses [carmen-cache](https://github.com/mapbox/carmen-cache) for indexes
   - Mapbox tile services (api-maps, api-gl) use [Mapnik](https://github.com/mapnik/mapnik) and [node-mapbox-gl-native](https://github.com/mapbox/mapbox-gl-native/tree/master/platform/node)
   - Mapbox scripts for processing OSM are often based on [libosmium](https://github.com/osmcode/libosmium)
+    - [minjur](https://github.com/mapbox/minjur) creates geojson and [tippecanoe](https://github.com/mapbox/tippecanoe) creates vector tiles for https://osmlab.github.io/osm-qa-tiles/
 
 When we hit bottlenecks in JS/Node.js scripts that can be solved by high concurrency we will consider porting node modules to C++ to leverage the threadpool: https://www.joyent.com/blog/node-js-on-the-road-dc-young-hahn
 
