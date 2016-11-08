@@ -28,6 +28,7 @@ When we hit bottlenecks in JS/Node.js scripts that can be solved by high concurr
 - [Efficient Optional Values](https://akrzemi1.wordpress.com/2015/07/15/efficient-optional-values/)
 - [Eli Bendersky's C/C++ posts](http://eli.thegreenplace.net/tag/c-c)
 - [Howard Hinnants blog](https://howardhinnant.github.io)
+- [The overhead of abstraction in C/C++ vs. Python/Ruby](http://blog.reverberate.org/2014/10/the-overhead-of-abstraction-in-cc-vs.html)
 
 Find existing real-world code:
 
