@@ -6,9 +6,9 @@ Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a 
 
 ### Native Abstractions for Node.js (NAN)
 
-To swing between Node and C++, the Node community maintains a project called [_NAN_](https://github.com/nodejs/nan) (Native Abstractions for Node.js) that simplifies running different versions of Node and, subsequently, V8. NAN is a header-only C++ library that provides a set of Macros for developing Node.js addons. Check out the [usage](https://github.com/nodejs/nan#usage) guidelines.
+To swing between Node and C++, the Node community maintains a project called [_NAN_](https://github.com/nodejs/nan) (Native Abstractions for Node.js) that simplifies running different versions of Node and, subsequently, v8. NAN is a header-only C++ library that provides a set of Macros for developing Node.js addons. Check out the [usage](https://github.com/nodejs/nan#usage) guidelines.
 
-More examples of how to port C++ libraries to node can be found at [nodejs.org/api/addons](http://nodejs.org/api/addons.html). See https://nodesource.com/blog/c-add-ons-for-nodejs-v4/ for a detailed summary of the origins of Nan.
+More examples of how to port C++ libraries to node can be found at [nodejs.org/api/addons](http://nodejs.org/api/addons.html). See https://nodesource.com/blog/c-add-ons-for-nodejs-v4/ for a detailed summary of the origins of Nan. And see http://blog.reverberate.org/2016/10/17/native-extensions-memory-management-part2-javascript-v8.html for a good introduction to v8 that is not specific to node.js.
 
 ### Why create an addon?
 
