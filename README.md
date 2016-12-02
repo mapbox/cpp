@@ -312,33 +312,19 @@ More details on the `llvm-cov gcov` command at http://llvm.org/docs/CommandGuide
 
 #### Debugging production crashes
 
-See if you can replicate locally on OS X first. On OSX backtraces are automatically generated after a crash and dropped into `~/Library/Logs/DiagnosticReports/`. Maybe the backtrace there can give you enough detail to find a bug, fix it, re-deploy to staging and confirm the fix is ready for production.
+Ensure you are using [logbt](https://github.com/mapbox/logbt/). This will ensure that backtraces are displayed for any crashes. You can use `logbt` on both Linux and OS X by launching your program with `logbt`:
 
-If not then the next step is to ensure your production and/or staging stacks are generating backtraces.
-
-On linux backtraces are suppressed by default. Yes, this is a serious inconvenience. For a node.js programmer this would be like having all javascript errors stop the program with nothing more than "Error". In the case of C++ you'll only see something like `segmentation fault` or `double free` or `terminate called after throwing an instance ...` when what you really want is a backtrace to show you were in the code the `segmentation fault` or `double free` or `terminate` actually happened.
-
-To do this you need to tell the linux kernal to allow backtraces:
-
-```
-ulimit -c unlimited
+```bash
+logbt node index.js
 ```
 
-After setting this, a crashing program that previously exited with just `segmentation fault`, should now report ``segmentation fault (core dumped)`. The `core dumped` part indicates that the `ulimit -c unlimited` worked and now core files are being produced. Core files are a unix way of snap-shotting program state in a way that can be queried for information. They are the raw material we can use to generate a backtrace. Now, to generate the backtrace we need to do two more things: 1) find the core file, 2) run gdb.
+On OS X backtraces are also automatically generated after a crash and dropped into `~/Library/Logs/DiagnosticReports/`. OS X can be configured to display a notification on any crash in native code with:
 
-The core file is either 1) in the current working directory of the program that crashed or 2) at a system defined location that you can view by doing `cat /proc/sys/kernel/core_pattern`. On most Mapbox API machines this location is `/tmp/logbt-coredump` as [defined here](https://github.com/mapbox/logbt/blob/2276ff1c1650bf430ea7d82d2845316863e292d8/bin/logbt#L10).
-
-Now install and run gdb to generate a backtrace. You can do this like:
-
-```
-gdb /path/to/your/program /path/to/corefile -ex "set pagination 0" -ex "thread apply all bt" --batch
+```bash
+defaults write com.apple.CrashReporter UseUNC 1
 ```
 
-Where `/path/to/your/program` must be an absolute path to the C or C++ binary that crashed. This could be `node` or some other C++ command line tool.
-
-Then disect the backtraces to get a sense of the cause of the crash.
-
-If you backtraces don't have enough detail, then try running Debug binaries in production to be able to generate better backtraces. Both node-osrm and node-mapnik provide Debug binaries using alternative travis jobs.
+If your backtraces don't have enough detail, then try running Debug binaries in production to be able to generate better backtraces. Both node-osrm and node-mapnik provide Debug binaries using alternative travis jobs.
 
 If backtraces don't provide enough to solve the problem consider running node instrumented with `-fsanitize=address` along with your C++ code instrumented the same.
 
@@ -348,7 +334,7 @@ For more details on how to get backtrace generation working on travis see https:
 
 Sanitizers work at runtime to watch your code for common mistakes and warn or throw when those mistakes are encountered. As opposed to static analysis (which operates at compile time) they are not designed catch errors that never happen. So test coverage is essential. Or running your code in real-world scenarios. The latter case is where the sanitizers really shine compared to other debugging tools because they can work with `-O1` optimization and don't slow down the runtime very much. Other tools, like valgrind, may slow down your program execution so much that actually reaching the bug in a long running process might take so long as to be untenable.
 
-The Addess sanitizer is one of the most useful because it can catch memory leaks (only on Linux however) and invalid use of memory that might cause crashes or undefined behavior.
+The Address sanitizer is one of the most useful because it can catch memory leaks (only on Linux however) and invalid use of memory that might cause crashes or undefined behavior.
 
 To leverage `-fsanitize=address` on OS X you'll need a custom built clang because the apple/xcode provided command line clang++ does not support `-fsanitize=address` at the time of this writing (though it does work inside XCode).
 
