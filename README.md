@@ -336,7 +336,7 @@ Sanitizers work at runtime to watch your code for common mistakes and warn or th
 
 The Address sanitizer is one of the most useful because it can catch memory leaks (only on Linux however) and invalid use of memory that might cause crashes or undefined behavior.
 
-To leverage `-fsanitize=address` on OS X you'll need a custom built clang because the apple/xcode provided command line clang++ does not support `-fsanitize=address` at the time of this writing (though it does work inside XCode).
+To leverage `-fsanitize=address` on OS X you'll need a custom built clang because the apple/xcode provided command line clang++ does not support `-fsanitize=address` at the time of this writing (though it does work inside XCode). Also on OS X, if using `-fsanitize=address` outside of XCode, it is important to define `-D_LIBCPP_HAS_NO_ASAN` in your CXXFLAGS otherwise you might receive false positives for container overflows (see http://stackoverflow.com/a/38858905 for an explanation).
 
 To leverage `-fsanitize=address` on Linux you'll want a very recent clang to ensure you a getting the best sanitizer results.
 
@@ -345,11 +345,11 @@ So, for both platforms it is recommended to [install clang++ via mason packages]
 After installing your custom clang, for `make`-based build systems, do:
 
 ```
-export CXXFLAGS="-fsanitize=address"
+export CXXFLAGS="-fsanitize=address -D_LIBCPP_HAS_NO_ASAN"
 export LDFLAGS="-fsanitize=address"
 ```
 
-Then ensure inspect the build output to ensure that the `-fsanitize=address` flag is showing up. You may need to pass `V=1` or `VERBOSE=1` to make systems to get the build output to show up.
+Then inspect the build output to ensure that the `-fsanitize=address` flag is showing up. You may need to pass `V=1` or `VERBOSE=1` to make systems to get the build output to show up.
 
 For `cmake`-based systems it may be harder to pass these flags, so consult with a developer on the project that can help you.
 
