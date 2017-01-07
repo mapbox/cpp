@@ -214,7 +214,7 @@ addons:
 dependencies:
      pre:
          - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
-         - sudo apt-get upgrade -y
+         - sudo apt-get -y update
          - sudo apt-get -y install libstdc++-5-dev
 ```
 
