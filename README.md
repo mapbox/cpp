@@ -213,9 +213,9 @@ addons:
 ```yml
 dependencies:
      pre:
-         - sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
-         - sudo -E apt-get upgrade -y
-         - sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install libstdc++-5-dev
+         - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
+         - sudo apt-get upgrade -y
+         - sudo apt-get -y install libstdc++-5-dev
 ```
 
 #### Code coverage
