@@ -122,7 +122,13 @@ More info at https://developer.apple.com/legacy/library/documentation/Darwin/Ref
 #### libc
 #### glibc
 #### libstdc++
+The [GNU implementation of the C++ STL](https://gcc.gnu.org/onlinedocs/libstdc++/).
+
+Note that on OS X, `libstdc++` does not support C++11 or C++14, and so we use `libc++` instead.  ([Read more](https://github.com/mapbox/cpp#standard-c-library).)
+
 #### libc++
+The [LLVM implementation of the C++ STL](https://libcxx.llvm.org/)
+
 #### undefined behavior
 #### versioned symbols
 #### abi compatibility
