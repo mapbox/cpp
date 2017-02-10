@@ -117,7 +117,7 @@ A release build describes a C++ binary built with a high compiler [optimization 
 
 A debug build describes a C++ binary built with a the `-DDEBUG` flag (or at least not built with [`-DNDEBUG`](#DNDEBUG) and with lower [optimization levels](#optimization-level). A debug build is also usually built with flags enabling [debug symbols](#debug-symbols)
 
-#### sanitized builds
+#### sanitized build
 
 Sanitized builds are builds that include the `-fsanitize` option. This option accepts one or more named [sanitizers](#sanitizers) that instrument your code to help catch problems at runtime.
 
