@@ -30,17 +30,23 @@ A set of standards for maintaining compatability between unix-like operating sys
 
 #### library
 
-A set of reusable C++ code that can be shared across projects. Libraries can be organized very differently, but typically contain a set of header files (static library) or pre-compiled binaries (dynamic/shared library). 
+A set of reusable C++ code that can be shared across projects. Libraries can be organized very differently, but typically contain a set of header files (static library) or [pre-compiled binaries (dynamic/shared library)](#precompiled-library).
 
 Opposite of an [executable](#executable), a library does not have a `main()` entry point and, instead, provide a set of functions and classes that can be called by other C/C++ libraries or executables. It must include at least a single [header file](#header) so the _calling application_ knows the definition of the interfaces provided. A library can be as static archives ([static library](#static-library)) or as a [shared library](#dynamicshared-library).
 
-#### dynamic/shared library
+#### precompiled library
 
-A shared library is only required at runtime, meaning it has already been [compiled](#compiler) into machine-readable code and is just required alongside your code when it executes.
+A library that contains source code in .cpp files that is compiled and linked into a [shared library](#shared-library) or [static library](#static-library)
+
+#### shared library
+
+A shared library is a type of [precompiled library](#precompiled-library). It required at link time and runtime by applications that depend on it. This means it has already been [compiled](#compiler) into machine-readable code and is just required alongside your code when it executes.
+
+Also known as a dynamic library.
 
 #### static library
 
-A static library is not required at runtime. Instead when a precompiled static library is linked by a calling application all of its object code is linked into that calling applications executable. This step is often called "static linking". The source code of a static library looks identical to a shared library (both contain headers and .cpp files). The only difference is the way it is built.
+A static library is a type of [precompiled library](#precompiled-library). It is only required at link time. When a static library is linked by a calling application all of its object code is put into that calling applications executable. This step is often called "static linking". The source code of a static library looks identical to a shared library (both contain headers and .cpp files). The only difference is the way it is built.
 
 #### header
 
@@ -237,7 +243,6 @@ sysctl -n kern.corefile
 More info at https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man5/core.5.html
 
 
-#### precompiled library: when source code is in .cpp files that is compiled and linked into a shared (aka dymamic) library (.so on linux, .dylib on os x)
 #### when to write compiled library vs a header only library?
 **hide dependencies that are only needed at runtime and not at compile time by users of library**
 **when you want to ship binary code that you don't want to recompile or re-link**
