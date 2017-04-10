@@ -154,8 +154,7 @@ So, a profiling build generally should:
   - Disable key compiler optimizations or options that make [callstacks](#callstack) more detailed:
     - Add `-fno-omit-frame-pointer` (no significant performance cost)
     - Consider adding `-fno-inline-functions ` (potentially significant performance cost, so test before adding this to an -O3 build)
-    - Remove `-fvisibility=hidden` and `-fvisibility-inlines-hidden`
-  - Enables [debug symbols](#debug-symbols), but only the ones needed for better [callstacks](#callstack) to avoid bloating binary size. (`-gline-tables-only`)
+  - Enable [debug symbols](#debug-symbols) by passing `-g`. Except when binary size is important and you want to keep it at a minimum the ideal solution is to only request the compiler to add debug metadata need for better [callstacks](#callstack). (This can be done when building with `clang++` by passing `-gline-tables-only` instead of `-g`)
 
 This boils down to:
 
