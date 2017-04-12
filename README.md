@@ -374,13 +374,15 @@ Wonderfully named you say? Yes, it is named logically and that is a wonderful th
 
 The `libstdc++6` package name can be confusing. Note that there is no dash between the `++` and the `6` like there is between the `++` and the `5` in the dev package.
 
-So why the `6`? It is the soname 6. Sonames are a linux way of speaking about binary library compatibility (ABI). The soname is not the version! The soname also does not really capture all you need to know about binary capability because libstdc++ also uses [versioned symbols](http://ftp.ntu.edu.tw/software/libs/glibc/hjl/compat/). Because of versioned symbols you can live a free and exciting life always running the latest libc or libstdc++ without fear because it is forward compatible (binaries only use the versioned symbols they were compiled against).
+So why the `6`? It is the soname 6. Sonames are a linux way of speaking about binary library compatibility (ABI). The soname is not the version! The soname also does not really capture all you need to know about binary capability because libstdc++ also uses [versioned symbols](https://github.com/springmeyer/glibcxx-symbol-versioning). Because of versioned symbols you can live a free and exciting life always running the latest libc or libstdc++ without fear because it is forward compatible (binaries only use the versioned symbols they were compiled against).
 
 #### So what version do you actually get if you install `libstdc++6` or `libstdc++-5-dev`?
 
 It depends :) The important thing to remember is that unless you know better you want the latest version. If you really need to know then you can do:
 
+```
 apt-get show libstdc++6
+```
 
 You will get the latest version packaged in https://launchpad.net/~ubuntu-toolchain-r/+archive/ubuntu/test/+packages for ubuntu precise and trusty. At the time of this writing the version is `v6.1.1`. Again, that `6` is not related to the soname.
 
@@ -389,6 +391,8 @@ Btw, if you ran `apt-get show libstdc++6` on ubuntu precise without the `ubuntu-
 If you hit a runtime error like `/usr/lib/x86_64-linux-gnu/libstdc++.so.6: version GLIBCXX_3.4.20' not found` it means you forgot to upgrade libstdc++6 to at least `v6.1.1`.
 
 One caveat: To upgrade libstdc++ for binary programs that don't need to be compiled, just installing `libstdc++6` is enough. You don't need the extra headers brought in by `libstdc++-5-dev`. But there is no harm having the headers installed and being explicit will help make clear in the future when we require the g++-6 version of libstdc++ and that we've upgraded to it by requiring `libstdc++-6-dev`. 
+
+For much more detail about which libstdc++ versions are available on which ubuntu versions (and upgradable via which packages) see https://github.com/springmeyer/glibcxx-symbol-versioning
 
 #### I'm seeing a compiler error like "no template named 'foo' in namespace 'std'". What is that about?
 
