@@ -59,7 +59,28 @@ Used to describe when code is organized such that all of the source code is in t
  - Not cpp files need to be compiled
  - To use the library, no library needs to be linked (just `#include <the header>` is enough
 
-#### optimization level
+#### performant
+
+A very dubious word, usually meant to refer to a program that performs well enough by some measure of enough. Prefer describing a program as either having acceptable [performance](#performance) or acceptable [efficiency](#efficiency).
+
+#### performance
+
+How quickly a program does its work. Improving performance involves doing work faster. How much performance can be increased is a function of how long certain operations take on a computer: https://gist.github.com/jboner/2841832.
+
+#### efficiency
+
+How much work is required by a task. Improving efficiency requires doing less work. An efficient program is one which does the minimum (that we're aware of) amount of work to accomplish a given task.
+`CppCon 2014: Chandler Carruth "Efficiency with Algorithms, Performance with Data Structures" https://youtu.be/fHNmRkzxHWs?t=754
+
+#### optimization technique
+
+Changing code to increase [efficiency](#efficiency) or [performance](#performance).
+
+#### memoization
+
+An [optimization technique](#optimization-technique) that reduces the amount of work needed and increases [efficiency](#efficiency) by storing the results of expensive function calls or data access.
+
+#### compiler optimization level
 
 [Compilers](#compiler) transform code into binaries that can run on various platforms. But they also optimize that code in specific ways depending on the `optimization level`.
 
@@ -117,11 +138,11 @@ Release mode is when a [release build](#release-build) is run.
 
 #### release build
 
-A release build describes a C++ binary built with a high compiler [optimization level](#optimization-level) and the `-DNDEBUG`flag. A release build is often built without flags enabling [debug symbols](#debug-symbols) (when developers want the smallest possible binaries). But because [debug symbols](#debug-symbols) do not impact program speed, some projects and developers prefer to include flags enabling [debug symbols](#debug-symbols) even in release builds.
+A release build describes a C++ binary built with a high [compiler optimization level](#compiler-optimization-level) and the `-DNDEBUG`flag. A release build is often built without flags enabling [debug symbols](#debug-symbols) (when developers want the smallest possible binaries). But because [debug symbols](#debug-symbols) do not impact program speed, some projects and developers prefer to include flags enabling [debug symbols](#debug-symbols) even in release builds.
 
 #### debug build
 
-A debug build describes a C++ binary built with a the `-DDEBUG` flag (or at least not built with [`-DNDEBUG`](#DNDEBUG) and with lower [optimization levels](#optimization-level). A debug build is also usually built with flags enabling [debug symbols](#debug-symbols)
+A debug build describes a C++ binary built with a the `-DDEBUG` flag (or at least not built with [`-DNDEBUG`](#DNDEBUG) and with lower [compiler optimization levels](#compiler-optimization-level). A debug build is also usually built with flags enabling [debug symbols](#debug-symbols)
 
 #### sanitized build
 
@@ -149,7 +170,7 @@ A profiling build is a hybrid between a [release build](#release-build) and a [d
 
 So, a profiling build generally should:
 
-  - Use the [highest optimization level](#optimization-level): `-O3` or `-O2`
+  - Use the [highest compiler optimization level](#compiler-optimization-level): `-O3` or `-O2`
   - Disable `assert`s by enabling [DNDEBUG](#DNDEBUG)
   - Disable key compiler optimizations or options that make [callstacks](#callstack) more detailed:
     - Add `-fno-omit-frame-pointer` (no significant performance cost)
@@ -163,7 +184,7 @@ This boils down to:
 clang++ -O3 -DNDEBUG -fno-omit-frame-pointer -gline-tables-only ...
 ```
 
-#### problem of profiling and optimization levels
+#### problem of profiling and compiler optimization levels
 
 Profiling is a great strategy for learning why and where a program is slow. But caution must be used in interpreting the results when profiling because:
 
