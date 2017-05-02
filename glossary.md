@@ -70,7 +70,8 @@ How quickly a program does its work. Improving performance involves doing work f
 #### efficiency
 
 How much work is required by a task. Improving efficiency requires doing less work. An efficient program is one which does the minimum (that we're aware of) amount of work to accomplish a given task.
-`CppCon 2014: Chandler Carruth "Efficiency with Algorithms, Performance with Data Structures" https://youtu.be/fHNmRkzxHWs?t=754
+
+- See also: CppCon 2014: Chandler Carruth "Efficiency with Algorithms, Performance with Data Structures" https://youtu.be/fHNmRkzxHWs?t=754
 
 #### optimization technique
 
@@ -118,11 +119,11 @@ Compilers are rapidly adding more and more optimizations and shifting around whi
 
 #### DNDEBUG
 
-`DNDEBUG` stands for `do not debug` and is a [preprocessor macro](#macro) or `#define`. It is passed as an option to a [compiler](#compiler).
+`DNDEBUG` stands for `do not debug` or `define no debug` and is a [preprocessor macro](#macro) or `#define`. It is passed as an option to a [compiler](#compiler).
 
-If defined, like `-DNDEBUG`. It is the opposite of [`-DDEBUG`](#DDEBUG) which stands for `yes, please, do debug`.
+To define it pass `-DNDEBUG` to the compiler. It is the opposite of [`-DDEBUG`](#DDEBUG) which stands for `yes, please, do debug`.
 
-The `-DNDEBUG` flag internally tells the compiler to remove `assert`s from the code. This allows the program to run faster (less expensive checks) at the cost of no longer preventing the program from stopping on `assert`s that might protect from [undefined behavior](#undefined-behavior).
+The `-DNDEBUG` flag internally tells the compiler to remove [assert](http://en.cppreference.com/w/cpp/error/assert)s from the code. This allows the program to run faster (less expensive checks) at the cost of no longer preventing the program from stopping on `assert`s that might protect from [undefined behavior](#undefined-behavior).
 
 :warning: Do not be tempted to write unit tests using `assert` unless you are 100% confident your build system sets `-DDEBUG`. Otherwise your tests will not be testing what you think because the `assert`s may be gone!
 
@@ -131,6 +132,12 @@ Also, sometimes programs hook into the `DNDEBUG` `#define` to apply their own cu
 See also: http://en.cppreference.com/w/cpp/error/assert
 
 #### DDEBUG
+
+`DDEBUG` stands for `yes, please, do debug` or `define debug` and is a [preprocessor macro](#macro) or `#define`. It is passed as an option to a [compiler](#compiler).
+
+To define it pass `-DDEBUG` to the compiler. It is the opposite of [`-DDEBUG`](#DDEBUG) which stands for `yes, please, do debug`.
+
+When defined [assert](http://en.cppreference.com/w/cpp/error/assert) in the code will be kept and enabled.
 
 #### release mode
 
@@ -142,7 +149,9 @@ A release build describes a C++ binary built with a high [compiler optimization 
 
 #### debug build
 
-A debug build describes a C++ binary built with a the `-DDEBUG` flag (or at least not built with [`-DNDEBUG`](#DNDEBUG) and with lower [compiler optimization levels](#compiler-optimization-level). A debug build is also usually built with flags enabling [debug symbols](#debug-symbols)
+A debug build describes a C++ binary built with the [`-DDEBUG`](#DDEBUG) flag and with lower [compiler optimization levels](#compiler-optimization-level). A debug build is also usually built with flags enabling [debug symbols](#debug-symbols)
+
+Debug builds run slower and may assert on hidden bugs in the code. They are very useful for testing and finding problems in the code.
 
 #### sanitized build
 
