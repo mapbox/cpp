@@ -44,7 +44,7 @@ Find existing real-world code:
 
 Clang++ is the primary compiler we use to build binaries (in mason) and test C++ code at Mapbox.
 
-Clang++ v3.8 is the latest stable version that we should be targeting.
+Clang++ v3.9 is the latest stable version that we should be targeting.
 
 ### Installing clang++
 
@@ -56,19 +56,20 @@ Recommendation: install with mason (see below).
 
 #### Mason
 
-You can install clang++ v3.8 using [mason](https://github.com/mapbox/mason), which works the same on both OS X and Linux:
+You can install clang++ v3.9 using [mason](https://github.com/mapbox/mason), which works the same on both OS X and Linux:
 
 ```
-CLANG_VERSION="3.8.1"
-git clone --depth 1 https://github.com/mapbox/mason .mason
-./.mason/mason install clang++ ${CLANG_VERSION}
-export PATH=$(./.mason/mason prefix clang++ ${CLANG_VERSION})/bin:${PATH}
+CLANG_VERSION="3.9.1"
+mkdir ./mason
+curl -sSfL https://github.com/mapbox/mason/archive/v0.9.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
+./mason/mason install clang++ ${CLANG_VERSION}
+export PATH=$(./mason/mason prefix clang++ ${CLANG_VERSION})/bin:${PATH}
 which clang++
 ```
 
 Notes:
 
-  - `export CXX=clang++-3.8` also works
+  - `export CXX=clang++-3.9` also works
 
 To compile C++ programs with this version of clang you'll need to have the libstdc++ headers available. These can be fetched by installing `libstdc++-5-dev (which are a sub-package of g++)`.
 
@@ -89,7 +90,7 @@ matrix:
     - os: linux
       sudo: false
       compiler: "clang-release"
-      env: CXX=clang++ CLANG_VERSION="3.8.1"
+      env: CXX=clang++ CLANG_VERSION="3.9.1"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
@@ -97,24 +98,25 @@ matrix:
     - os: linux
       sudo: false
       compiler: "clang-debug"
-      env: CXX=clang++ CLANG_VERSION="3.8.1"
+      env: CXX=clang++ CLANG_VERSION="3.9.1"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
           packages: [ 'libstdc++-5-dev' ]
 
 install:
-  - git clone --depth 1 https://github.com/mapbox/mason .mason
-  - ./.mason/mason install clang++ ${CLANG_VERSION}
-  - export PATH=$(./.mason/mason prefix clang++ ${CLANG_VERSION})/bin:${PATH}
+  - mkdir ./mason
+curl -sSfL https://github.com/mapbox/mason/archive/v0.9.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
+  - ./mason/mason install clang++ ${CLANG_VERSION}
+  - export PATH=$(./mason/mason prefix clang++ ${CLANG_VERSION})/bin:${PATH}
   - which clang++
 ```
 
-Note: Mason also provides a `clang++` v3.5.2 package. Request is by setting `CLANG_VERSION=3.5.2` above instead of `3.8.1`
+Note: Mason also provides a `clang++` v3.5.2 package. Request is by setting `CLANG_VERSION=3.5.2` above instead of `3.9.1`
 
 All the available `clang++` packages can be seen at: https://github.com/mapbox/mason/tree/master/scripts/clang
 
-Public documentation on this is also available at https://github.com/mapbox/mason/blob/master/scripts/clang/3.8.1/README.md
+Public documentation on this is also available at https://github.com/mapbox/mason/blob/master/scripts/clang/3.9.1/README.md
 
 #### OS X
 
@@ -140,9 +142,10 @@ You can either install the `llvm` package that contains all the llvm tools, or f
 Installing clang-format via mason can be done like:
 
 ```bash
-git clone --depth 1 https://github.com/mapbox/mason .mason
-./.mason/mason install clang-format 3.8.1
-export PATH=$(./.mason/mason prefix clang-format 3.8.1)/bin:${PATH}
+mkdir ./mason
+curl -sSfL https://github.com/mapbox/mason/archive/v0.9.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
+./mason/mason install clang-format 3.9.1
+export PATH=$(./mason/mason prefix clang-format 3.9.1)/bin:${PATH}
 which clang-format
 ```
 
