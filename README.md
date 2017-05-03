@@ -162,12 +162,6 @@ On OS X we use libc++: http://libcxx.llvm.org
 
 Apple did some incredible work to make both libc++ and libstdc++ live harmoniously on OS X. This would lead to crashes or undefined behavior on linux, but on OS X it works fine. So, for example, you are able to use node.js binaries that link to `libstdc++` with node c++ addons that link to `libc++`. We do this commonly so that a node c++ addon can use the latest c++11 or c++14 features even though the node binary does not. The node binary provided by https://nodejs.org at the time of this writing still links to libstdc++. This is because they want the binary to support versions as old as OS X 10.7 that predate the existence of `libc++` on the system. This is achieved by passing the `-mmacosx-version-min` which automatically adds `-stdlib=libstdc++` to the linking flags. See [this line](https://github.com/nodejs/node/blob/88323e874473d18cce22d6ae134a056919c457e4/common.gypi#L355). If `-mmacosx-version-min=10.7` is not passed then the default linking would use `-stdlib=libc++`.
 
-Troubleshooting: An error like `clang: warning: libstdc++ is deprecated; move to libc++ with a minimum deployment target of OS X 10.9` is expected on OS X >= 10.12 if you are building a node c++ addon against the nodejs provided binary and that c++ addon is not explicitly requesting linking to libc++ or overriding the ``-mmacosx-version-min` flag. In this case the default is being use from node core. This is harmless until Apple decides to remove `libstdc++` from an OS X version. It is going to continue to warn until either:
-
- - the nodejs project starts linking to libc++ explicitly (refs https://github.com/nodejs/node/commit/7292a1e954e0db348ff78c704df9e105ba5667ad)
- - or the nodejs project changes [this line](https://github.com/nodejs/node/blob/88323e874473d18cce22d6ae134a056919c457e4/common.gypi#L355) to `10.8`
- - or the c++ addon you are building explicitly links to libc++ or overrides the `-mmacosx-version-min` flag [like this](https://github.com/mapbox/node-cpp-skel/blob/bf5fa91961c4027e709b557f5d3acd7eef8a7894/binding.gyp#L20).
-
 #### Linux
 
 On Linux we use libstdc++: https://gcc.gnu.org/libstdc++
