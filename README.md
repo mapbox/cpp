@@ -29,6 +29,7 @@ When we hit bottlenecks in JS/Node.js scripts that can be solved by high concurr
 - [Eli Bendersky's C/C++ posts](http://eli.thegreenplace.net/tag/c-c)
 - [Howard Hinnants blog](https://howardhinnant.github.io)
 - [The overhead of abstraction in C/C++ vs. Python/Ruby](http://blog.reverberate.org/2014/10/the-overhead-of-abstraction-in-cc-vs.html)
+- [Competitive Programmer's Handbook](https://cses.fi/book.html)
 
 Find existing real-world code:
 
