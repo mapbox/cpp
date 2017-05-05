@@ -114,3 +114,9 @@ Example
 Mapnik is a C++ library, named `mapnik`. Its Node.js interface is named `node-mapnik`.
 
 ## [Glossary](https://github.com/mapbox/cpp/blob/master/glossary.md#nodejs--c)
+
+## Performance
+
+ - https://nodejs.org/en/docs/guides/simple-profiling/
+ - https://www.dynatrace.com/blog/understanding-garbage-collection-and-hunting-memory-leaks-in-node-js/
+ - https://www.dynatrace.com/blog/how-to-track-down-cpu-issues-in-node-js/
