@@ -379,7 +379,7 @@ So why the `6`? It is the soname 6. Sonames are a linux way of speaking about bi
 It depends :) The important thing to remember is that unless you know better you want the latest version. If you really need to know then you can do:
 
 ```
-apt-get show libstdc++6
+apt-cache show libstdc++6
 ```
 
 You will get the latest version packaged in https://launchpad.net/~ubuntu-toolchain-r/+archive/ubuntu/test/+packages for ubuntu precise and trusty. At the time of this writing the version is `v6.1.1`. Again, that `6` is not related to the soname.
