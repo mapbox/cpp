@@ -2,7 +2,7 @@
 
 The following document outlines Mapbox's approach to writing C++ modules for Node.js (often referred to as _addons_).
 
-Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a bottleneck for performance. Node is single-threaded, which blocks execution. C++ on the other hand allows you to execute operations without clogging up the event loop. Passing heavy operations into C++ and subsequently into C++ workers can greatly improve the overall runtime of the code.
+Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a bottleneck for performance. Node is single-threaded, which blocks execution. C++ on the other hand allows you to execute operations without clogging up the event loop (learn more about the node event loop [here](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)). Passing heavy operations into C++ and subsequently into C++ workers can greatly improve the overall runtime of the code.
 
 ### Native Abstractions for Node.js (NAN)
 
