@@ -90,6 +90,7 @@ The `optimization level` impacts both how fast the resulting binaries will run, 
 The most important reason to understand `optimization levels` is to understand the larger concept of [build modes](#build-modes) including:
 
   - [release builds](#release-build)
+  - [debuggable release builds](#release-with-debug-build)
   - [debug builds](#debug-build)
   - [profiling builds](#profiling-build)
   - [sanitized builds](#sanitized-build)
@@ -153,6 +154,19 @@ A debug build describes a C++ binary built with the [`-DDEBUG`](#DDEBUG) flag an
 
 Debug builds run slower and may assert on hidden bugs in the code. They are very useful for testing and finding problems in the code.
 
+#### debuggable release build
+
+Like a [profiling build](#profiling-build), a debuggable release build is a hybrid between a [release build](#release-build) and a [debug build](#debug-build). A  debuggable release build tries to address the [problem of debugging release-crashes](#problem-of-debugging-release-crashes).
+
+A build like this should:
+
+  - Use the [highest compiler optimization level](#compiler-optimization-level)
+  - Enable [debug symbols](#debug-symbols) by passing `-g`.
+
+This is similar to a [profiling build](#profiling-build) but without any extra flags that might hurt performance.
+
+Note: Developers that use cmake can automatically build this way by passing the `RelWithDebInfo` value to the [CMAKE_BUILD_TYPE](https://cmake.org/cmake/help/v3.0/variable/CMAKE_BUILD_TYPE.html)` variable like: `-DCMAKE_BUILD_TYPE=RelWithDebInfo`
+
 #### sanitized build
 
 Sanitized builds are builds that include the `-fsanitize` option. This option accepts one or more named [sanitizers](#sanitizers) that instrument your code to help catch problems at runtime.
@@ -165,7 +179,7 @@ The sanitizers are designed to be efficient and generally low overhead compared 
 
 For unit tests a sanitized build should likely be a [debug build](#debug-build) with sanitizers enabled. This way invalid code execution will stop abruptly and present a detailed stack trace of the problem, for quick fixing.
 
-For production a sanitized should be a [profiling build](#release-build) with sanitizers enabled such that the binary still runs fast and therefore more closely emulates a [release build](#release-build) that is running in production.
+For production a sanitized should be a [profiling build](#profiling-build) with sanitizers enabled such that the binary still runs fast and therefore more closely emulates a [release build](#release-build) that is running in production.
 
 #### sanitizers
 
@@ -175,11 +189,11 @@ They are available as part of clang++: https://clang.llvm.org/docs/UsersManual.h
 
 #### profiling build
 
-A profiling build is a hybrid between a [release build](#release-build) and a [debug build](#debug-build). A profiling build tries to address the [problem of profiling and optimization levels](#problem-of-profiling-and-optimization-levels).
+Like a [debuggable release build](#release-with-debug-build), a profiling build is a hybrid between a [release build](#release-build) and a [debug build](#debug-build). A profiling build tries to address the [problem of profiling and optimization levels](#problem-of-profiling-and-optimization-levels).
 
 So, a profiling build generally should:
 
-  - Use the [highest compiler optimization level](#compiler-optimization-level): `-O3` or `-O2`
+  - Use the [highest compiler optimization level](#compiler-optimization-level)
   - Disable `assert`s by enabling [DNDEBUG](#DNDEBUG)
   - Disable key compiler optimizations or options that make [callstacks](#callstack) more detailed:
     - Add `-fno-omit-frame-pointer` (no significant performance cost)
@@ -192,6 +206,15 @@ This boils down to:
 ```cpp
 clang++ -O3 -DNDEBUG -fno-omit-frame-pointer -gline-tables-only ...
 ```
+
+#### problem of debugging release-crashes
+
+When production binaries crash the [callstacks](#callstack) in the [backtraces](#backtrace) will not likely contain line numbers for where, exactly, the code crashed. Instead the only clue for what happened is the name of last function called (that was not inlined by the compiler). If the function is simple and only a few lines of code, perhaps this will give you the programmer enough of the lead to see the potential problem and fix the bug that caused the crash. But more likely the function will be composed of many lines of code and/or it may call other functions that have been inlined away.
+
+So really you want the line number for where the crash happened. An ideal solution might be to run the [debug builds](#debug-build), replicate the crash, to get a more detailed backtrace. But more often than not it is difficult to impossible to replicate a crash with [debug builds](#debug-build). An example of this would be a rare race condition that only happens under load: it can't be replicated with a [debug build](#debug-build) because the code runs too slow. Or it can only be replicated under production load and [debug builds](#debug-build) can't be pushed into production since it would hurt performance too much.
+
+The solution to this problem then is to build your [release builds](#release-build) with just enough debug information to get line numbers, without hurting performance. For details on how to do this see [debuggable release build](#release-with-debug-build).
+
 
 #### problem of profiling and compiler optimization levels
 
