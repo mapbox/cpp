@@ -165,7 +165,7 @@ A build like this should:
 
 This is similar to a [profiling build](#profiling-build) but without any extra flags that might hurt performance.
 
-Note: Developers that use cmake can automatically build this way by passing the `RelWithDebInfo` value to the [CMAKE_BUILD_TYPE](https://cmake.org/cmake/help/v3.0/variable/CMAKE_BUILD_TYPE.html)` variable like: `-DCMAKE_BUILD_TYPE=RelWithDebInfo`
+Note: Developers that use cmake can automatically build this way by passing the `RelWithDebInfo` value to the [CMAKE_BUILD_TYPE](https://cmake.org/cmake/help/v3.0/variable/CMAKE_BUILD_TYPE.html) variable like: `-DCMAKE_BUILD_TYPE=RelWithDebInfo`
 
 #### sanitized build
 
