@@ -90,7 +90,7 @@ The `optimization level` impacts both how fast the resulting binaries will run, 
 The most important reason to understand `optimization levels` is to understand the larger concept of [build modes](#build-modes) including:
 
   - [release builds](#release-build)
-  - [debuggable release builds](#release-with-debug-build)
+  - [debuggable release builds](#debuggable-release-build)
   - [debug builds](#debug-build)
   - [profiling builds](#profiling-build)
   - [sanitized builds](#sanitized-build)
@@ -189,7 +189,7 @@ They are available as part of clang++: https://clang.llvm.org/docs/UsersManual.h
 
 #### profiling build
 
-Like a [debuggable release build](#release-with-debug-build), a profiling build is a hybrid between a [release build](#release-build) and a [debug build](#debug-build). A profiling build tries to address the [problem of profiling and optimization levels](#problem-of-profiling-and-optimization-levels).
+Like a [debuggable release build](#debuggable-release-build), a profiling build is a hybrid between a [release build](#release-build) and a [debug build](#debug-build). A profiling build tries to address the [problem of profiling and optimization levels](#problem-of-profiling-and-optimization-levels).
 
 So, a profiling build generally should:
 
@@ -213,7 +213,7 @@ When production binaries crash the [callstacks](#callstack) in the [backtraces](
 
 So really you want the line number for where the crash happened. An ideal solution might be to run the [debug builds](#debug-build), replicate the crash, to get a more detailed backtrace. But more often than not it is difficult to impossible to replicate a crash with [debug builds](#debug-build). An example of this would be a rare race condition that only happens under load: it can't be replicated with a [debug build](#debug-build) because the code runs too slow. Or it can only be replicated under production load and [debug builds](#debug-build) can't be pushed into production since it would hurt performance too much.
 
-The solution to this problem then is to build your [release builds](#release-build) with just enough debug information to get line numbers, without hurting performance. For details on how to do this see [debuggable release build](#release-with-debug-build).
+The solution to this problem then is to build your [release builds](#release-build) with just enough debug information to get line numbers, without hurting performance. For details on how to do this see [debuggable release build](#debuggable-release-build).
 
 
 #### problem of profiling and compiler optimization levels
