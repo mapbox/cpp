@@ -115,15 +115,16 @@ There are hundreds of different optimization options inside compilers. Luckily w
    - The program will run as fast as possible and the resulting binary will be smaller (except where inlining might increase its size somewhat).
    - [Backtraces](#backtrace) will be less detailed due to inlining
 
- - `-Os` - "oh s" enables optimizations, but not at the cost of code size.
+ - `-Os` - "oh s" enables optimizations for speed, but not at the cost of code size.
    - The program may run slower than `-O2` or `-O3`, but how much slower is hard to determine without extensive testing.
 
 Compilers are rapidly adding more and more optimizations and shifting around which internal optimizations are enabled in which "O" level. See also:
 
- - http://clang-developers.42468.n3.nabble.com/Meaning-of-LLVM-optimization-levels-td4032493.html
+ - clang: https://clang.llvm.org/docs/CommandGuide/clang.html#cmdoption-o0
+ - gcc: https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+ - discussion by clang devs: http://clang-developers.42468.n3.nabble.com/Meaning-of-LLVM-optimization-levels-td4032493.html
  - http://llvm.org/docs/Passes.html for a listing of all the internal compiler optimizations in clang++ which you don't need to know specifically, but which are under-the-hood of the "O" levels.
  - http://stackoverflow.com/a/15548189 for a detailed summary of which internal optimizations are grouped in which "O" level across clang++ releases.
- - https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html for g++ specific docs.
 
 
 #### DNDEBUG
