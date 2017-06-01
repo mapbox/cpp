@@ -99,20 +99,28 @@ There are hundreds of different optimization options inside compilers. Luckily w
 
 
  - `-O0` - "oh zero" disables optimization.
-   - The program will run very very slowly and the resulting binary will likely be much larger.
+   - The program will run very very slowly and the resulting binary will likely be much larger (no dead code removal).
    - The advantage is that [backtraces](#backtrace) to be much more detailed because inlining and other optimizations are disabled that would otherwise shrink the size of the [callstack](#callstack).
-   - A [backtrace](#backtrace) for a crash will likely show the exact line number where a SIGSEGV or SIGABRT happened.
+   - A [backtrace](#backtrace) for a crash will likely show the exact line number where a crash happened when also built with `-g`.
 
- - `O1` - "oh one" is moderately optimized.
-   - Not all functions will be inlined, but the program should still run reasonably fast.
-   - This level is a good compromise when you want good [backtraces](#backtrace) but also not awful speed.
+ - `-O1` - "oh one" is moderately optimized.
+   - Not all functions will be inlined, but the program should still run reasonably fast and dead code will be removed.
+   - This level is a good compromise when you want good [backtraces](#backtrace)(when also built with -g) but not awful speed.
 
- - `O3` - "oh three" enables most all optimizations inside the compiler.
+ - `-O2` - "oh two" is optimized, but should not explode code size
+   - The program will run nearly as fast as possible and the resulting binary will be small
+   - [Backtraces](#backtrace) will be less detailed due to inlining
+
+ - `-O3` - "oh three" enables most all optimizations inside the compiler.
    - The program will run as fast as possible and the resulting binary will be smaller (except where inlining might increase its size somewhat).
-   - Backtraces will likely be much less detailed and [callstacks](#callstack) will only have minimal usefulness for knowing the location of a crash (no line numbers).
+   - [Backtraces](#backtrace) will be less detailed due to inlining
+
+ - `-Os` - "oh s" enables optimizations, but not at the cost of code size.
+   - The program may run slower than `-O2` or `-O3`, but how much slower is hard to determine without extensive testing.
 
 Compilers are rapidly adding more and more optimizations and shifting around which internal optimizations are enabled in which "O" level. See also:
 
+ - http://clang-developers.42468.n3.nabble.com/Meaning-of-LLVM-optimization-levels-td4032493.html
  - http://llvm.org/docs/Passes.html for a listing of all the internal compiler optimizations in clang++ which you don't need to know specifically, but which are under-the-hood of the "O" levels.
  - http://stackoverflow.com/a/15548189 for a detailed summary of which internal optimizations are grouped in which "O" level across clang++ releases.
  - https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html for g++ specific docs.
