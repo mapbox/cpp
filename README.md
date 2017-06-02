@@ -308,25 +308,31 @@ Troubleshooting:
 More details on the `llvm-cov gcov` command at http://llvm.org/docs/CommandGuide/llvm-cov.html#llvm-cov-gcov.
 
 
-#### Debugging production crashes
+#### Debugging crashes
 
-Ensure you are using [logbt](https://github.com/mapbox/logbt/). This will ensure that backtraces are displayed for any crashes. You can use `logbt` on both Linux and OS X by launching your program with `logbt`:
+The first step is to view the [backtrace](glossary.md#backtrace) for the crash.
 
-```bash
-logbt node index.js
-```
+##### OS X
 
-On OS X backtraces are also automatically generated after a crash and dropped into `~/Library/Logs/DiagnosticReports/`. OS X can be configured to display a notification on any crash in native code with:
+On OS X [backtraces](glossary.md#backtrace) are automatically generated after a crash and dropped into `~/Library/Logs/DiagnosticReports/`. OS X can also be configured to display a notification on any crash in native code with:
 
 ```bash
 defaults write com.apple.CrashReporter UseUNC 1
 ```
 
-If your backtraces don't have enough detail, then try running Debug binaries in production to be able to generate better backtraces. Both node-osrm and node-mapnik provide Debug binaries using alternative travis jobs.
+##### Linux
 
-If backtraces don't provide enough to solve the problem consider running node instrumented with `-fsanitize=address` along with your C++ code instrumented the same.
+On linux backtraces [backtraces](glossary.md#backtrace) are not automatically generated.
 
-For more details on how to get backtrace generation working on travis see https://github.com/springmeyer/travis-coredump.
+To enable them, use [logbt](https://github.com/mapbox/logbt/). This will ensure that backtraces are displayed for any crashes right when the program exits. You can use `logbt` on both Linux and OS X by launching your program with `logbt`:
+
+```bash
+logbt -- node index.js
+```
+
+If your backtraces don't have enough detail, then try running [debug binaries](glossary.md#debug-build) in production.
+
+If backtraces don't provide enough detail to clearly identify the problem consider running [sanitized binaries](glossary.md#sanitized-build).
 
 #### Sanitizers
 

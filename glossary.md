@@ -178,7 +178,7 @@ Note: Developers that use cmake can automatically build this way by passing the 
 
 #### sanitized build
 
-Sanitized builds are builds that include the `-fsanitize` option. This option accepts one or more named [sanitizers](#sanitizers) that instrument your code to help catch problems at runtime.
+Sanitized builds include the `-fsanitize` option and produce special binaries. This option accepts one or more named [sanitizers](#sanitizers) that instrument your code to help catch problems at runtime.
 
 The sanitizers are designed to be efficient and generally low overhead compared to other tools for catching C++ bugs. This makes them viable to run in production or staging environments to catch bugs that:
 
