@@ -59,6 +59,14 @@ Used to describe when code is organized such that all of the source code is in t
  - Not cpp files need to be compiled
  - To use the library, no library needs to be linked (just `#include <the header>` is enough
 
+#### `#include`
+
+Using `#include` at the beginning of a file is very similar to "importing". Including a header allows you to utilize the code defined in the included header file. Literally speaking, [the compiler will "replace" the #include line with the actual contents of the file you're including when it compiles the file.](http://www.cplusplus.com/forum/articles/10627/).
+
+There are [a couple ways](https://stackoverflow.com/questions/21593/what-is-the-difference-between-include-filename-and-include-filename/21594#21594) to include headers:
+- Using carrots, ex: `<nan.h>` --> look for header in global
+- Using quotes, ex: `"hello.hpp"` --> look for header in location relative to this file
+
 #### performant
 
 A very dubious word, usually meant to refer to a program that performs well enough by some measure of enough. Prefer describing a program as either having acceptable [performance](#performance) or acceptable [efficiency](#efficiency).
