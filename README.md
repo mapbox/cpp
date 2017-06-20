@@ -30,7 +30,8 @@ When we hit bottlenecks in JS/Node.js scripts that can be solved by high concurr
 - [Howard Hinnants blog](https://howardhinnant.github.io)
 - [The overhead of abstraction in C/C++ vs. Python/Ruby](http://blog.reverberate.org/2014/10/the-overhead-of-abstraction-in-cc-vs.html)
 - [Competitive Programmer's Handbook](https://cses.fi/book.html)
-- [Great runthrough of thread behaviour in Node, and how to properly use UV_THREADPOOL_SIZE with some examples](https://www.future-processing.pl/blog/on-problems-with-threads-in-node-js/)
+- [Great runthrough of thread behavior in Node, and how to properly use UV_THREADPOOL_SIZE with some examples](https://www.future-processing.pl/blog/on-problems-with-threads-in-node-js/)
+- [How compilers and linkers work](http://www.lurklurk.org/linkers/linkers.html)
 
 Find existing real-world code:
 
