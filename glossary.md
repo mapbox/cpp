@@ -1,5 +1,45 @@
 # Building C++
 
+[backtrace](https://github.com/mapbox/cpp/blob/master/glossary.md#backtrace)
+[callstack](https://github.com/mapbox/cpp/blob/master/glossary.md#callstack)
+[calltree](https://github.com/mapbox/cpp/blob/master/glossary.md#calltree)
+[compiler](https://github.com/mapbox/cpp/blob/master/glossary.md#compiler)
+[compiler optimization level](https://github.com/mapbox/cpp/blob/master/glossary.md#compiler-optimization-level)
+[core file](https://github.com/mapbox/cpp/blob/master/glossary.md#core-file)
+[core_pattern](https://github.com/mapbox/cpp/blob/master/glossary.md#core_pattern)
+[crash](https://github.com/mapbox/cpp/blob/master/glossary.md#crash)
+[development toolchain](https://github.com/mapbox/cpp/blob/master/glossary.md#development-toolchain)
+[DDEBUG](https://github.com/mapbox/cpp/blob/master/glossary.md#ddebug)
+[debug build](https://github.com/mapbox/cpp/blob/master/glossary.md#debug-build)
+[debuggable release build](https://github.com/mapbox/cpp/blob/master/glossary.md#debuggable-release-build)
+[Debugger](https://github.com/mapbox/cpp/blob/master/glossary.md#debugger)
+[DNDEBUG](https://github.com/mapbox/cpp/blob/master/glossary.md#dndebug)
+[efficiency](https://github.com/mapbox/cpp/blob/master/glossary.md#efficiency)
+[executable](https://github.com/mapbox/cpp/blob/master/glossary.md#executable)
+[header](https://github.com/mapbox/cpp/blob/master/glossary.md#header)
+[header-only library](https://github.com/mapbox/cpp/blob/master/glossary.md#header-only-library)
+[include](https://github.com/mapbox/cpp/blob/master/glossary.md#include)
+[library](https://github.com/mapbox/cpp/blob/master/glossary.md#library)
+[linker](https://github.com/mapbox/cpp/blob/master/glossary.md#linker)
+[memoization](https://github.com/mapbox/cpp/blob/master/glossary.md#memoization)
+[object file](https://github.com/mapbox/cpp/blob/master/glossary.md#object-file)
+[optimization technique](https://github.com/mapbox/cpp/blob/master/glossary.md#optimization-technique)
+[performance](https://github.com/mapbox/cpp/blob/master/glossary.md#performance)
+[performant](https://github.com/mapbox/cpp/blob/master/glossary.md#performant)
+[posix](https://github.com/mapbox/cpp/blob/master/glossary.md#posix)
+[precompiled library](https://github.com/mapbox/cpp/blob/master/glossary.md#precompiled-library)
+[problem of debugging release-crashes](https://github.com/mapbox/cpp/blob/master/glossary.md#problem-of-debugging-release-crashes)
+[problem of profiling and compiler optimization levels](https://github.com/mapbox/cpp/blob/master/glossary.md#problem-of-profiling-and-compiler-optimization-levels)
+[profiling build](https://github.com/mapbox/cpp/blob/master/glossary.md#profiling-build)
+[release build](https://github.com/mapbox/cpp/blob/master/glossary.md#release-build)
+[release mode](https://github.com/mapbox/cpp/blob/master/glossary.md#release-mode)
+[sanitized build](https://github.com/mapbox/cpp/blob/master/glossary.md#sanitized-build)
+[sanitizers](https://github.com/mapbox/cpp/blob/master/glossary.md#sanitizers)
+[shared library](https://github.com/mapbox/cpp/blob/master/glossary.md#shared-library)
+[signal](https://github.com/mapbox/cpp/blob/master/glossary.md#signal)
+[static library](https://github.com/mapbox/cpp/blob/master/glossary.md#static-library)
+[Tracer](https://github.com/mapbox/cpp/blob/master/glossary.md#tracer)
+
 #### development toolchain
 
 The toolset used to generate C++ code into [executables](#executable) for a computer. Typically consists of a [compiler](#compiler) and [linker](#linker). 
@@ -384,6 +424,17 @@ https://gcc.gnu.org/onlinedocs/cpp/Macros.html
 #### const
 
 # Node.js & C++
+
+[blocking/non-blocking](https://github.com/mapbox/cpp/blob/master/glossary.md#non-blockingblocking)
+[C++ bindings](https://github.com/mapbox/cpp/blob/master/glossary.md#c-bindings)
+[event loop](https://github.com/mapbox/cpp/blob/master/glossary.md#event-loop)
+[I/O](https://github.com/mapbox/cpp/blob/master/glossary.md#io)
+[libuv](https://github.com/mapbox/cpp/blob/master/glossary.md#libuv)
+[NAN](https://github.com/mapbox/cpp/blob/master/glossary.md#nan)
+[Node](https://github.com/mapbox/cpp/blob/master/glossary.md#node)
+[threadpool](https://github.com/mapbox/cpp/blob/master/glossary.md#threadpool)
+[V8](https://github.com/mapbox/cpp/blob/master/glossary.md#v8)
+[worker](https://github.com/mapbox/cpp/blob/master/glossary.md#worker)
 
 #### Node
 
