@@ -1,6 +1,205 @@
 # Building C++
 
-## Table of Contents
+#### Table of Contents
+
+-   [General terms](#general-terms)
+
+    -   [development toolchain](#development-toolchain)
+
+    -   [compiler](#compiler)
+
+    -   [linker](#linker)
+
+    -   [linked](#linked)
+
+    -   [linking](#linking)
+
+    -   [translation unit](#translation-unit)
+
+    -   [object file](#object-file)
+
+    -   [symbol](#symbol)
+
+    -   [executable](#executable)
+
+    -   [posix](#posix)
+
+    -   [API](#api)
+
+    -   [instantiate](#instantiate)
+
+    -   [calling application](#calling-application)
+
+    -   [loadable module](#loadable-module)
+
+    -   [address space](#address-space)
+
+    -   [dlopen](#dlopen)
+
+    -   [library](#library)
+
+    -   [precompiled library](#precompiled-library)
+
+    -   [precompiled](#precompiled)
+
+    -   [shared library](#shared-library)
+
+    -   [static library](#static-library)
+
+    -   [statically linked](#statically-linked)
+
+    -   [dynamically linked](#dynamically-linked)
+
+    -   [dynamically loaded](#dynamically-loaded)
+
+    -   [header](#header)
+
+    -   [header-only library](#header-only-library)
+
+    -   [include](#include)
+
+    -   [performant](#performant)
+
+    -   [performance](#performance)
+
+    -   [efficiency](#efficiency)
+
+    -   [optimization technique](#optimization-technique)
+
+    -   [memoization](#memoization)
+
+    -   [compiler optimization level](#compiler-optimization-level)
+
+    -   [DNDEBUG](#dndebug)
+
+    -   [DDEBUG](#ddebug)
+
+    -   [release mode](#release-mode)
+
+    -   [release build](#release-build)
+
+    -   [debug build](#debug-build)
+
+    -   [debuggable release build](#debuggable-release-build)
+
+    -   [sanitized build](#sanitized-build)
+
+    -   [sanitizers](#sanitizers)
+
+    -   [profiling build](#profiling-build)
+
+    -   [problem of debugging release-crashes](#problem-of-debugging-release-crashes)
+
+    -   [problem of profiling and compiler optimization levels](#problem-of-profiling-and-compiler-optimization-levels)
+
+    -   [signal](#signal)
+
+    -   [crash](#crash)
+
+    -   [Debugger](#debugger)
+
+        -   [Tracer](#tracer)
+
+    -   [core file](#core-file)
+
+    -   [callstack](#callstack)
+
+    -   [calltree](#calltree)
+
+    -   [backtrace](#backtrace)
+
+    -   [core_pattern](#core_pattern)
+
+    -   [when to write compiled library vs a header only library?](#when-to-write-compiled-library-vs-a-header-only-library)
+
+    -   [c++11: https://isocpp.org/wiki/faq/cpp11-language](#c11-httpsisocpporgwikifaqcpp11-language)
+
+    -   [c++14: https://isocpp.org/wiki/faq/cpp14-language](#c14-httpsisocpporgwikifaqcpp14-language)
+
+    -   [c++1y](#c1y)
+
+    -   [c++98](#c98)
+
+    -   [c++11 move semantics (std::move)](#c11-move-semantics-stdmove)
+
+    -   [LLVM](#llvm)
+
+    -   [gcc](#gcc)
+
+    -   [clang](#clang)
+
+    -   [g++](#g)
+
+    -   [clang++](#clang-1)
+
+    -   [versioned symbols](#versioned-symbols)
+
+    -   [debug symbols](#debug-symbols)
+
+    -   [libc](#libc)
+
+    -   [glibc](#glibc)
+
+    -   [libstdc++](#libstdc)
+
+    -   [libc++](#libc-1)
+
+    -   [undefined behavior](#undefined-behavior)
+
+    -   [versioned symbols](#versioned-symbols-1)
+
+    -   [abi compatibility](#abi-compatibility)
+
+    -   [source code](#source-code)
+
+    -   [out of source build](#out-of-source-build)
+
+    -   [in-tree build](#in-tree-build)
+
+-   [Memory concepts](#memory-concepts)
+
+    -   [new keyword](#new-keyword)
+    -   [allocator](#allocator)
+    -   [stack allocation](#stack-allocation)
+    -   [heap allocation](#heap-allocation)
+    -   [custom allocator](#custom-allocator)
+    -   [shared memory](#shared-memory)
+    -   [memory-mapped file](#memory-mapped-file)
+    -   [memory leak](#memory-leak)
+    -   [memory growth](#memory-growth)
+    -   [memory fragmentation](#memory-fragmentation)
+    -   [static data](#static-data)
+
+-   [Concurrency concepts](#concurrency-concepts)
+
+    -   [multi-process](#multi-process)
+    -   [multi-threaded](#multi-threaded)
+    -   [single-threaded](#single-threaded)
+    -   [reentrant](#reentrant)
+    -   [thread safety](#thread-safety)
+    -   [immutability](#immutability)
+    -   [thread safe by locking](#thread-safe-by-locking)
+    -   [thread safe by design](#thread-safe-by-design)
+
+-   [Writing C++](#writing-c)
+
+    -   [template](#template)
+    -   [macro](#macro)
+    -   [mutex](#mutex)
+    -   [const](#const)
+
+-   [Node.js & C++](#nodejs--c)
+
+    -   [Node](#node)
+    -   [V8](#v8)
+    -   [event loop](#event-loop)
+    -   [libuv](#libuv)
+    -   [I/O](#io)
+    -   [threadpool](#threadpool)
+    -   [worker](#worker)
+    -   [C++ bindings](#c-bindings)
+    -   [non-blocking/blocking](#non-blockingblocking)
+    -   [NAN](#nan)
 
 #### General terms
 
