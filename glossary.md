@@ -556,7 +556,7 @@ For example a segfault (segmentation fault or violation) leads to a `SIGSEGV` si
 
 A program like `gdb` or `lldb` that is able to run or "hook" into executables, pause them, inspect variables, print backtraces, and see what threads are doing.
 
-###### Tracer
+##### Tracer
 
 A program like `perf` or `Activity Monitor` that is able to observe program behavior and generate summary reports.
 
