@@ -1,0 +1,23 @@
+{
+  "name": "cpp",
+  "version": "1.0.0",
+  "description": "Scripts to process markdown files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "toc": "remark glossary.md --use toc -o"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mapbox/cpp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mapbox/cpp/issues"
+  },
+  "homepage": "https://github.com/mapbox/cpp#readme",
+  "dependencies": {
+    "remark-cli": "^3.0.1"
+  }
+}
