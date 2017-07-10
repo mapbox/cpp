@@ -8,35 +8,111 @@ All C++ code falls into the ["ahead-of-time" compilation](https://en.wikipedia.o
 
 #### compiler
 
-A program that converts a C++ source code into machine code (binary) files readable by a computer. Compilers turn `.cpp` code into `.o` [object files](#object-file). 
+A program that converts a C++ [source code](#source code) into machine code (binary) files readable by a computer. Compilers turn `.cpp` code into `.o` [object files](#object-file). 
 
 Example open source compilers are [clang](#clang) or [gcc](#gcc).
 
 #### linker
 
-A program that combines object files into a single [executable](#executable) or [library](#library). Typically a step enacted by the [compiler](#compiler).
+A program that combines [object files](#object-file) into a single [executable](#executable) or [library](#library). Typically a step enacted by the [compiler](#compiler).
+
+#### linked
+
+This term is used to describe the process when an [executable](#executable) or [library](#library) is told to be [dynamically linked](#dynamically-linked) to [library](#library).
+
+#### linking
+
+A general term to describe the process of combining all [translation units](#translation unit) and resolving the undefined [symbols](#symbol) with the defined ones.
+
+Generally linking occurs when [object files](#object-file) are combined into a [library](#library).
+
+#### translation unit
+
+The input to a compiler from which an [object file](#object-file) is created. Normally this is one or more files with the extension of `.cpp`, `c++`, or `.cc`.
 
 #### object file
 
-An object file contains symbols, compiled code, external symbols, and other static data. If you are compiling three C++ files – `one.cpp`, `two.cpp`, `three.cpp` – they will be compiled into three object files – `one.o`, `two.o`, `three.o`. These can subsequently be combined by a [linker](#linker) and turned into a [library](#library) or [executable](#executable).
+An object file contains object code. Object code is what a [compiler](#compiler) produces. It contains symbols, compiled code, external symbols, and other [static data](#static-data). If you are compiling three C++ files (aka [translation units](#translation unit)) – `one.cpp`, `two.cpp`, `three.cpp` – they will be compiled into three object files – `one.o`, `two.o`, `three.o`. These can subsequently be combined by a [linker](#linker) and turned into a [library](#library) or [executable](#executable).
+
+Note: The file extension of object files is usually `.o`. You may also encounter `.os`.
+
+#### symbol
+
+In C/C++ a symbol is the name embedded inside a binary for a function or class. For example, every [executable](#executable) will have a function in the code named `main()`. Once this function is compiled it will be available in the binary as a public symbol. For example, we can confirm this for the `python` binary using the `nm` command:
+
+```bash
+$ nm $(which python) | grep main
+0000000100000f60 T _main
+```
+
+`nm` shows you the symbol table for an [object file](#object-files). [symbols](#symbol) are generally either:
+
+ - `T` = this object file has the implementation of this symbol
+ - `U` = this object file will need the symbol to be dynamically loaded before use
+
+Including a header file that only had definitions of functions or classes gets you to the `U` state - this lets the [translation unit](#translation unit) compile, but you can’t execute it because there will be undefined symbols. It must be [linked](#linked).
 
 #### executable
 
-A binary file and/or program that can be run by a computer. This is the outcome of [compiling](#compiler) and [linking](#linker). Specifically, an executable has a `main()` function or _entry point_. 
+A binary file and/or program that can be run by a computer. This is the outcome of [compiling](#compiler) and [linking](#linker). Specifically, an executable has a `main()` function or _entry point_. A binary that does not have a `main()` entry point is likely a #
 
 #### posix
 
-A set of standards for maintaining compatability between unix-like operating systems. Generally posix is synonymous with unix when it comes to what system APIs exist in C/C++ code to interface with the operating system. With minor exceptions POSIX APIs work the same on linux and osx.
+A set of standards for maintaining compatibility between unix-like operating systems. Generally posix is synonymous with unix when it comes to what system APIs exist in C/C++ code to interface with the operating system. With minor exceptions POSIX APIs work the same on linux and osx.
+
+#### API
+
+Application programming interface. This term is used broadly to describe how software and code can and should interact. In C++ programs an API describes a public set of functions that can be called, classes that can be [instantiated](#instantiate), or static data that can be used.
+
+#### instantiate
+
+To instantiate a C++ class is to create a variable that refers to an instance of that class. That instance may point to dynamically allocated memory if the [new keyword](#new-keyword) was used. Or if [stack allocation](#stack-allocation) was used then the instance will point to a temporary variable on the stack.
+
+#### calling application
+
+A term used to describe the application that depends on the [API](#API) of another application.
+
+#### loadable module
+
+A loadable module is similar to a [shared library](#dynamicshared-library). Just like a [shared library](#dynamicshared-library) a loadable module is:
+
+ - created by [linking](#linking)
+ - [pre-compiled](#precompiled)
+ - [dynamically loaded](#dynamically loaded).
+
+But, whereas a [shared library](#dynamicshared-library) is [dynamically linked](#dynamically-linked) at startup, a loadable module is designed to be loaded sometime after startup, by the [calling application](#calling-application), with [dlopen](#dlopen).
+
+Most plugin type interfaces in C/C++ are implemented as loadable modules. These loadable modules can have any extension, but most commonly use the `.so` extension like a [shared library](#dynamicshared-library) does on linux.
+
+Advanced note: A loadable module may depend on [symbols](#symbol) from external libraries. When those symbols are also needed by the [calling application](#calling-application) that will load the loadable module, then it is common for the loadable module to be created without resolving (aka linking it to) those external symbols. This means that the loadable module is [linked](#linked) without [linking](#linking) all of its dependencies. It will have undefined symbols when it is loaded unless they are available already in the [address space](#address-space) of the [calling application](#calling-application) already. This will be possible if the the [calling application](#calling-application) has itself been either [statically linked](#statically-linked) or [dynamically linked](#dynamically-linked) to external libraries that provide those [symbols](#symbol).
+
+#### address space
+
+In C++ the term address space usually refers to the scope of memory the program has access to. You can refer to something in code by referencing its memory address if it is in the same address space as your code.
+
+#### dlopen
+
+The `dlopen` api is a [POSIX api](#posix) API available on linux and osx (on windows a similar API is `LoadLibraryA`) that is able to dynamically load a [shared library](#dynamicshared-library) or [loadable module](#loadable-module).
+
+It is often used with [loadable modules](#loadable-module) to implement plugin systems to C++ programs.
+
+It is often used with pure C [shared libraries](#dynamicshared-library) and [the libffi foreign function interface library](https://en.wikipedia.org/wiki/Libffi) to implement language bindings to C libraries.
+
+More info at [this man7 page](http://man7.org/linux/man-pages/man3/dlopen.3.html)
 
 #### library
 
 A set of reusable C++ code that can be shared across projects. Libraries can be organized very differently, but typically contain a set of header files (static library) or [pre-compiled binaries (dynamic/shared library)](#precompiled-library).
 
-Opposite of an [executable](#executable), a library does not have a `main()` entry point and, instead, provide a set of functions and classes that can be called by other C/C++ libraries or executables. It must include at least a single [header file](#header) so the _calling application_ knows the definition of the interfaces provided. A library can be as static archives ([static library](#static-library)) or as a [shared library](#dynamicshared-library).
+As opposed to an [executable](#executable), a library does not have a `main()` entry point and, instead, provide a set of functions and classes that can be called by other C/C++ libraries or executables. It must include at least a single [header file](#header) so the _calling application_ knows the definition of the interfaces provided. A library can be as static archives ([static library](#static-library)) or as a [shared library](#dynamicshared-library).
 
 #### precompiled library
 
-A library that contains source code in .cpp files that is compiled and linked into a [shared library](#shared-library) or [static library](#static-library)
+A general term to describe a [library](#library) created from [precompiled](#precompiled) code. All libraries are created this way, but may be turned into different types of libraries depending on how they should be used. Most commonly a precompiled library is either a [shared library](#shared-library) or [static library](#static-library).
+
+#### precompiled
+
+A term used to describe something created from compiling code that defines an [API](#API). Something precompiled is assembled from a set of one or more C++ files (aka [translation unit](#translation unit)) turned into [object files](#object-files).
 
 #### shared library
 
@@ -46,7 +122,22 @@ Also known as a dynamic library.
 
 #### static library
 
-A static library is a type of [precompiled library](#precompiled-library). It is only required at link time. When a static library is linked by a calling application all of its object code is put into that calling applications executable. This step is often called "static linking". The source code of a static library looks identical to a shared library (both contain headers and .cpp files). The only difference is the way it is built.
+A static library is a type of [precompiled library](#precompiled-library). It is only required at link time. When a static library is linked to another application all of its [object files](#object-file) are put into that application's executable. This step is often called "static linking". The [source code](#source code) of a static library looks identical to a shared library (both contain headers and .cpp files). The only difference is the way it is built.
+
+#### statically linked
+
+A program can statically link a [static library](#static-library). This means that no external library is needed at runtime. Instead all the [symbols](#symbol) needed are available in the binary already.
+
+#### dynamically linked
+
+A [shared library](#shared-library) can be dynamically linked to another binary (either an [executable](#executable) or another [shared library](#shared-library)). The link happens during a build and is done by the system linker (usually the `ld` program or a compiler). This creates a dependence on this [shared library](#shared-library) that is resolved at startup of the program linking it. This runtime resolution at startup is done by the [operating systems loader](https://en.wikipedia.org/wiki/Loader_(computing)).
+
+#### dynamically loaded
+
+A general term to describe a binary that is loaded either of these two cases:
+
+ - A [library](#library) loaded into the [address space](#address-space) of a program by [dynamic linking](#dynamically-linked)
+ - A [loadable module](#loadable-module) loaded into the [address space](#address-space) of a program by [dlopen](#dlopen).
 
 #### header
 
@@ -54,7 +145,7 @@ A file with the `.hpp` or `.h` file extension.
 
 #### header-only library
 
-Used to describe when code is organized such that all of the source code is in the .hpp file such that:
+Used to describe when code is organized such that all of the [source code](#source code) is in the .hpp file such that:
 
  - Not cpp files need to be compiled
  - To use the library, no library needs to be linked (just `#include <the header>` is enough
@@ -328,7 +419,7 @@ More info at https://developer.apple.com/legacy/library/documentation/Darwin/Ref
 #### versioned symbols
 #### debug symbols
 
-Extra stuff the compiler encodes in a binary to help [debuggers](#debuggers) inspect details about a running or crashed program and [tracers](#tracers) collect detailed information about program execution. Normally to enable debug symbols you pass `-g` to a compiler. This can be done in either a [release build](#release-build) or a [debug build](#debug-build).
+Extra stuff the compiler encodes in a binary to help [debuggers](#debuggers) inspect details about a running or crashed program and [tracers](#tracers) collect detailed information about program execution. Normally to enable debug [symbols](#symbol) you pass `-g` to a compiler. This can be done in either a [release build](#release-build) or a [debug build](#debug-build).
 
 #### libc
 #### glibc
@@ -348,9 +439,32 @@ See http://blog.regehr.org/archives/213 and http://blog.llvm.org/2011/05/what-ev
 #### versioned symbols
 #### abi compatibility
 
+#### source code
+
+In C++ source code describes `.hpp` or `.cpp` files before they are compiled. Groups of source code passed to the compiler are called [translation units](#translation unit).
+
+#### out of source build
+
+A common build convention is to put into a custom directory structure all the results of all compiling and linking [source code](#source code). For example, all [object files](#object-files) might be put at a path like `./build/Release/obj/`, all [libraries](#library) at `./build/Release/lib/`, or all [executables](#executable) at `./build/Release/bin`.
+
+Each build system may use a different directory name and structure, but the general goal is to:
+
+ - Keep the binary outputs separate from the source code
+ - Version the path of the build results based on the build type (e.g. `Release` or `Debug`)
+
+This approach is in contrast to an [in-tree build](#in-tree-build). It is advantageous to [in-tree build](#in-tree-build) because:
+
+ - It makes it easy to clean up all compiled files just by removing a single directly. (no complex cleanup scripts are needed to track down all the .o files)
+ - It makes it easy to create multiple binaries, potentially build with different build options, without overwriting previous binaries.
+
+#### in-tree build
+
+An in-tree build describes when a build system compiles all [object files](#object-files) and writes them to the same directory structure where the [source code](#source code) exists. In this case you might have [source code](#source code) at `src/foo/bar.cpp` and the object file would end up at `src/foo/bar.o`.
+
 
 # Memory concepts
 
+#### new keyword
 #### allocator
 #### stack allocation
 #### heap allocation
@@ -360,6 +474,9 @@ See http://blog.regehr.org/archives/213 and http://blog.llvm.org/2011/05/what-ev
 #### memory leak
 #### memory growth
 #### memory fragmentation
+#### static data
+
+Data created statically. This usually means created at the time the program starts and therefore is available for the whole time the program is running and does not need to be created by the programmer.
 
 # Concurrency concepts
 
@@ -387,7 +504,7 @@ https://gcc.gnu.org/onlinedocs/cpp/Macros.html
 
 #### Node
 
-A command line tool that consists of a set of bindings to V8 Javascript. These bindings allow you to use Javascript for implementing "lower-level" operations like working with the file system, threads, and scripting servers. More specifically, Node allows you to interact with the [POSIX api](https://github.com/mapbox/cpp/blob/master/glossary.md#posix) (and POSIX-like api for Windows), using Javascript.
+A command line tool that consists of a set of bindings to V8 Javascript. These bindings allow you to use Javascript for implementing "lower-level" operations like working with the file system, threads, and scripting servers. More specifically, Node allows you to interact with the [POSIX api](#posix) (and POSIX-like api for Windows), using Javascript.
 
 Node is made up of a combination of parts:
 - V8: to interpret Javscript
