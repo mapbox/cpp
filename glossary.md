@@ -148,9 +148,9 @@ A file with the `.hpp` or `.h` file extension.
 Used to describe when code is organized such that all of the [source code](#source code) is in the .hpp file such that:
 
  - Not cpp files need to be compiled
- - To use the library, no library needs to be linked (just `#include <the header>` is enough
+ - To use the library, no library needs to be linked (just [using `#include <the header>`](#include) is enough
 
-#### `#include`
+#### include
 
 Using `#include` at the beginning of a file is very similar to "importing". Including a header allows you to utilize the code defined in the included header file. Literally speaking, [the compiler will "replace" the #include line with the actual contents of the file you're including when it compiles the file.](http://www.cplusplus.com/forum/articles/10627/).
 
