@@ -6,6 +6,7 @@
 
     -   [development toolchain](#development-toolchain)
     -   [compiler](#compiler)
+    -   [Front-end](#front-end)
     -   [linker](#linker)
     -   [linked](#linked)
     -   [linking](#linking)
@@ -125,6 +126,12 @@
     -   [C++ bindings](#c-bindings)
     -   [non-blocking/blocking](#non-blockingblocking)
     -   [NAN](#nan)
+    -   [mason](#mason)
+    -   [make](#make)
+    -   [cmake](#cmake)
+    -   [gyp](#gyp)
+    -   [visual studio](#visual-studio)
+    -   [ninja](#ninja)
 
 #### General terms
 
@@ -136,13 +143,21 @@ All C++ code falls into the ["ahead-of-time" compilation](https://en.wikipedia.o
 
 ##### compiler
 
-A program that converts a C++ [source code](<#source code>) into machine code (binary) files readable by a computer. Compilers turn `.cpp` code into `.o` [object files](#object-file). 
+A program that converts C++ [source code](#source-code) into machine code (binary) files readable by a computer. 
+
+Compilers turn `.cpp` code into `.o` [object files](#object-file) and are often a [front-end](#front-end) to the [linker](#linker)
 
 Example open source compilers are [clang](#clang) or [gcc](#gcc).
 
+It is common to specify the `CC` and `CXX` environment variables and many build systems ([make](#make) in particular) to customize the default C and C++ compiler that should be used.
+
+##### Front-end
+
+The term front-end refers to when a command line tool `A` can be used in place of another command line tool `B` such that you call `B` through the interface of `A`.
+
 ##### linker
 
-A program that combines [object files](#object-file) into a single [executable](#executable) or [library](#library). Typically a step enacted by the [compiler](#compiler).
+A program that combines [object files](#object-file) into a single [executable](#executable) or [library](#library). Typically a step enacted by the [compiler](#compiler). The linker on unix systems is usually the `ld` command. Type `man ld` for more info or visit [the ld linux man page](https://linux.die.net/man/1/ld)
 
 ##### linked
 
@@ -150,7 +165,7 @@ This term is used to describe the process when an [executable](#executable) or [
 
 ##### linking
 
-A general term to describe the process of combining all [translation units](<#translation unit>) and resolving the undefined [symbols](#symbol) with the defined ones.
+A general term to describe the process of combining all [translation units](#translation-unit) and resolving the undefined [symbols](#symbol) with the defined ones.
 
 Generally linking occurs when [object files](#object-file) are combined into a [library](#library).
 
@@ -160,7 +175,7 @@ The input to a compiler from which an [object file](#object-file) is created. No
 
 ##### object file
 
-An object file contains object code. Object code is what a [compiler](#compiler) produces. It contains symbols, compiled code, external symbols, and other [static data](#static-data). If you are compiling three C++ files (aka [translation units](<#translation unit>)) – `one.cpp`, `two.cpp`, `three.cpp` – they will be compiled into three object files – `one.o`, `two.o`, `three.o`. These can subsequently be combined by a [linker](#linker) and turned into a [library](#library) or [executable](#executable).
+An object file contains object code. Object code is what a [compiler](#compiler) produces. It contains symbols, compiled code, external symbols, and other [static data](#static-data). If you are compiling three C++ files (aka [translation units](#translation-unit)) – `one.cpp`, `two.cpp`, `three.cpp` – they will be compiled into three object files – `one.o`, `two.o`, `three.o`. These can subsequently be combined by a [linker](#linker) and turned into a [library](#library) or [executable](#executable).
 
 Note: The file extension of object files is usually `.o`. You may also encounter `.os`.
 
@@ -178,7 +193,7 @@ $ nm $(which python) | grep main
 -   `T` = this object file has the implementation of this symbol
 -   `U` = this object file will need the symbol to be dynamically loaded before use
 
-Including a header file that only had definitions of functions or classes gets you to the `U` state - this lets the [translation unit](<#translation unit>) compile, but you can’t execute it because there will be undefined symbols. It must be [linked](#linked).
+Including a header file that only had definitions of functions or classes gets you to the `U` state - this lets the [translation unit](#translation-unit) compile, but you can’t execute it because there will be undefined symbols. It must be [linked](#linked).
 
 ##### executable
 
@@ -240,7 +255,7 @@ A general term to describe a [library](#library) created from [precompiled](#pre
 
 ##### precompiled
 
-A term used to describe something created from compiling code that defines an [API](#API). Something precompiled is assembled from a set of one or more C++ files (aka [translation unit](<#translation unit>)) turned into [object files](#object-files).
+A term used to describe something created from compiling code that defines an [API](#API). Something precompiled is assembled from a set of one or more C++ files (aka [translation unit](#translation-unit)) turned into [object files](#object-files).
 
 ##### shared library
 
@@ -250,7 +265,7 @@ Also known as a dynamic library.
 
 ##### static library
 
-A static library is a type of [precompiled library](#precompiled-library). It is only required at link time. When a static library is linked to another application all of its [object files](#object-file) are put into that application's executable. This step is often called "static linking". The [source code](<#source code>) of a static library looks identical to a shared library (both contain headers and .cpp files). The only difference is the way it is built.
+A static library is a type of [precompiled library](#precompiled-library). It is only required at link time. When a static library is linked to another application all of its [object files](#object-file) are put into that application's executable. This step is often called "static linking". The [source code](#source-code) of a static library looks identical to a shared library (both contain headers and .cpp files). The only difference is the way it is built.
 
 ##### statically linked
 
@@ -273,7 +288,7 @@ A file with the `.hpp` or `.h` file extension.
 
 ##### header-only library
 
-Used to describe when code is organized such that all of the [source code](<#source code>) is in the .hpp file such that:
+Used to describe when code is organized such that all of the [source code](#source-code) is in the .hpp file such that:
 
 -   Not cpp files need to be compiled
 -   To use the library, no library needs to be linked (just [using `#include <the header>`](#include) is enough
@@ -556,6 +571,8 @@ More info at <https://developer.apple.com/legacy/library/documentation/Darwin/Re
 
 ##### clang++
 
+The recommended [compiler](#compiler) used a Mapbox. It is open source and packaged in [mason](#mason).
+
 ##### versioned symbols
 
 ##### debug symbols
@@ -586,11 +603,11 @@ See <http://blog.regehr.org/archives/213> and <http://blog.llvm.org/2011/05/what
 
 ##### source code
 
-In C++ source code describes `.hpp` or `.cpp` files before they are compiled. Groups of source code passed to the compiler are called [translation units](<#translation unit>).
+In C++ source code describes `.hpp` or `.cpp` files before they are compiled. Groups of source code passed to the compiler are called [translation units](#translation-unit).
 
 ##### out of source build
 
-A common build convention is to put into a custom directory structure all the results of all compiling and linking [source code](<#source code>). For example, all [object files](#object-files) might be put at a path like `./build/Release/obj/`, all [libraries](#library) at `./build/Release/lib/`, or all [executables](#executable) at `./build/Release/bin`.
+A common build convention is to put into a custom directory structure all the results of all compiling and linking [source code](#source-code). For example, all [object files](#object-files) might be put at a path like `./build/Release/obj/`, all [libraries](#library) at `./build/Release/lib/`, or all [executables](#executable) at `./build/Release/bin`.
 
 Each build system may use a different directory name and structure, but the general goal is to:
 
@@ -604,7 +621,7 @@ This approach is in contrast to an [in-tree build](#in-tree-build). It is advant
 
 ##### in-tree build
 
-An in-tree build describes when a build system compiles all [object files](#object-files) and writes them to the same directory structure where the [source code](<#source code>) exists. In this case you might have [source code](<#source code>) at `src/foo/bar.cpp` and the object file would end up at `src/foo/bar.o`.
+An in-tree build describes when a build system compiles all [object files](#object-files) and writes them to the same directory structure where the [source code](#source-code) exists. In this case you might have [source code](#source-code) at `src/foo/bar.cpp` and the object file would end up at `src/foo/bar.o`.
 
 #### Memory concepts
 
@@ -708,3 +725,47 @@ I/O stands for "input/output".
 ##### non-blocking/blocking
 
 ##### [NAN](https://github.com/mapbox/cpp/blob/master/node-cpp.md#nodejs-c-addons)
+
+##### mason
+
+Mason is a package manager for C++. It is able to install [precompiled libraries](#precompiled-library) and [executables](#executable) from binaries. And it is able to install the source code for [header-only libraries](#header-only-library). All packages end up in the `./mason_packages` folder in the current working directory.
+
+Learn more [at the mason homepage](https://github.com/mapbox/mason).
+
+##### make
+
+A venerable build system only compatible with unix systems. Usually available by default on most unix systems without needing to be installed or upgraded. In this sense `make` is a bit like `bash`. It is the first tool many developers reach for when starting a project.
+
+The configuration for make is a `Makefile`. It uses `tab` indentation. It is rare that you will ever encounter a `Makefile` that needs a specific version of `make`. This is likely because what `make` does is pretty simple and was hammered out a long time ago and has not changed much in recent versions.
+
+For a project that only needs to build a few files `make` can be a good choice. For projects that need to build libraries or many files, [cmake](#cmake) is the better choice.
+
+At Mapbox `make` is commonly used as the entry point for building a complex application. So, you might have a `Makefile` that actually calls out to another build system like [cmake](#cmake) or [gyp](#gyp). This allows the documentation to simply say: type `make` to build this project, while more complex things actually happen under the hood.
+
+Learn more [at the make homepage](https://www.gnu.org/software/make).
+
+##### cmake
+
+A modern, very sophisticated, build system that is cross-platform.
+
+But cmake is not a build system in the traditional sense: it does not directly call out to the compiler or linker. Instead it is designed to generate build files in a variety of formats. For example, it is common to use `cmake` to generate configuration files for [make](#make) on unix systems and [Visual Studio](#visual-studio) on windows systems. Frequently the desired target is for `cmake` to generate files for [ninja](#ninja)
+
+The configuration for cmake is `CMakeLists.txt`. It uses a very custom syntax that takes a while to learn, may bring about anger, but works and will scale to large projects.
+
+The `cmake` project is written in C++ so it needs to be compiled itself. Often needs to be upgraded since you will encounter projects using `CMakelists.txt` that need specific `cmake` features only available in recent versions.
+
+Learn more [at the cmake homepage](https://cmake.org/).
+
+##### gyp
+
+Also modern and cross-platform like [cmake](#cmake). The advantage is that `gyp` is written in `python` and is therefore easier to install and upgrade. The disadvantage is that google, the original maintainer of `gyp`, is no longer maintaining `gyp` actively. For this reason we recommend porting most projects written in `gyp` to [cmake](#cmake).
+
+Learn more about gyp [here](https://gyp.gsrc.io)
+
+##### visual studio
+
+The windows GUI that supports "project" files that `cmake` can generate in order to build C++ files.
+
+##### ninja
+
+A cross platform build system that is designed to be fast. Written by google and the chromium project, but now a great, general open source project.
