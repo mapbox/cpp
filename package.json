@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/mapbox/cpp#readme",
   "dependencies": {
-    "remark-cli": "^3.0.1"
+    "remark-cli": "^3.0.1",
+    "toc": "^0.4.0"
   }
 }
