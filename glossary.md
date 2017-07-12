@@ -2,9 +2,15 @@
 
 This is an opinionated glossary of terms developed by the Mapbox C++ team.
 
-It is intended to cover terms needed to understand compilers, build systems, library design, and key performance, language and debugging topics.
+It is intended to cover terms needed to understand:
 
-See also:
+-   compilers
+-   build systems
+-   library design
+-   binary distribution
+-   key performance and debugging topics
+
+It is not intended to be a complete reference on language or syntax terms. For more references on language terms see:
 
 -   A glossary by the creator of C++: <http://www.stroustrup.com/glossary.html>
 -   A keyword glossary: <http://en.cppreference.com/w/cpp/keyword>
