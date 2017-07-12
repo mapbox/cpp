@@ -37,6 +37,16 @@ Please edit or add to this file!
     -   [mason](#mason)
     -   [node-pre-gyp](#node-pre-gyp)
 
+-   [Environment variables](#environment-variables)
+
+    -   [CPP](#cpp)
+    -   [CC](#cc)
+    -   [CXX](#cxx)
+    -   [LD](#ld)
+    -   [CFLAGS](#cflags)
+    -   [CXXFLAGS](#cxxflags)
+    -   [LDFLAGS](#ldflags)
+
 -   [Builds](#builds)
 
     -   [make](#make)
@@ -233,9 +243,9 @@ linker flags, for more advanced linker tuning.
 
 Note: not respected with [cmake](#cmake) which uses different flags depending on the type of binary being created:
 
- - CMAKE_EXE_LINKER_FLAGS (for [executables](#executable))
- - CMAKE_SHARED_LINKER_FLAGS (for [shared library](#dynamicshared-library))
- - CMAKE_MODULE_LINKER_FLAGS (for [loadable module](#loadable-module))
+-   CMAKE_EXE_LINKER_FLAGS (for [executables](#executable))
+-   CMAKE_SHARED_LINKER_FLAGS (for [shared library](#dynamicshared-library))
+-   CMAKE_MODULE_LINKER_FLAGS (for [loadable module](#loadable-module))
 
 More info [here](https://stackoverflow.com/a/3544343).
 
