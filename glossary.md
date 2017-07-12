@@ -86,15 +86,16 @@
 
     -   [new keyword](#new-keyword)
     -   [allocator](#allocator)
+    -   [stack](#stack)
     -   [stack allocation](#stack-allocation)
     -   [heap allocation](#heap-allocation)
+    -   [heap](#heap)
     -   [custom allocator](#custom-allocator)
     -   [shared memory](#shared-memory)
     -   [memory-mapped file](#memory-mapped-file)
     -   [memory leak](#memory-leak)
     -   [memory growth](#memory-growth)
     -   [memory fragmentation](#memory-fragmentation)
-    -   [static data](#static-data)
 
 -   [Concurrency concepts](#concurrency-concepts)
 
@@ -109,6 +110,15 @@
 
 -   [Writing C++](#writing-c)
 
+    -   [pointer](#pointer)
+    -   [reference](#reference)
+    -   [constexpr](#constexpr)
+    -   [singleton](#singleton)
+    -   [static initialization](#static-initialization)
+    -   [global static](#global-static)
+    -   [static member](#static-member)
+    -   [static method](#static-method)
+    -   [static data](#static-data)
     -   [template](#template)
     -   [macro](#macro)
     -   [mutex](#mutex)
@@ -205,7 +215,7 @@ A set of standards for maintaining compatibility between unix-like operating sys
 
 ##### API
 
-Application programming interface. This term is used broadly to describe how software and code can and should interact. In C++ programs an API describes a public set of functions that can be called, classes that can be [instantiated](#instantiate), or static data that can be used.
+Application programming interface. This term is used broadly to describe how software and code can and should interact. In C++ programs an API describes a public set of functions that can be called, classes that can be [instantiated](#instantiate), or [static data](#static-data) that can be used.
 
 ##### instantiate
 
@@ -627,13 +637,67 @@ An in-tree build describes when a build system compiles all [object files](#obje
 
 ##### new keyword
 
+In C++ the `new` keyword is used to allocate an object dynamically, on the [heap](#heap). The result is a pointer to a class instance. This object must be cleaned up by calling `delete` on the pointer.
+
 ##### allocator
+
+C and C++ programs all depend upon a single dynamic memory allocator to implement dynamic management functions like `malloc` and related functions (`free`, `calloc`, and `realloc`).
+
+We call this "dynamic" memory because the size of memory requested is determined at runtime by your C++ code: what objects it creates and how much space they require.
+
+Dynamic memory allocation requires able [RAM](https://en.wikipedia.org/wiki/Random-access_memory) available on your machine.
+
+The default allocator is usually tuned to perform well under varied conditions and provided as part of the implementation of the C library. [Custom allocators](#custom-allocator) can be swapped in and may perform better.
+
+##### stack
+
+In C++ when you write code like:
+
+```c++
+int num = 1;
+MyClass klass = MyClass();
+```
+
+You are depending on pre-allocated [address space](#address-space) reserved for your program for placing those temporary objects.
+
+This pre-allocated [address space](#address-space) is the stack. Your program has access to it automatically. It is local to a thread of execution.
+
+When a program runs out of stack space (too much is allocated on the stack) you get a [stack overflow](https://en.wikipedia.org/wiki/Stack_overflow).
+
+Note: there is also a `std::stack` in the C++ STL. This is different - this is a [data structure](http://en.cppreference.com/w/cpp/container/stack).
 
 ##### stack allocation
 
+When an object is created without the `new` keyword, it is allocated on the [stack](#stack) and does not need to be manually deleted.
+
+Generally stack allocation is faster than [heap allocation](#heap-allocation) because it does not require a call to the [dynamic memory allocator](#allocator).
+
+Often very tuned C++ programs find their remaining bottlenecks are memory allocation. In this case, to further increase performance, developers often look for ways to utilize stack allocation without the fear of [overflow](https://en.wikipedia.org/wiki/Stack_overflow). See [stack alloc](https://howardhinnant.github.io/stack_alloc.html) as well as "SmallVector" inside llvm which both allocate on the stack up for a limite number of elements. See [this talk](https://youtu.be/vElZc6zSIXM?t=135) or [this stack overflow (pun not intended) mention here](https://stackoverflow.com/a/42122275).
+
+Read more [here](https://stackoverflow.com/a/80113)
+
 ##### heap allocation
 
+When an object is created with the `new` keyword  it is allocated on the [heap](#heap) and must be deleted otherwise your program will have a memory leak.
+
+When a chunk of memory is initialized by calling `malloc`, this is also heap allocation. The `new` keyword used with a custom object calls `malloc` under the hood with the right arguments to request memory for the custom object.
+
+The advantage of heap allocation is:
+
+-   The stack is limited in size and might [overflow](https://en.wikipedia.org/wiki/Stack_overflow)
+-   The result of heap allocation is a pointer that can be passed around and is not limited to the local scope.
+
+Note: as of C++11, now that you can move stack allocated objects using `std::move` you can treat these objects more like heap allocated pointers (they can be passed around and, once moved, are not limited to the local scope).
+
+Read more [here](https://stackoverflow.com/a/80113)
+
+##### heap
+
+TODO
+
 ##### custom allocator
+
+A custom allocator may be able to allocate memory faster, or use memory more efficiently. An example of such an allocator is [jemalloc](https://github.com/jemalloc/jemalloc).
 
 ##### shared memory
 
@@ -644,10 +708,6 @@ An in-tree build describes when a build system compiles all [object files](#obje
 ##### memory growth
 
 ##### memory fragmentation
-
-##### static data
-
-Data created statically. This usually means created at the time the program starts and therefore is available for the whole time the program is running and does not need to be created by the programmer.
 
 #### Concurrency concepts
 
@@ -668,6 +728,110 @@ Data created statically. This usually means created at the time the program star
 ##### thread safe by design
 
 #### Writing C++
+
+##### pointer
+
+<http://en.cppreference.com/w/cpp/language/reference>.
+
+##### reference
+
+A reference in C++ is denoted by the `&` keyword when applied to a variable. When you dereference a [pointer](#pointer) you get a reference. Also when you pass an object "by reference" you are asking the object to not be copied. When you pass an object "by value" you are asking for the object to be copied.
+
+Learn more a <http://en.cppreference.com/w/cpp/language/reference>.
+
+##### constexpr
+
+The constexpr specifier declares that it is possible to evaluate the value of the function or variable at compile time.
+
+##### singleton
+
+A singleton is a instance of something that is created only once. When accessed the same instance is always returned.
+
+There are a variety of ways to implement a singleton. None of them are recommended unless you know what you are doing.
+
+Learn more [here](https://en.wikipedia.org/wiki/Singleton_pattern).
+
+##### static initialization
+
+Read about this at <http://en.cppreference.com/w/cpp/language/initialization>.
+
+##### global static
+
+A global static is a variable created in the global scope that points to [static data](#static-data).
+
+Generally it is bad practice to create global statics due to the [possibility of the static initialization fiasco](https://isocpp.org/wiki/faq/ctors#static-init-order), so only do this if you know what you are doing.
+
+They can be created like:
+
+```c++
+#include <iostream>
+
+static int one = 1;
+
+int main() {
+    std::cout << one << "\n";    
+}
+```
+
+##### static member
+
+A static member is [static data](#static-data) declared on a class that uses the `static` keyword. For example:
+
+    #include <iostream>
+    #include <string>
+
+    class HelloWorld {
+     public:
+        static int one_;
+    };
+
+    int HelloWorld::one_ = 1;
+
+    int main()
+    {
+      std::cout << "One: " << HelloWorld::one_ << "!\n";
+    }
+
+Using the `static` keyword on a class member allows the member to be accessed without creating an instance of that class. So, that member is not "bound" to a class instance.
+
+Read more at <http://en.cppreference.com/w/cpp/language/static>.
+
+##### static method
+
+A static method is a function defined on a class that uses the `static` keyword. For example:
+
+```cpp
+#include <iostream>
+#include <string>
+
+class HelloWorld {
+ public:
+    static std::string hello() {
+        return "world";
+    }
+};
+
+int main()
+{
+  std::cout << "Hello " << HelloWorld::hello() << "!\n";
+}
+```
+
+Using the `static` keyword on a class method allows the method to be called without creating an instance of that class. So, that method is not "bound" to a class instance.
+
+Read more at <http://en.cppreference.com/w/cpp/language/static>.
+
+##### static data
+
+Data created statically. In short this means a variable created with the static keyword like:
+
+```c++
+static int one = 1;
+```
+
+The longer explanation is that it is data created by [static initialization](<static initialization>). This basically means that the variable is created at the time the program starts and therefore is available for the whole time the program is running (aka "static storage duration").
+
+Often static is used in combination with [constexpr](#constexpr) to ask for a variable to have static storage duration and have its value computed at compile time.
 
 ##### template
 
