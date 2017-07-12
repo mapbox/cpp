@@ -175,9 +175,9 @@ More info at <https://en.wikipedia.org/wiki/Unix_signal>
 
 ### crash
 
-A crash is a general term to describe when execution of the program exits in an unintended and unrecoverable way. There are a variety of reasons a program may crash, ranging from a bug that created a fatal error condition to another program killing your program. Each crash can be described one of a known set of signals, which also maps to a return code.
+A crash is a general term to describe when execution of the program exits in an unintended and unrecoverable way. There are a variety of reasons a program may crash, ranging from a bug that created a fatal error condition to another program killing your program. Each crash can be described by one of a known set of [signals](#signal) which map to a return code.
 
-For example a segfault (segmentation fault or violation) leads to a `SIGSEGV` signal, which is id `11`, and an exit code of `128+11` == 139.
+For example, a segfault (segmentation fault or violation) leads to a `SIGSEGV` signal, which is id `11`, and an exit code of `128+11` == 139.
 
 ## Packaging
 
