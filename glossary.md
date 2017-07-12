@@ -1,5 +1,19 @@
 # Building C++
 
+This is an opinionated glossary of terms developed by the Mapbox C++ team.
+
+It is intended to cover terms needed to understand compilers, build systems, library design, and key performance, language and debugging topics.
+
+See also:
+
+-   A glossary by the creator of C++: <http://www.stroustrup.com/glossary.html>
+-   A keyword glossary: <http://en.cppreference.com/w/cpp/keyword>
+
+Please add to this file!
+
+-   If you add a new term, rebuild the table of contents by running `npm install && npm run toc`
+-   If you add new terms and want review please create a PR and /cc @springmeyer
+
 #### Table of Contents
 
 -   [General terms](#general-terms)
