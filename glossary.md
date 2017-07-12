@@ -193,6 +193,52 @@ node-pre-gyp is a package manager for node addons written in C++. It is able to 
 
 Learn more [at the mason homepage](https://github.com/mapbox/node-pre-gyp).
 
+## Environment variables
+
+Build tools on [posix](#posix) systems such as [make](#make), [cmake](#cmake) and [gyp](#gyp) pick up many of these environment variables and use them for compiling and linking your code. If you leave them blank it depends on the build system and your setup what you will get.
+
+### CPP
+
+The C Pre-Processor - the program reading your code and replacing header includes with their content and macros with their values
+
+### CC
+
+C Compiler - the program understanding the C language, taking a .c source code file and generating a .o object file out of it
+
+Ignored by [cmake](#cmake) if `-DCMAKE_C_COMPILER` is passed.
+
+### CXX
+
+C++ Compiler - the program understanding the C++ language, taking a [translation unit](#translation-unit) and generating an [object file](#object-file) out of it
+
+Ignored by [cmake](#cmake) if `-DCMAKE_CXX_COMPILER` is passed.
+
+### LD
+
+linker - the program taking multiple [object files](#object-file) and [libraries](#library) and generating an ELF file out of it on linux or a Mach-O file on OS X - the final binary
+
+### CFLAGS
+
+Compilation flags for the C compiler, think `-Wall -Wextra -pedantic -O2 -std=c99` to enable warnings, optimize the code and work with C99 source code
+
+### CXXFLAGS
+
+Same for C++, `-Wall -Wextra -pedantic -O2 -std=c++14`.
+
+Ignored by [cmake](#cmake) if `-DCMAKE_CXX_FLAGS` is passed.
+
+### LDFLAGS
+
+linker flags, for more advanced linker tuning.
+
+Note: not respected with [cmake](#cmake) which uses different flags depending on the type of binary being created:
+
+ - CMAKE_EXE_LINKER_FLAGS (for [executables](#executable))
+ - CMAKE_SHARED_LINKER_FLAGS (for [shared library](#dynamicshared-library))
+ - CMAKE_MODULE_LINKER_FLAGS (for [loadable module](#loadable-module))
+
+More info [here](https://stackoverflow.com/a/3544343).
+
 ## Builds
 
 ### make
@@ -267,7 +313,7 @@ Compilers turn `.cpp` code into `.o` [object files](#object-file) and are often 
 
 Example open source compilers are [clang](#clang) or [gcc](#gcc).
 
-It is common to specify the `CC` and `CXX` environment variables and many build systems ([make](#make) in particular) to customize the default C and C++ compiler that should be used.
+It is common to specify the [CC](#CC) and [CXX](#CXX) environment variables and many build systems ([make](#make) in particular) to customize the default C and C++ compiler that should be used.
 
 ### Front-end
 
