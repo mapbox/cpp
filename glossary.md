@@ -4,26 +4,50 @@ This is an opinionated glossary of terms developed by the Mapbox C++ team.
 
 It is intended to cover terms needed to understand:
 
--   compilers and build systems
+-   packaging
+-   build systems
+-   compilers and linkers
 -   library design
 -   binary distribution
--   key performance and debugging topics
+-   profiling and debugging topics
 
 It is not intended to be a complete reference on language or syntax terms. For more references on language terms see:
 
 -   A glossary by the creator of C++: <http://www.stroustrup.com/glossary.html>
 -   A keyword glossary: <http://en.cppreference.com/w/cpp/keyword>
 
-Please add to this file!
+Please edit or add to this file!
 
--   If you add a new term, rebuild the table of contents by running `npm install && npm run toc`
--   If you add new terms and want review please create a PR and /cc @springmeyer
 -   Add a new section with `##`
 -   Add a new term with `###`
+-   If you add a new term or section, rebuild the table of contents by running `npm install && npm run toc`
+-   If you add new terms and want review please create a PR and /cc @springmeyer
 
 ## Table of Contents
 
--   [General terms](#general-terms)
+-   [Core concepts](#core-concepts)
+
+    -   [posix](#posix)
+    -   [API](#api)
+    -   [signal](#signal)
+    -   [crash](#crash)
+
+-   [Packaging](#packaging)
+
+    -   [mason](#mason)
+    -   [node-pre-gyp](#node-pre-gyp)
+
+-   [Builds](#builds)
+
+    -   [make](#make)
+    -   [cmake](#cmake)
+    -   [gyp](#gyp)
+    -   [visual studio](#visual-studio)
+    -   [ninja](#ninja)
+    -   [out of source build](#out-of-source-build)
+    -   [in-tree build](#in-tree-build)
+
+-   [Compilers and linkers](#compilers-and-linkers)
 
     -   [development toolchain](#development-toolchain)
     -   [compiler](#compiler)
@@ -35,13 +59,7 @@ Please add to this file!
     -   [object file](#object-file)
     -   [symbol](#symbol)
     -   [executable](#executable)
-    -   [posix](#posix)
-    -   [API](#api)
-    -   [instantiate](#instantiate)
-    -   [calling application](#calling-application)
     -   [loadable module](#loadable-module)
-    -   [address space](#address-space)
-    -   [dlopen](#dlopen)
     -   [library](#library)
     -   [precompiled library](#precompiled-library)
     -   [precompiled](#precompiled)
@@ -50,15 +68,28 @@ Please add to this file!
     -   [statically linked](#statically-linked)
     -   [dynamically linked](#dynamically-linked)
     -   [dynamically loaded](#dynamically-loaded)
-    -   [header](#header)
+    -   [dlopen](#dlopen)
     -   [header-only library](#header-only-library)
+    -   [LLVM](#llvm)
+    -   [gcc](#gcc)
+    -   [clang](#clang)
+    -   [g++](#g)
+    -   [clang++](#clang-1)
+    -   [calling application](#calling-application)
+    -   [header](#header)
     -   [include](#include)
-    -   [performant](#performant)
-    -   [performance](#performance)
+
+-   [Performance](#performance)
+
+    -   [performance](#performance-1)
     -   [efficiency](#efficiency)
     -   [optimization technique](#optimization-technique)
     -   [memoization](#memoization)
+    -   [performant](#performant)
     -   [compiler optimization level](#compiler-optimization-level)
+
+-   [Build modes](#build-modes)
+
     -   [DNDEBUG](#dndebug)
     -   [DDEBUG](#ddebug)
     -   [release mode](#release-mode)
@@ -70,8 +101,10 @@ Please add to this file!
     -   [profiling build](#profiling-build)
     -   [problem of debugging release-crashes](#problem-of-debugging-release-crashes)
     -   [problem of profiling and compiler optimization levels](#problem-of-profiling-and-compiler-optimization-levels)
-    -   [signal](#signal)
-    -   [crash](#crash)
+
+-   [Debugging and Profiling](#debugging-and-profiling)
+
+    -   [debug symbols](#debug-symbols)
     -   [Debugger](#debugger)
     -   [Tracer](#tracer)
     -   [core file](#core-file)
@@ -79,32 +112,15 @@ Please add to this file!
     -   [calltree](#calltree)
     -   [backtrace](#backtrace)
     -   [core_pattern](#core_pattern)
-    -   [when to write compiled library vs a header only library?](#when-to-write-compiled-library-vs-a-header-only-library)
-    -   [c++11: https://isocpp.org/wiki/faq/cpp11-language](#c11-httpsisocpporgwikifaqcpp11-language)
-    -   [c++14: https://isocpp.org/wiki/faq/cpp14-language](#c14-httpsisocpporgwikifaqcpp14-language)
-    -   [c++1y](#c1y)
-    -   [c++98](#c98)
-    -   [c++11 move semantics (std::move)](#c11-move-semantics-stdmove)
-    -   [LLVM](#llvm)
-    -   [gcc](#gcc)
-    -   [clang](#clang)
-    -   [g++](#g)
-    -   [clang++](#clang-1)
-    -   [versioned symbols](#versioned-symbols)
-    -   [debug symbols](#debug-symbols)
-    -   [libc](#libc)
-    -   [glibc](#glibc)
     -   [libstdc++](#libstdc)
-    -   [libc++](#libc-1)
+    -   [libc++](#libc)
     -   [undefined behavior](#undefined-behavior)
-    -   [versioned symbols](#versioned-symbols-1)
-    -   [abi compatibility](#abi-compatibility)
     -   [source code](#source-code)
-    -   [out of source build](#out-of-source-build)
-    -   [in-tree build](#in-tree-build)
 
 -   [Memory concepts](#memory-concepts)
 
+    -   [instantiate](#instantiate)
+    -   [address space](#address-space)
     -   [new keyword](#new-keyword)
     -   [allocator](#allocator)
     -   [stack](#stack)
@@ -112,24 +128,8 @@ Please add to this file!
     -   [heap allocation](#heap-allocation)
     -   [heap](#heap)
     -   [custom allocator](#custom-allocator)
-    -   [shared memory](#shared-memory)
-    -   [memory-mapped file](#memory-mapped-file)
-    -   [memory leak](#memory-leak)
-    -   [memory growth](#memory-growth)
-    -   [memory fragmentation](#memory-fragmentation)
 
--   [Concurrency concepts](#concurrency-concepts)
-
-    -   [multi-process](#multi-process)
-    -   [multi-threaded](#multi-threaded)
-    -   [single-threaded](#single-threaded)
-    -   [reentrant](#reentrant)
-    -   [thread safety](#thread-safety)
-    -   [immutability](#immutability)
-    -   [thread safe by locking](#thread-safe-by-locking)
-    -   [thread safe by design](#thread-safe-by-design)
-
--   [Writing C++](#writing-c)
+-   [Language concepts and keywords](#language-concepts-and-keywords)
 
     -   [pointer](#pointer)
     -   [reference](#reference)
@@ -140,10 +140,7 @@ Please add to this file!
     -   [static member](#static-member)
     -   [static method](#static-method)
     -   [static data](#static-data)
-    -   [template](#template)
     -   [macro](#macro)
-    -   [mutex](#mutex)
-    -   [const](#const)
 
 -   [Node.js & C++](#nodejs--c)
 
@@ -157,14 +154,104 @@ Please add to this file!
     -   [C++ bindings](#c-bindings)
     -   [non-blocking/blocking](#non-blockingblocking)
     -   [NAN](#nan)
-    -   [mason](#mason)
-    -   [make](#make)
-    -   [cmake](#cmake)
-    -   [gyp](#gyp)
-    -   [visual studio](#visual-studio)
-    -   [ninja](#ninja)
 
-## General terms
+## Core concepts
+
+### posix
+
+A set of standards for maintaining compatibility between unix-like operating systems. Generally posix is synonymous with unix when it comes to what system APIs exist in C/C++ code to interface with the operating system. With minor exceptions POSIX APIs work the same on linux and osx.
+
+### API
+
+Application programming interface. This term is used broadly to describe how software and code can and should interact. In C++ programs an API describes a public set of functions that can be called, classes that can be [instantiated](#instantiate), or [static data](#static-data) that can be used.
+
+### signal
+
+Signals are a method of interprocess communication. When a program exits it returns an integer code. That code, if the program crashed, will encode an integer id of a signal. This offers a way for monitoring programs that crashed and why. The signals that result from a [crash](#crash) are listed at <http://en.cppreference.com/w/c/program/SIG_types>.
+
+To know the exit code of a signal you add the `<signal id> + 128`. You can find the id of each signal at <http://www.comptechdoc.org/os/linux/programming/linux_pgsignals.html>.
+
+More info at <https://en.wikipedia.org/wiki/Unix_signal>
+
+### crash
+
+A crash is a general term to describe when execution of the program exits in an unintended and unrecoverable way. There are a variety of reasons a program may crash, ranging from a bug that created a fatal error condition to another program killing your program. Each crash can be described one of a known set of signals, which also maps to a return code.
+
+For example a segfault (segmentation fault or violation) leads to a `SIGSEGV` signal, which is id `11`, and an exit code of `128+11` == 139.
+
+## Packaging
+
+### mason
+
+Mason is a package manager for C++. It is able to install [precompiled libraries](#precompiled-library) and [executables](#executable) from binaries. And it is able to install the source code for [header-only libraries](#header-only-library). All packages end up in the `./mason_packages` folder in the current working directory.
+
+Learn more [at the mason homepage](https://github.com/mapbox/mason).
+
+### node-pre-gyp
+
+node-pre-gyp is a package manager for node addons written in C++. It is able to install [precompiled loadable modules](#loadable-modules) (aka `.node` files) from binaries. 
+
+Learn more [at the mason homepage](https://github.com/mapbox/node-pre-gyp).
+
+## Builds
+
+### make
+
+A venerable build system only compatible with unix systems. Usually available by default on most unix systems without needing to be installed or upgraded. In this sense `make` is a bit like `bash`. It is the first tool many developers reach for when starting a project.
+
+The configuration for make is a `Makefile`. It uses `tab` indentation. It is rare that you will ever encounter a `Makefile` that needs a specific version of `make`. This is likely because what `make` does is pretty simple and was hammered out a long time ago and has not changed much in recent versions.
+
+For a project that only needs to build a few files `make` can be a good choice. For projects that need to build libraries or many files, [cmake](#cmake) is the better choice.
+
+At Mapbox `make` is commonly used as the entry point for building a complex application. So, you might have a `Makefile` that actually calls out to another build system like [cmake](#cmake) or [gyp](#gyp). This allows the documentation to simply say: type `make` to build this project, while more complex things actually happen under the hood.
+
+Learn more [at the make homepage](https://www.gnu.org/software/make).
+
+### cmake
+
+A modern, very sophisticated, build system that is cross-platform.
+
+But cmake is not a build system in the traditional sense: it does not directly call out to the compiler or linker. Instead it is designed to generate build files in a variety of formats. For example, it is common to use `cmake` to generate configuration files for [make](#make) on unix systems and [Visual Studio](#visual-studio) on windows systems. Frequently the desired target is for `cmake` to generate files for [ninja](#ninja)
+
+The configuration for cmake is `CMakeLists.txt`. It uses a very custom syntax that takes a while to learn, may bring about anger, but works and will scale to large projects.
+
+The `cmake` project is written in C++ so it needs to be compiled itself. Often needs to be upgraded since you will encounter projects using `CMakelists.txt` that need specific `cmake` features only available in recent versions.
+
+Learn more [at the cmake homepage](https://cmake.org/).
+
+### gyp
+
+Also modern and cross-platform like [cmake](#cmake). The advantage is that `gyp` is written in `python` and is therefore easier to install and upgrade. The disadvantage is that google, the original maintainer of `gyp`, is no longer maintaining `gyp` actively. For this reason we recommend porting most projects written in `gyp` to [cmake](#cmake).
+
+Learn more about gyp [here](https://gyp.gsrc.io)
+
+### visual studio
+
+The windows GUI that supports "project" files that `cmake` can generate in order to build C++ files.
+
+### ninja
+
+A cross platform build system that is designed to be fast. Written by google and the chromium project, but now a great, general open source project.
+
+### out of source build
+
+A common build convention is to put into a custom directory structure all the results of all compiling and linking [source code](#source-code). For example, all [object files](#object-files) might be put at a path like `./build/Release/obj/`, all [libraries](#library) at `./build/Release/lib/`, or all [executables](#executable) at `./build/Release/bin`.
+
+Each build system may use a different directory name and structure, but the general goal is to:
+
+-   Keep the binary outputs separate from the source code
+-   Version the path of the build results based on the build type (e.g. `Release` or `Debug`)
+
+This approach is in contrast to an [in-tree build](#in-tree-build). It is advantageous to [in-tree build](#in-tree-build) because:
+
+-   It makes it easy to clean up all compiled files just by removing a single directly. (no complex cleanup scripts are needed to track down all the .o files)
+-   It makes it easy to create multiple binaries, potentially build with different build options, without overwriting previous binaries.
+
+### in-tree build
+
+An in-tree build describes when a build system compiles all [object files](#object-files) and writes them to the same directory structure where the [source code](#source-code) exists. In this case you might have [source code](#source-code) at `src/foo/bar.cpp` and the object file would end up at `src/foo/bar.o`.
+
+## Compilers and linkers
 
 ### development toolchain
 
@@ -230,22 +317,6 @@ Including a header file that only had definitions of functions or classes gets y
 
 A binary file and/or program that can be run by a computer. This is the outcome of [compiling](#compiler) and [linking](#linker). Specifically, an executable has a `main()` function or _entry point_. A binary that does not have a `main()` entry point is likely a #
 
-### posix
-
-A set of standards for maintaining compatibility between unix-like operating systems. Generally posix is synonymous with unix when it comes to what system APIs exist in C/C++ code to interface with the operating system. With minor exceptions POSIX APIs work the same on linux and osx.
-
-### API
-
-Application programming interface. This term is used broadly to describe how software and code can and should interact. In C++ programs an API describes a public set of functions that can be called, classes that can be [instantiated](#instantiate), or [static data](#static-data) that can be used.
-
-### instantiate
-
-To instantiate a C++ class is to create a variable that refers to an instance of that class. That instance may point to dynamically allocated memory if the [new keyword](#new-keyword) was used. Or if [stack allocation](#stack-allocation) was used then the instance will point to a temporary variable on the stack.
-
-### calling application
-
-A term used to describe the application that depends on the [API](#API) of another application.
-
 ### loadable module
 
 A loadable module is similar to a [shared library](#dynamicshared-library). Just like a [shared library](#dynamicshared-library) a loadable module is:
@@ -259,20 +330,6 @@ But, whereas a [shared library](#dynamicshared-library) is [dynamically linked](
 Most plugin type interfaces in C/C++ are implemented as loadable modules. These loadable modules can have any extension, but most commonly use the `.so` extension like a [shared library](#dynamicshared-library) does on linux.
 
 Advanced note: A loadable module may depend on [symbols](#symbol) from external libraries. When those symbols are also needed by the [calling application](#calling-application) that will load the loadable module, then it is common for the loadable module to be created without resolving (aka linking it to) those external symbols. This means that the loadable module is [linked](#linked) without [linking](#linking) all of its dependencies. It will have undefined symbols when it is loaded unless they are available already in the [address space](#address-space) of the [calling application](#calling-application) already. This will be possible if the the [calling application](#calling-application) has itself been either [statically linked](#statically-linked) or [dynamically linked](#dynamically-linked) to external libraries that provide those [symbols](#symbol).
-
-### address space
-
-In C++ the term address space usually refers to the scope of memory the program has access to. You can refer to something in code by referencing its memory address if it is in the same address space as your code.
-
-### dlopen
-
-The `dlopen` api is a [POSIX api](#posix) API available on linux and osx (on windows a similar API is `LoadLibraryA`) that is able to dynamically load a [shared library](#dynamicshared-library) or [loadable module](#loadable-module).
-
-It is often used with [loadable modules](#loadable-module) to implement plugin systems to C++ programs.
-
-It is often used with pure C [shared libraries](#dynamicshared-library) and [the libffi foreign function interface library](https://en.wikipedia.org/wiki/Libffi) to implement language bindings to C libraries.
-
-More info at [this man7 page](http://man7.org/linux/man-pages/man3/dlopen.3.html)
 
 ### library
 
@@ -313,9 +370,15 @@ A general term to describe a binary that is loaded either of these two cases:
 -   A [library](#library) loaded into the [address space](#address-space) of a program by [dynamic linking](#dynamically-linked)
 -   A [loadable module](#loadable-module) loaded into the [address space](#address-space) of a program by [dlopen](#dlopen).
 
-### header
+### dlopen
 
-A file with the `.hpp` or `.h` file extension.
+The `dlopen` api is a [POSIX api](#posix) API available on linux and osx (on windows a similar API is `LoadLibraryA`) that is able to dynamically load a [shared library](#dynamicshared-library) or [loadable module](#loadable-module).
+
+It is often used with [loadable modules](#loadable-module) to implement plugin systems to C++ programs.
+
+It is often used with pure C [shared libraries](#dynamicshared-library) and [the libffi foreign function interface library](https://en.wikipedia.org/wiki/Libffi) to implement language bindings to C libraries.
+
+More info at [this man7 page](http://man7.org/linux/man-pages/man3/dlopen.3.html)
 
 ### header-only library
 
@@ -323,6 +386,34 @@ Used to describe when code is organized such that all of the [source code](#sour
 
 -   Not cpp files need to be compiled
 -   To use the library, no library needs to be linked (just [using `#include <the header>`](#include) is enough
+
+### LLVM
+
+Low level virtual machine - a suite of tools that [clang++](#clang++) depends on.
+
+### gcc
+
+The gnu C compiler. See also [g++](#g++).
+
+### clang
+
+The `clang` is the same as [clang++](clang++) except compiles C code instead of C++. Usually you should be using `clang++` even if you are compiling pure C.
+
+### g++
+
+The gnu C++ compiler. Very similar to bu licensed differently and slower to compile C++ templates.
+
+### clang++
+
+The recommended [C++ compiler](#compiler) used a Mapbox. It is open source and packaged in [mason](#mason).
+
+### calling application
+
+A term used to describe the application that depends on the [API](#API) of another application.
+
+### header
+
+A file with the `.hpp` or `.h` file extension.
 
 ### include
 
@@ -333,9 +424,7 @@ There are [a couple ways](https://stackoverflow.com/questions/21593/what-is-the-
 -   Using carrots, ex: `<nan.h>` --> look for header in global
 -   Using quotes, ex: `"hello.hpp"` --> look for header in location relative to this file
 
-### performant
-
-A very dubious word, usually meant to refer to a program that performs well enough by some measure of enough. Prefer describing a program as either having acceptable [performance](#performance) or acceptable [efficiency](#efficiency).
+## Performance
 
 ### performance
 
@@ -354,6 +443,10 @@ Changing code to increase [efficiency](#efficiency) or [performance](#performanc
 ### memoization
 
 An [optimization technique](#optimization-technique) that reduces the amount of work needed and increases [efficiency](#efficiency) by storing the results of expensive function calls or data access.
+
+### performant
+
+A very dubious word, usually meant to refer to a program that performs well enough by some measure of enough. Prefer describing a program as either having acceptable [performance](#performance) or acceptable [efficiency](#efficiency).
 
 ### compiler optimization level
 
@@ -402,6 +495,8 @@ Compilers are rapidly adding more and more optimizations and shifting around whi
 -   discussion by clang devs: <http://clang-developers.42468.n3.nabble.com/Meaning-of-LLVM-optimization-levels-td4032493.html>
 -   <http://llvm.org/docs/Passes.html> for a listing of all the internal compiler optimizations in clang++ which you don't need to know specifically, but which are under-the-hood of the "O" levels.
 -   <http://stackoverflow.com/a/15548189> for a detailed summary of which internal optimizations are grouped in which "O" level across clang++ releases.
+
+## Build modes
 
 ### DNDEBUG
 
@@ -509,19 +604,11 @@ Profiling is a great strategy for learning why and where a program is slow. But 
 
 There is no perfect solution, other than only relying on profiling output to guide your understanding of a program and not letting it be the end-all word. But consider profiling a [profile build](#profile-build) for a binary that should give more trustworthy results than a debug builds](#debug-build) and more detailed [callstacks](#callstack) than a [release builds](#release-build).
 
-### signal
+## Debugging and Profiling
 
-Signals are a method of interprocess communication. When a program exits it returns an integer code. That code, if the program crashed, will encode an integer id of a signal. This offers a way for monitoring programs that crashed and why. The signals that result from a [crash](#crash) are listed at <http://en.cppreference.com/w/c/program/SIG_types>.
+### debug symbols
 
-To know the exit code of a signal you add the `<signal id> + 128`. You can find the id of each signal at <http://www.comptechdoc.org/os/linux/programming/linux_pgsignals.html>.
-
-More info at <https://en.wikipedia.org/wiki/Unix_signal>
-
-### crash
-
-A crash is a general term to describe when execution of the program exits in an unintended and unrecoverable way. There are a variety of reasons a program may crash, ranging from a bug that created a fatal error condition to another program killing your program. Each crash can be described one of a known set of signals, which also maps to a return code.
-
-For example a segfault (segmentation fault or violation) leads to a `SIGSEGV` signal, which is id `11`, and an exit code of `128+11` == 139.
+Extra stuff the compiler encodes in a binary to help [debuggers](#debugger) inspect details about a running or crashed program and [tracers](#tracer) collect detailed information about program execution. Normally to enable debug [symbols](#symbol) you pass `-g` to a compiler. This can be done in either a [release build](#release-build) or a [debug build](#debug-build).
 
 ### Debugger
 
@@ -577,43 +664,6 @@ sysctl -n kern.corefile
 
 More info at <https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man5/core.5.html>
 
-### when to write compiled library vs a header only library?
-
-**hide dependencies that are only needed at runtime and not at compile time by users of library**
-**when you want to ship binary code that you don't want to recompile or re-link**
-
-### c++11: <https://isocpp.org/wiki/faq/cpp11-language>
-
-### c++14: <https://isocpp.org/wiki/faq/cpp14-language>
-
-### c++1y
-
-### c++98
-
-### c++11 move semantics (std::move)
-
-### LLVM
-
-### gcc
-
-### clang
-
-### g++
-
-### clang++
-
-The recommended [compiler](#compiler) used a Mapbox. It is open source and packaged in [mason](#mason).
-
-### versioned symbols
-
-### debug symbols
-
-Extra stuff the compiler encodes in a binary to help [debuggers](#debuggers) inspect details about a running or crashed program and [tracers](#tracers) collect detailed information about program execution. Normally to enable debug [symbols](#symbol) you pass `-g` to a compiler. This can be done in either a [release build](#release-build) or a [debug build](#debug-build).
-
-### libc
-
-### glibc
-
 ### libstdc++
 
 The [GNU implementation of the C++ STL](https://gcc.gnu.org/onlinedocs/libstdc++/).
@@ -628,33 +678,19 @@ The [LLVM implementation of the C++ STL](https://libcxx.llvm.org/)
 
 See <http://blog.regehr.org/archives/213> and <http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html>
 
-### versioned symbols
-
-### abi compatibility
-
 ### source code
 
 In C++ source code describes `.hpp` or `.cpp` files before they are compiled. Groups of source code passed to the compiler are called [translation units](#translation-unit).
 
-### out of source build
-
-A common build convention is to put into a custom directory structure all the results of all compiling and linking [source code](#source-code). For example, all [object files](#object-files) might be put at a path like `./build/Release/obj/`, all [libraries](#library) at `./build/Release/lib/`, or all [executables](#executable) at `./build/Release/bin`.
-
-Each build system may use a different directory name and structure, but the general goal is to:
-
--   Keep the binary outputs separate from the source code
--   Version the path of the build results based on the build type (e.g. `Release` or `Debug`)
-
-This approach is in contrast to an [in-tree build](#in-tree-build). It is advantageous to [in-tree build](#in-tree-build) because:
-
--   It makes it easy to clean up all compiled files just by removing a single directly. (no complex cleanup scripts are needed to track down all the .o files)
--   It makes it easy to create multiple binaries, potentially build with different build options, without overwriting previous binaries.
-
-### in-tree build
-
-An in-tree build describes when a build system compiles all [object files](#object-files) and writes them to the same directory structure where the [source code](#source-code) exists. In this case you might have [source code](#source-code) at `src/foo/bar.cpp` and the object file would end up at `src/foo/bar.o`.
-
 ## Memory concepts
+
+### instantiate
+
+To instantiate a C++ class is to create a variable that refers to an instance of that class. That instance may point to dynamically allocated memory if the [new keyword](#new-keyword) was used. Or if [stack allocation](#stack-allocation) was used then the instance will point to a temporary variable on the stack.
+
+### address space
+
+In C++ the term address space usually refers to the scope of memory the program has access to. You can refer to something in code by referencing its memory address if it is in the same address space as your code.
 
 ### new keyword
 
@@ -714,41 +750,13 @@ Read more [here](https://stackoverflow.com/a/80113)
 
 ### heap
 
-TODO
+The heap is [address space](#addres-space) in RAM.
 
 ### custom allocator
 
 A custom allocator may be able to allocate memory faster, or use memory more efficiently. An example of such an allocator is [jemalloc](https://github.com/jemalloc/jemalloc).
 
-### shared memory
-
-### memory-mapped file
-
-### memory leak
-
-### memory growth
-
-### memory fragmentation
-
-## Concurrency concepts
-
-### multi-process
-
-### multi-threaded
-
-### single-threaded
-
-### reentrant
-
-### thread safety
-
-### immutability
-
-### thread safe by locking
-
-### thread safe by design
-
-## Writing C++
+## Language concepts and keywords
 
 ### pointer
 
@@ -854,15 +862,9 @@ The longer explanation is that it is data created by [static initialization](<st
 
 Often static is used in combination with [constexpr](#constexpr) to ask for a variable to have static storage duration and have its value computed at compile time.
 
-### template
-
 ### macro
 
 <https://gcc.gnu.org/onlinedocs/cpp/Macros.html>
-
-### mutex
-
-### const
 
 ## Node.js & C++
 
@@ -889,6 +891,8 @@ V8 is a Javascript "engine", or a Javascript interpreter. It translates Javascri
 
 ### event loop
 
+TODO
+
 ### libuv
 
 A library that handles threadpool, event loop, and uses the threading implementation native to the given operating system (for example: Unix uses `pthread`). It is open source, written in C, and is a standalone library most useful as a multithreading interface. Before libuv was available, developers had to manually manage and write threads based on what was provided by the operating system.
@@ -910,47 +914,3 @@ I/O stands for "input/output".
 ### non-blocking/blocking
 
 ### [NAN](https://github.com/mapbox/cpp/blob/master/node-cpp.md#nodejs-c-addons)
-
-### mason
-
-Mason is a package manager for C++. It is able to install [precompiled libraries](#precompiled-library) and [executables](#executable) from binaries. And it is able to install the source code for [header-only libraries](#header-only-library). All packages end up in the `./mason_packages` folder in the current working directory.
-
-Learn more [at the mason homepage](https://github.com/mapbox/mason).
-
-### make
-
-A venerable build system only compatible with unix systems. Usually available by default on most unix systems without needing to be installed or upgraded. In this sense `make` is a bit like `bash`. It is the first tool many developers reach for when starting a project.
-
-The configuration for make is a `Makefile`. It uses `tab` indentation. It is rare that you will ever encounter a `Makefile` that needs a specific version of `make`. This is likely because what `make` does is pretty simple and was hammered out a long time ago and has not changed much in recent versions.
-
-For a project that only needs to build a few files `make` can be a good choice. For projects that need to build libraries or many files, [cmake](#cmake) is the better choice.
-
-At Mapbox `make` is commonly used as the entry point for building a complex application. So, you might have a `Makefile` that actually calls out to another build system like [cmake](#cmake) or [gyp](#gyp). This allows the documentation to simply say: type `make` to build this project, while more complex things actually happen under the hood.
-
-Learn more [at the make homepage](https://www.gnu.org/software/make).
-
-### cmake
-
-A modern, very sophisticated, build system that is cross-platform.
-
-But cmake is not a build system in the traditional sense: it does not directly call out to the compiler or linker. Instead it is designed to generate build files in a variety of formats. For example, it is common to use `cmake` to generate configuration files for [make](#make) on unix systems and [Visual Studio](#visual-studio) on windows systems. Frequently the desired target is for `cmake` to generate files for [ninja](#ninja)
-
-The configuration for cmake is `CMakeLists.txt`. It uses a very custom syntax that takes a while to learn, may bring about anger, but works and will scale to large projects.
-
-The `cmake` project is written in C++ so it needs to be compiled itself. Often needs to be upgraded since you will encounter projects using `CMakelists.txt` that need specific `cmake` features only available in recent versions.
-
-Learn more [at the cmake homepage](https://cmake.org/).
-
-### gyp
-
-Also modern and cross-platform like [cmake](#cmake). The advantage is that `gyp` is written in `python` and is therefore easier to install and upgrade. The disadvantage is that google, the original maintainer of `gyp`, is no longer maintaining `gyp` actively. For this reason we recommend porting most projects written in `gyp` to [cmake](#cmake).
-
-Learn more about gyp [here](https://gyp.gsrc.io)
-
-### visual studio
-
-The windows GUI that supports "project" files that `cmake` can generate in order to build C++ files.
-
-### ninja
-
-A cross platform build system that is designed to be fast. Written by google and the chromium project, but now a great, general open source project.
