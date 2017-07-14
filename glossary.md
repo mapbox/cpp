@@ -973,6 +973,99 @@ A custom allocator may be able to allocate memory faster, or use memory more eff
 
 ## Language concepts and keywords
 
+### inline keyword
+
+A standalone function or a class method can be marked with the `inline` keyword like:
+
+```c++
+inline int get() {
+    return 1;
+}
+```
+
+This asks the compiler to [inline-expand](#inline-expands) your code.
+
+Learn more at <https://isocpp.org/wiki/faq/inline-functions#inline-member-fns>
+
+### inline-expands
+
+Also know as "inlined", this describes when a compiler moves code such that "the function’s code gets inserted into the caller’s code stream" from <https://isocpp.org/wiki/faq/inline-functions#overview-inline-fns>
+
+This expansion happens during compilation so the impact of inlining is on the resultant [object files](#object-files) and binaries produced. The compiler does not rewrite [source code](#source-code).
+
+However, let's use [source code](#source-code) as a simple example of what inlining is about.
+
+Given the following code:
+
+```c++
+inline int get() {
+    return 1;
+}
+
+int main() {
+    int result = get();
+    return result;
+}
+```
+
+The inline-expanded version would likely be seen/re-written internally by the compiler to be more like:
+
+```c++
+
+int main() {
+    int result = 1;
+    return result;
+}
+```
+
+What the compiler does is hard to predict (its job is to optimize code in innovative ways!), so this is an incomplete example, but hints at the start of what may be happening behind the scenes.
+
+You could also imagine the compiler taking this example a step further and doing:
+
+```c++
+int main() {
+    return 1;
+}
+```
+
+Because in our example it knows that `result` will always be `1`.
+
+### inlined
+
+When a compiler [inline-expands](#inline-expands) a function.
+
+### definition
+
+A definition is code that describes the types an object like a function, class, or template.
+
+A definition for a function looks like:
+
+```c++
+int get();
+```
+
+A pure definition has no [implementation](#implementation).
+
+When code is designed to be a [precompiled library](#precompiled-library) the definition is often included on its own in a header file (.hpp) and the [implementation](#implementation) is put in a `.cpp` file.
+
+It is also valid to have the entire [implementation](#implementation) in the header file. When only this is done then the library is called a [header-only library](#header-only-library)
+
+### implementation
+
+An implementation is the code for a function inside the `{ ... }`. So, for example, an implementation of a function looks like:
+
+```c++
+int get() {
+    return 1;
+}
+```
+
+When the implementation is in a .cpp file it will be compiled into an [executable](#executable) or a [precompiled library](#precompiled-library).
+
+When the implementation is in a .hpp file completely it is considered a [header-only library](#header-only-library).
+
+Read more at <https://stackoverflow.com/a/1410632>
+
 ### pointer
 
 <http://en.cppreference.com/w/cpp/language/reference>.
@@ -1007,7 +1100,7 @@ Function built-in to C++ that can display the size, in [bytes](#bytes) of a type
 
 ### memory alignment
 
-[C++ objects anb alignment](http://en.cppreference.com/w/c/language/object)
+[C++ objects and alignment](http://en.cppreference.com/w/c/language/object)
 
 ### statically typed
 
