@@ -484,11 +484,11 @@ There are [a couple ways](https://stackoverflow.com/questions/21593/what-is-the-
 
 ### performance
 
-How quickly a program does its work. Improving performance involves doing work faster. How much performance can be increased is a function of how long certain operations take on a computer: <https://gist.github.com/jboner/2841832>.
+How quickly a program does its work. Improving performance involves doing work faster by optimizing code to be more [efficient](#efficiency) through code changes or [compiler optimizations](#compiler-optimization-level). But ultimately how fast a program runs is also constrainted by the system resources and how long certain operations take on a computer: <https://gist.github.com/jboner/2841832>.
 
 ### efficiency
 
-How much work is required by a task. Improving efficiency requires doing less work. An efficient program is one which does the minimum (that we're aware of) amount of work to accomplish a given task.
+How much work is required by a task. Improving efficiency requires doing less work and results in [performance improvements](#performance). An efficient program is one which does the minimum (that we're aware of) amount of work to accomplish a given task.
 
 -   See also: CppCon 2014: Chandler Carruth "Efficiency with Algorithms, Performance with Data Structures" <https://youtu.be/fHNmRkzxHWs?t=754>
 
