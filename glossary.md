@@ -1,22 +1,35 @@
-# Building C++
+# C++ Glossary
 
-This is an opinionated glossary of terms developed by the Mapbox C++ team.
+This is an opinionated glossary of terms developed by the Mapbox team.
+
+The assumptions are:
+
+-   **_performance matters_**
+    you are choosing to use C++ to write the most efficient code possible
+-   **_robustness matters_**
+    you are choosing to use C++ to unlock the benefits of a statically typed language
+-   **_multiple platforms matter_**
+    your code will need to run across multiple linux or os x versions
+-   **_distribution matters_**
+    your seek to distribute your code to users and clients without them knowing how to compile it
 
 It is intended to cover terms needed to understand:
 
 -   packaging
 -   build systems
 -   compilers and linkers
+-   memory allocation
 -   library design
 -   binary distribution
--   profiling and debugging topics
+-   profiling
+-   debugging
 
 It is not intended to be a complete reference on language or syntax terms. For more references on language terms see:
 
 -   A glossary by the creator of C++: <http://www.stroustrup.com/glossary.html>
 -   A keyword glossary: <http://en.cppreference.com/w/cpp/keyword>
 
-Please edit or add to this file!
+Contributions are welcome. To contribute, please:
 
 -   Add a new section with `##`
 -   Add a new term with `###`
@@ -129,7 +142,11 @@ Please edit or add to this file!
 
 -   [Memory concepts](#memory-concepts)
 
+    -   [allocation](#allocation)
+    -   [deallocation](#deallocation)
+    -   [reallocation](#reallocation)
     -   [instantiate](#instantiate)
+    -   [memory address](#memory-address)
     -   [address space](#address-space)
     -   [new keyword](#new-keyword)
     -   [allocator](#allocator)
@@ -740,13 +757,60 @@ In C++ source code describes `.hpp` or `.cpp` files before they are compiled. Gr
 
 ## Memory concepts
 
+### allocation
+
+A term used to describe when memory is requested to create space to hold a variable. This request is answered by the [allocator](#allocator). The [allocator](#allocator) is often the bottleneck is programs that have been optimized in all the obvious ways. Therefore, reducing allocation can often be the key to unlocking the highest levels of [efficiency](#efficiency).
+
+### deallocation
+
+A term used to describe when memory is released to let go of the space previously allocated to hold a variable. This release is answered by the [allocator](#allocator), and can take the same amount of time to service as [allocation](#allocation).
+
+### reallocation
+
+A term used to describe when the space previously allocated to hold a variable is discarded and re-created at a new size, usually larger. Reallocation is expensive because it triggers both [deallocation](#deallocation) and [allocation](#allocation)
+
 ### instantiate
 
-To instantiate a C++ class is to create a variable that refers to an instance of that class. That instance may point to dynamically allocated memory if the [new keyword](#new-keyword) was used. Or if [stack allocation](#stack-allocation) was used then the instance will point to a temporary variable on the stack.
+To instantiate a C++ type is to create a variable that refers to an instance of that type. That instance may point to [dynamically allocated memory](#allocator) on the [heap](#heap) if the [new keyword](#new-keyword) was used. Or if the [new keyword](#new-keyword) was not used then [stack allocation](#stack-allocation) is how the instance was created and the object will be temporary and go out of scope.
+
+For example to instantiate a temporary variable `a` that is type `std::int64_t` and value `1` you would do:
+
+```c++
+{
+  std::int64_t a = 1;
+}
+```
+
+After program control passes `}` the the variable has gone out of scope and will no longer exist.
+
+If you instantiate the same type but with the [new keyword](#new-keyword), then:
+
+-   the type returned will be a pointer to the type rather than just the type
+-   the pointer will point to a [memory address](#memory-address)
+-   the pointer must be deleted to avoid a memory leak
+
+```c++
+{
+  std::int64_t * a = new std::int64_t(1);
+  delete a;
+}
+```
+
+Note: when instantiating classes without the [new keyword](#new-keyword) you might think that only stack allocation is being used. For example when creating a `std::string` like:
+
+```c++
+std::string a("hello");
+```
+
+However `std::string` is a container class that holds an arbitrary length array of characters inside. So, to do this it uses, except in the case of [SSO](<>), [dynamically allocated memory](#allocator) internally. It also cleans up this memory automatically. Both allocation and deallocation take time. So when performance is critical and you want to avoid dynamic allocations, always given consideration to how the class is implemented that you are instantiating.
+
+### memory address
+
+A value like `0x7fb20ac02680` that points to a location in the program's [address space](#address-space).
 
 ### address space
 
-In C++ the term address space usually refers to the scope of memory the program has access to. You can refer to something in code by referencing its memory address if it is in the same address space as your code.
+In C++ the term address space usually refers to the scope of memory the program has access to. You can refer to something in code by referencing its [memory address](#memory-address) if it is in the same address space as your code.
 
 ### new keyword
 
