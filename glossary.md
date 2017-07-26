@@ -201,7 +201,7 @@ Learn more [at the mason homepage](https://github.com/mapbox/mason).
 
 node-pre-gyp is a package manager for node addons written in C++. It is able to install [precompiled loadable modules](#loadable-modules) (aka `.node` files) from binaries. 
 
-Learn more [at the mason homepage](https://github.com/mapbox/node-pre-gyp).
+Learn more [at the node-pre-gyp homepage](https://github.com/mapbox/node-pre-gyp).
 
 ## Environment variables
 
