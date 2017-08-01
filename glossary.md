@@ -904,6 +904,10 @@ TODO
 
 TODO
 
+### structure packing
+
+Learn more at <http://www.catb.org/esr/structure-packing>
+
 ### sizeof
 
 Function built-in to C++ that can display the size, in [bytes](#bytes) of a type.
@@ -938,7 +942,21 @@ Same as a [struct](#struct) except all members are default private.
 
 Same as a [class](#class) except all members are default public.
 
+### assembly
+
+An ascii output able to be produced by a [compiler](#compiler). It is fully optimized and can be 1-to-1 translated to [machine code](#machine-code). It can be viewed to understand what compiler optimizations were made.
+
+### machine code
+
+TODO
+
 ### implicit conversion
+
+When a type is automatically converted to another type. This is often a cause of bugs and surprise to developers that expect 
+
+To prevent is behavior use the [explicit keyword](#explicit).
+
+### explicit
 
 TODO
 
