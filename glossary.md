@@ -908,6 +908,10 @@ TODO
 
 Function built-in to C++ that can display the size, in [bytes](#bytes) of a type.
 
+### memory alignment
+
+TODO
+
 ### statically typed
 
 When a type is enforced at compile time.
