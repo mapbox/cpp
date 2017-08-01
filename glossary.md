@@ -216,7 +216,7 @@ Learn more [at the mason homepage](https://github.com/mapbox/mason).
 
 ### node-pre-gyp
 
-node-pre-gyp is a package manager for node addons written in C++. It is able to install [precompiled loadable modules](#loadable-modules) (aka `.node` files) from binaries. 
+node-pre-gyp is a package manager for node addons written in C++. It is able to install [precompiled loadable modules](#loadable-modules) (aka `.node` files) from binaries.
 
 Learn more [at the node-pre-gyp homepage](https://github.com/mapbox/node-pre-gyp).
 
@@ -328,13 +328,13 @@ An in-tree build describes when a build system compiles all [object files](#obje
 
 ### development toolchain
 
-The toolset used to generate C++ code into [executables](#executable) for a computer. Typically consists of a [compiler](#compiler) and [linker](#linker). 
+The toolset used to generate C++ code into [executables](#executable) for a computer. Typically consists of a [compiler](#compiler) and [linker](#linker).
 
 All C++ code falls into the ["ahead-of-time" compilation](https://en.wikipedia.org/wiki/Ahead-of-time_compilation) category, which means code is compiled and linked separately from execution, unlike  ["just-in-time"](https://en.wikipedia.org/wiki/Just-in-time_compilation) compilation languages, like JavaScript.
 
 ### compiler
 
-A program that converts C++ [source code](#source-code) into machine code (binary) files readable by a computer. 
+A program that converts C++ [source code](#source-code) into machine code (binary) files readable by a computer.
 
 Compilers turn `.cpp` code into `.o` [object files](#object-file) and are often a [front-end](#front-end) to the [linker](#linker)
 
@@ -589,7 +589,7 @@ See also: <http://en.cppreference.com/w/cpp/error/assert>
 
 `DDEBUG` stands for `yes, please, do debug` or `define debug` and is a [preprocessor macro](#macro) or `#define`. It is passed as an option to a [compiler](#compiler).
 
-To define it pass `-DDEBUG` to the compiler. It is the opposite of [`-DDEBUG`](#DDEBUG) which stands for `yes, please, do debug`.
+To define it pass `-DDEBUG` to the compiler. It is the opposite of [`-DNDEBUG`](#DNDEBUG) which stands for `do not debug`.
 
 When defined [assert](http://en.cppreference.com/w/cpp/error/assert) in the code will be kept and enabled.
 
