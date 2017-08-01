@@ -892,6 +892,70 @@ A reference in C++ is denoted by the `&` keyword when applied to a variable. Whe
 
 Learn more a <http://en.cppreference.com/w/cpp/language/reference>.
 
+### noexcept
+
+TODO
+
+### bytes
+
+TODO
+
+### bits
+
+TODO
+
+### sizeof
+
+Function built-in to C++ that can display the size, in [bytes](#bytes) of a type.
+
+### statically typed
+
+When a type is enforced at compile time.
+
+Statically typed languages allows us to be much more descriptive. An example is [strong types](#strong-type).
+
+### dynamically typed
+
+TODO
+
+### public member
+
+TODO
+
+### private member
+
+TODO
+
+### class
+
+Same as a [struct](#struct) except all members are default private.
+
+### struct
+
+Same as a [class](#class) except all members are default public.
+
+### implicit conversion
+
+TODO
+
+### explicit conversion
+
+TODO
+
+### strong type
+
+Creating a custom type to enforce correct usage of a function or class.
+
+When we write compiled language, like C++, our main target audience is the compiler. This is a very important concept to bear in mind. Second most important is fellow developer trying to understand what you have written years later and users downstream. If we can work well with the compiler we can serve all audiences better.
+
+### deterministic
+
+TODO
+
+### fit into register
+
+Okay to pass by value.
+
 ### constexpr
 
 The constexpr specifier declares that it is possible to evaluate the value of the function or variable at compile time.
