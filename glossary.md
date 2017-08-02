@@ -894,15 +894,16 @@ Learn more a <http://en.cppreference.com/w/cpp/language/reference>.
 
 ### noexcept
 
-TODO
+See http://en.cppreference.com/w/cpp/keyword/noexcept 
 
 ### bytes
 
-TODO
+https://en.wikipedia.org/wiki/Byte
+http://en.cppreference.com/w/cpp/types/byte [c++17]
 
 ### bits
 
-TODO
+https://en.wikipedia.org/wiki/Bit 
 
 ### structure packing
 
@@ -911,10 +912,11 @@ Learn more at <http://www.catb.org/esr/structure-packing>
 ### sizeof
 
 Function built-in to C++ that can display the size, in [bytes](#bytes) of a type.
+http://en.cppreference.com/w/cpp/language/sizeof
 
 ### memory alignment
 
-TODO
+[C++ objects anb alignment](http://en.cppreference.com/w/c/language/object)
 
 ### statically typed
 
@@ -924,15 +926,15 @@ Statically typed languages allows us to be much more descriptive. An example is 
 
 ### dynamically typed
 
-TODO
+Languages is dynamically typed (or just  dynamic) when type checking happens at run time. Example languages: Python, JavaScript.
 
 ### public member
 
-TODO
+http://en.cppreference.com/w/cpp/language/access
 
 ### private member
 
-TODO
+See link from above ^. We should mentioned `protected` specifier for completeness. 
 
 ### class
 
@@ -948,7 +950,7 @@ An ascii output able to be produced by a [compiler](#compiler). It is fully opti
 
 ### machine code
 
-TODO
+https://en.wikipedia.org/wiki/Machine_code
 
 ### implicit conversion
 
@@ -956,13 +958,15 @@ When a type is automatically converted to another type. This is often a cause of
 
 To prevent is behavior use the [explicit keyword](#explicit).
 
+http://en.cppreference.com/w/cpp/language/implicit_conversion
+
 ### explicit
 
-TODO
+http://en.cppreference.com/w/cpp/language/explicit
 
 ### explicit conversion
 
-TODO
+http://en.cppreference.com/w/cpp/language/explicit_cast
 
 ### strong type
 
@@ -972,9 +976,16 @@ When we write compiled language, like C++, our main target audience is the compi
 
 ### deterministic
 
-TODO
+Definition of deterministic in English: 
 
-### fit into register
+"Relating to the philosophical doctrine that all events, including human action, are ultimately determined by causes regarded as external to the will.
+‘a deterministic theory’"
+
+In computer science, a deterministic algorithm is an algorithm which, given a particular input, will always produce the same output, with the underlying machine always passing through the same sequence of states.
+
+https://en.wikipedia.org/wiki/Deterministic_algorithm
+
+### fits into register
 
 Okay to pass by value.
 
