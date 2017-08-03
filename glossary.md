@@ -954,9 +954,9 @@ https://en.wikipedia.org/wiki/Machine_code
 
 ### implicit conversion
 
-When a type is automatically converted to another type. This is often a cause of bugs and surprise to developers that expect 
+When a type is automatically converted to another type. This is often [a cause of bugs](https://github.com/mapbox/mapbox-gl-native/pull/5754) and a surprise to developers.
 
-To prevent is behavior use the [explicit keyword](#explicit).
+To prevent this behavior use the [explicit keyword](#explicit).
 
 http://en.cppreference.com/w/cpp/language/implicit_conversion
 
@@ -972,7 +972,7 @@ http://en.cppreference.com/w/cpp/language/explicit_cast
 
 Creating a custom type to enforce correct usage of a function or class.
 
-When we write compiled language, like C++, our main target audience is the compiler. This is a very important concept to bear in mind. Second most important is fellow developer trying to understand what you have written years later and users downstream. If we can work well with the compiler we can serve all audiences better.
+When we write in a compiled language, like C++, our main target audience is the compiler. This is a very important concept to bear in mind. Second most important is fellow developers trying to understand what you have written years later and users downstream. If we can work well with the compiler, we can serve all audiences better.
 
 ### deterministic
 
