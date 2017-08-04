@@ -902,6 +902,103 @@ A reference in C++ is denoted by the `&` keyword when applied to a variable. Whe
 
 Learn more a <http://en.cppreference.com/w/cpp/language/reference>.
 
+### noexcept
+
+See http://en.cppreference.com/w/cpp/keyword/noexcept 
+
+### bytes
+
+https://en.wikipedia.org/wiki/Byte
+http://en.cppreference.com/w/cpp/types/byte [c++17]
+
+### bits
+
+https://en.wikipedia.org/wiki/Bit 
+
+### structure packing
+
+Learn more at <http://www.catb.org/esr/structure-packing>
+
+### sizeof
+
+Function built-in to C++ that can display the size, in [bytes](#bytes) of a type.
+http://en.cppreference.com/w/cpp/language/sizeof
+
+### memory alignment
+
+[C++ objects anb alignment](http://en.cppreference.com/w/c/language/object)
+
+### statically typed
+
+When a type is enforced at compile time.
+
+Statically typed languages allows us to be much more descriptive. An example is [strong types](#strong-type).
+
+### dynamically typed
+
+Languages is dynamically typed (or just  dynamic) when type checking happens at run time. Example languages: Python, JavaScript.
+
+### public member
+
+http://en.cppreference.com/w/cpp/language/access
+
+### private member
+
+See link from above ^. We should mentioned `protected` specifier for completeness. 
+
+### class
+
+Same as a [struct](#struct) except all members are default private.
+
+### struct
+
+Same as a [class](#class) except all members are default public.
+
+### assembly
+
+An ascii output able to be produced by a [compiler](#compiler). It is fully optimized and can be 1-to-1 translated to [machine code](#machine-code). It can be viewed to understand what compiler optimizations were made.
+
+### machine code
+
+https://en.wikipedia.org/wiki/Machine_code
+
+### implicit conversion
+
+When a type is automatically converted to another type. This is often [a cause of bugs](https://github.com/mapbox/mapbox-gl-native/pull/5754) and a surprise to developers.
+
+To prevent this behavior use the [explicit keyword](#explicit).
+
+http://en.cppreference.com/w/cpp/language/implicit_conversion
+
+### explicit
+
+http://en.cppreference.com/w/cpp/language/explicit
+
+### explicit conversion
+
+http://en.cppreference.com/w/cpp/language/explicit_cast
+
+### strong type
+
+Creating a custom type to enforce correct usage of a function or class.
+
+When we write in a compiled language, like C++, our main target audience is the compiler. This is a very important concept to bear in mind. Second most important is fellow developers trying to understand what you have written years later and users downstream. If we can work well with the compiler, we can serve all audiences better.
+
+### deterministic
+
+Definition of deterministic in English: 
+
+"Relating to the philosophical doctrine that all events, including human action, are ultimately determined by causes regarded as external to the will.
+‘a deterministic theory’"
+
+In computer science, a deterministic algorithm is an algorithm which, given a particular input, will always produce the same output, with the underlying machine always passing through the same sequence of states.
+
+https://en.wikipedia.org/wiki/Deterministic_algorithm
+
+### fits into register
+
+Okay to pass by value.
+
 ### constexpr
 
 The constexpr specifier declares that it is possible to evaluate the value of the function or variable at compile time.
