@@ -519,9 +519,11 @@ An [optimization technique](#optimization-technique) that reduces the amount of 
 
 ### small size optimization
 
-This refers to when [stack allocation] is to make data structures extremely fast. A data member is used to store data in a C++ class. That data member is not dynamically allocated unless the container needs to grow to a large size. This saves on many allocations which often end up being a bottleneck. This can be described as "hybrid data structures".
+Also known as SSO, this refers to when [stack allocation] is used to make data structures extremely fast. A data member is used to store data in a C++ class. That data member is not dynamically allocated unless the container needs to grow to a large size. This saves on many allocations which often end up being a bottleneck. This can be described as "hybrid data structures".
 
 This is such an important optimization it is central to how the llvm compiler is written. See Chandler Carruth's talk at CppCon 2016 that covers this: “High Performance Code 201: Hybrid Data Structures" <https://youtu.be/vElZc6zSIXM?t=157>.
+
+See [this g<https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring/10319672#10319672> and <https://akrzemi1.wordpress.com/2014/04/14/common-optimizations/> for more about SSO.
 
 ### performant
 
@@ -812,7 +814,7 @@ std::string a("hello");
 
 That is using [stack allocation](#stack-allocation) so you might thing that no dynamic memory is being allocated. However, dynamic memory is being allocated. This is because `std::string` is a container class that holds an arbitrary length array of characters inside. So to create space for this arbitrary array of characters it uses [dynamically allocated memory](#allocator) internally. It also cleans up this memory automatically by [deallocating](#deallcation) when the `std::string` goes out of scope. Both allocation and deallocation take time. So when performance is critical and you want to avoid dynamic allocations, always give consideration to how the class is implemented that you are instantiating.
 
-Note: We say above that `std::string` uses [dynamically allocated memory](#allocator) internally. This is true except when the `std::string` implementation itself has been optimized to reduce allocations. Many implementations are clever enough and care about performance enough to do this using an optimization internally that uses [stack allocation](#stack-allocation) for the array of characters. This only works for small strings and as such is called the "Short/Small String Optimization", or SSO. See <https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring/10319672#10319672> and <https://akrzemi1.wordpress.com/2014/04/14/common-optimizations/> for more about SSO.
+Note: We say above that `std::string` uses [dynamically allocated memory](#allocator) internally. This is true except when the `std::string` implementation itself has been optimized to reduce allocations. Many implementations are clever enough and care about performance enough to do this using an optimization internally that uses [stack allocation](#stack-allocation) for the array of characters. This only works for small strings and as such is called the [short/small size optimization](small-size-optimization) or SSO.
 
 ### memory address
 
