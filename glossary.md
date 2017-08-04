@@ -523,7 +523,7 @@ Also known as SSO, this refers to when [stack allocation] is used to make data s
 
 This is such an important optimization it is central to how the llvm compiler is written. See Chandler Carruth's talk at CppCon 2016 that covers this: “High Performance Code 201: Hybrid Data Structures" <https://youtu.be/vElZc6zSIXM?t=157>.
 
-See [this g<https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring/10319672#10319672> and <https://akrzemi1.wordpress.com/2014/04/14/common-optimizations/> for more about SSO.
+See [this](https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring/10319672#10319672) and [this](https://akrzemi1.wordpress.com/2014/04/14/common-optimizations) for more about SSO.
 
 ### performant
 
@@ -571,11 +571,11 @@ There are hundreds of different optimization options inside compilers. Luckily w
 
 Compilers are rapidly adding more and more optimizations and shifting around which internal optimizations are enabled in which "O" level. See also:
 
--   clang: <https://clang.llvm.org/docs/CommandGuide/clang.html#cmdoption-o0>
--   gcc: <https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html>
--   discussion by clang devs: <http://clang-developers.42468.n3.nabble.com/Meaning-of-LLVM-optimization-levels-td4032493.html>
--   <http://llvm.org/docs/Passes.html> for a listing of all the internal compiler optimizations in clang++ which you don't need to know specifically, but which are under-the-hood of the "O" levels.
--   <http://stackoverflow.com/a/15548189> for a detailed summary of which internal optimizations are grouped in which "O" level across clang++ releases.
+-   [clang](https://clang.llvm.org/docs/CommandGuide/clang.html#cmdoption-o0)
+-   [gcc](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html)
+-   [discussion by clang devs](http://clang-developers.42468.n3.nabble.com/Meaning-of-LLVM-optimization-levels-td4032493.html)
+-   [a listing](http://llvm.org/docs/Passes.html) of all the internal compiler optimizations in clang++ which you don't need to know specifically, but which are under-the-hood of the "O" levels.
+-   [a detailed summary](http://stackoverflow.com/a/15548189) of which internal optimizations are grouped in which "O" level across clang++ releases.
 
 ## Build modes
 
@@ -723,7 +723,7 @@ A backtrace, also known as a stack trace, "is a report of the active stack frame
 
 The C/C++ language has a method called [backtrace and backtrace_symbols](http://man7.org/linux/man-pages/man3/backtrace_symbols.3.html) that can be used to print out the active stack frames. However, because C/C++ crashes might result from invalid use of memory, or out of memory conditions, it is dangerous to try to run more code, even these functions, after a [crash](#crash). Therefore the convention to get backtraces for crashes is to enable [core file](#core-file) generation and use a [debugger](#debugger) to generate a backtrace after the [crash](#crash) has happened.
 
-Have a look at <https://github.com/mapbox/logbt> for a project that makes generating backtraces easier, on both Linux and OS X.
+Have a look at [logbt](https://github.com/mapbox/logbt) for a project that makes generating backtraces easier, on both Linux and OS X.
 
 ### core_pattern
 
@@ -814,7 +814,7 @@ std::string a("hello");
 
 That is using [stack allocation](#stack-allocation) so you might thing that no dynamic memory is being allocated. However, dynamic memory is being allocated. This is because `std::string` is a container class that holds an arbitrary length array of characters inside. So to create space for this arbitrary array of characters it uses [dynamically allocated memory](#allocator) internally. It also cleans up this memory automatically by [deallocating](#deallcation) when the `std::string` goes out of scope. Both allocation and deallocation take time. So when performance is critical and you want to avoid dynamic allocations, always give consideration to how the class is implemented that you are instantiating.
 
-Note: We say above that `std::string` uses [dynamically allocated memory](#allocator) internally. This is true except when the `std::string` implementation itself has been optimized to reduce allocations. Many implementations are clever enough and care about performance enough to do this using an optimization internally that uses [stack allocation](#stack-allocation) for the array of characters. This only works for small strings and as such is called the [short/small size optimization](small-size-optimization) or SSO.
+Note: We say above that `std::string` uses [dynamically allocated memory](#allocator) internally. This is true except when the `std::string` implementation itself has been optimized to reduce allocations. Many implementations are clever enough and care about performance enough to do this using an optimization internally that uses [stack allocation](#stack-allocation) for the array of characters. This only works for small strings and as such is called the [short/small size optimization](#small-size-optimization) or SSO.
 
 ### memory address
 
@@ -902,7 +902,7 @@ A custom allocator may be able to allocate memory faster, or use memory more eff
 
 A reference in C++ is denoted by the `&` keyword when applied to a variable. When you dereference a [pointer](#pointer) you get a reference. Also when you pass an object "by reference" you are asking the object to not be copied. When you pass an object "by value" you are asking for the object to be copied.
 
-Learn more a <http://en.cppreference.com/w/cpp/language/reference>.
+Learn more at <http://en.cppreference.com/w/cpp/language/reference>.
 
 ### noexcept
 
@@ -946,7 +946,11 @@ http://en.cppreference.com/w/cpp/language/access
 
 ### private member
 
-See link from above ^. We should mentioned `protected` specifier for completeness. 
+http://en.cppreference.com/w/cpp/language/access 
+
+### protected member
+
+http://en.cppreference.com/w/cpp/language/access
 
 ### class
 
@@ -1091,7 +1095,7 @@ Data created statically. In short this means a variable created with the static 
 static int one = 1;
 ```
 
-The longer explanation is that it is data created by [static initialization](<static initialization>). This basically means that the variable is created at the time the program starts and therefore is available for the whole time the program is running (aka "static storage duration").
+The longer explanation is that it is data created by [static initialization](#static-initialization). This basically means that the variable is created at the time the program starts and therefore is available for the whole time the program is running (aka "static storage duration").
 
 Often static is used in combination with [constexpr](#constexpr) to ask for a variable to have static storage duration and have its value computed at compile time.
 
