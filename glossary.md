@@ -517,6 +517,12 @@ Changing code to increase [efficiency](#efficiency) or [performance](#performanc
 
 An [optimization technique](#optimization-technique) that reduces the amount of work needed and increases [efficiency](#efficiency) by storing the results of expensive function calls or data access.
 
+### small size optimization
+
+This refers to when [stack allocation] is to make data structures extremely fast. A data member is used to store data in a C++ class. That data member is not dynamically allocated unless the container needs to grow to a large size. This saves on many allocations which often end up being a bottleneck. This can be described as "hybrid data structures".
+
+This is such an important optimization it is central to how the llvm compiler is written. See Chandler Carruth's talk at CppCon 2016 that covers this: “High Performance Code 201: Hybrid Data Structures" <https://youtu.be/vElZc6zSIXM?t=157>.
+
 ### performant
 
 A very dubious word, usually meant to refer to a program that performs well enough by some measure of enough. Prefer describing a program as either having acceptable [performance](#performance) or acceptable [efficiency](#efficiency).
@@ -815,6 +821,10 @@ A value like `0x7fb20ac02680` that points to a location in the program's [addres
 ### address space
 
 In C++ the term address space usually refers to the scope of memory the program has access to. You can refer to something in code by referencing its [memory address](#memory-address) if it is in the same address space as your code.
+
+### free store
+
+A term use to describe free memory or [address space](#address-space) not yet requested.
 
 ### new keyword
 
