@@ -5,9 +5,11 @@ This is an opinionated glossary of terms developed by the Mapbox team.
 The assumptions are:
 
 **_performance matters_**
+
 You are choosing to use C++ to write the most efficient code possible
 
 **_robustness matters_**
+
 You are choosing to use C++ to unlock the benefits of a statically typed language
 
 **_multiple platforms matter_**
@@ -17,7 +19,9 @@ Your code will need to run across multiple linux or os x versions
 **_binary distribution matters_**
 You seek to distribute your code to users and clients via easily installable binaries (without them needing to know how to compile it)
 
-It covers these primary areas:
+---
+
+The glossary covers these primary areas:
 
 -   packaging
 -   build systems
