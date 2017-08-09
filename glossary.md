@@ -17,6 +17,7 @@ You are choosing to use C++ to unlock the benefits of a statically typed languag
 Your code will need to run across multiple linux or os x versions
 
 **_binary distribution matters_**
+
 You seek to distribute your code to users and clients via easily installable binaries (without them needing to know how to compile it)
 
 ---
