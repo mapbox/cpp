@@ -360,6 +360,49 @@ A general term to describe the process of combining all [translation units](#tra
 
 Generally linking occurs when [object files](#object-file) are combined into a [library](#library).
 
+
+### linking order
+
+The process of [linking](#linking) involves resolving dependencies that your code might depend on, including both across the [translation units](#translation-unit) of your project and external dependencies. When dependencies are libraries, the linker handles resolving [symbols](#symbol) differently depending on a variety of factors including:
+
+ - The order of the libraries in the command sent to the linker on Linux.
+ - Whether those libraries are [static libraries](#static-library) or [shared libraries](#dynamicshared-library)
+ - Custom linker flags like `-undefined dynamic` on OSX or `--start-group` on Linux
+
+This matters when you are linking your code to [static libraries](#static-library) on Linux. Imagine that:
+
+ - Your program is called `convert` and it depends on `libpng`
+ - You are building against a static `libpng.a` from [mason](#mason)
+ - `libpng.a` also depends on zlib (could be `libz.so` from the system or libz.a from [mason](#mason)).
+ - Your build system correctly asks for `convert` to be linked to both libpng and zlib
+ - But you hit a linking error on defined symbols for zlib
+
+Why did you hit undefined symbols? Most likely it is because your build system invoked the linker (through clang+++ in this example) with the order of libraries like:
+
+```
+clang++ -o convert -lz -lpng
+```
+
+This will fail on Linux, when `libpng` is a static library, because the linker on linux requires `-lz` to be listed **after** `libpng` because `libpng` depends on `zlib`.
+
+This would fix the linking:
+
+```
+clang++ -o convert -lpng -lz
+```
+
+Hence: libraries depended upon by other libraries need to come after the library that needs them.
+
+Yes, this is really quite tedious and brittle on Linux. If you don't have control of your build system such that you can change it to fix the linking order, you may be stuck. So, another workaround is to disable this behavior by asking the Linux linker to recurse to look for dependencies across all listed libraries.
+
+This would work:
+
+```
+clang++ -o convert -Wl,--start-group -lz -lpng
+```
+
+Because it would tell the compiler to try looking for undefined symbols across the entire group rather than just in order. Note: technically you are supposed to denote the end of the group of libraries with `-Wl,--end-group`, but I've found that is optional.
+
 ### translation unit
 
 The input to a compiler from which an [object file](#object-file) is created. Normally this is one or more files with the extension of `.cpp`, `c++`, or `.cc`.
