@@ -985,11 +985,40 @@ inline int get() {
 
 This asks the compiler to [inline-expand](#inline-expands) your code.
 
+In addition the `inline` keyword has to be used for [definitions](#definition) in headers to not violate the [One-Definition Rule (ODR)](#one-definition rule):
+
+
 Learn more at <https://isocpp.org/wiki/faq/inline-functions#inline-member-fns>
+
+
+### one-definition rule
+
+The `inline` keyword has to be used for [definitions](#definition) in headers to not violate the One-Definition Rule (ODR):
+
+```c++
+// myheader.hpp
+
+inline int get() {
+    return 1;
+}
+
+template <typename T> int put(int x) {
+    return x + 1;
+}
+```
+
+The definition for `get` in the header needs `inline` - not for performance reasons - but to make sure multiple translation units do not clash exposing the same definition.
+
+Except for fully specialized templates (`template <>`) templates are `inline` by default and do not require the `inline` keyword when defining them in headers.
+It's a good practice to just always specify the `inline` keyword for definitions in headers.
+
+Learn more at <http://en.cppreference.com/w/cpp/language/definition#One_Definition_Rule>
 
 ### inline-expands
 
 Also know as "inlined", this describes when a compiler moves code such that "the function’s code gets inserted into the caller’s code stream" from <https://isocpp.org/wiki/faq/inline-functions#overview-inline-fns>
+
+Inlining functions allows the compiler's optimizer to "see" across [translation unit](#translation-unit) boundaries and optimize the code in its larger context.
 
 This expansion happens during compilation so the impact of inlining is on the resultant [object files](#object-files) and binaries produced. The compiler does not rewrite [source code](#source-code).
 
@@ -1019,6 +1048,7 @@ int main() {
 ```
 
 What the compiler does is hard to predict (its job is to optimize code in innovative ways!), so this is an incomplete example, but hints at the start of what may be happening behind the scenes.
+You can use Clang's [`-Rpass`](https://clang.llvm.org/docs/UsersManual.html#options-to-emit-optimization-reports) switch to inspect what the inliner is doing and especially where it fails to inline.
 
 You could also imagine the compiler taking this example a step further and doing:
 
