@@ -20,7 +20,7 @@ Your code will need to run across multiple linux or os x versions
 
 You seek to distribute your code to users and clients via easily installable binaries (without them needing to know how to compile it)
 
----
+* * *
 
 The glossary covers these primary areas:
 
@@ -53,6 +53,9 @@ Contributions are welcome. To contribute, please:
     -   [API](#api)
     -   [signal](#signal)
     -   [crash](#crash)
+    -   [libstdc++](#libstdc)
+    -   [libc++](#libc)
+    -   [source code](#source-code)
 
 -   [Packaging](#packaging)
 
@@ -146,10 +149,7 @@ Contributions are welcome. To contribute, please:
     -   [calltree](#calltree)
     -   [backtrace](#backtrace)
     -   [core_pattern](#core_pattern)
-    -   [libstdc++](#libstdc)
-    -   [libc++](#libc)
     -   [undefined behavior](#undefined-behavior)
-    -   [source code](#source-code)
 
 -   [Memory concepts](#memory-concepts)
 
@@ -238,6 +238,20 @@ More info at <https://en.wikipedia.org/wiki/Unix_signal>
 A crash is a general term to describe when execution of the program exits in an unintended and unrecoverable way. There are a variety of reasons a program may crash, ranging from a bug that created a fatal error condition to another program killing your program. Each crash can be described by one of a known set of [signals](#signal) which map to a return code.
 
 For example, a segfault (segmentation fault or violation) leads to a `SIGSEGV` signal, which is id `11`, and an exit code of `128+11` == 139.
+
+### libstdc++
+
+The [GNU implementation of the C++ STL](https://gcc.gnu.org/onlinedocs/libstdc++/).
+
+Note that on OS X, `libstdc++` does not support C++11 or C++14, and so we use `libc++` instead.  ([Read more](https://github.com/mapbox/cpp#standard-c-library).)
+
+### libc++
+
+The [LLVM implementation of the C++ STL](https://libcxx.llvm.org/)
+
+### source code
+
+In C++ source code describes `.hpp` or `.cpp` files before they are compiled. Groups of source code passed to the compiler are called [translation units](#translation-unit).
 
 ## Packaging
 
@@ -814,23 +828,9 @@ sysctl -n kern.corefile
 
 More info at <https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man5/core.5.html>
 
-### libstdc++
-
-The [GNU implementation of the C++ STL](https://gcc.gnu.org/onlinedocs/libstdc++/).
-
-Note that on OS X, `libstdc++` does not support C++11 or C++14, and so we use `libc++` instead.  ([Read more](https://github.com/mapbox/cpp#standard-c-library).)
-
-### libc++
-
-The [LLVM implementation of the C++ STL](https://libcxx.llvm.org/)
-
 ### undefined behavior
 
 See <http://blog.regehr.org/archives/213> and <http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html>
-
-### source code
-
-In C++ source code describes `.hpp` or `.cpp` files before they are compiled. Groups of source code passed to the compiler are called [translation units](#translation-unit).
 
 ## Memory concepts
 
