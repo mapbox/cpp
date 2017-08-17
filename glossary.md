@@ -150,6 +150,8 @@ Contributions are welcome. To contribute, please:
     -   [backtrace](#backtrace)
     -   [core_pattern](#core_pattern)
     -   [undefined behavior](#undefined-behavior)
+    -   [static analysis](#static-analysis)
+    -   [runtime analysis](#runtime-analysis)
 
 -   [Memory concepts](#memory-concepts)
 
@@ -831,6 +833,14 @@ More info at <https://developer.apple.com/legacy/library/documentation/Darwin/Re
 ### undefined behavior
 
 See <http://blog.regehr.org/archives/213> and <http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html>
+
+### static analysis
+
+Static analysis of code is checks or assertions that are done on the code without needing to execute or run the code. The advantage of this is that these checks may find bugs which [runtime analysis](#runtime-analysis) alone would not see. Ideally you implement both methods in your project.
+
+### runtime analysis
+
+Runtime analysis of code is checks or assertions in the code that happen when your code runs. Usually these checks, like the [santizers](#sanitizers), will only find problems in code that has tests or that is actually used. To find problems in code that you don't have tests for, consider [static analysis](#static-analysis). Ideally you implement both methods in your project.
 
 ## Memory concepts
 
