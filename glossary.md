@@ -542,8 +542,24 @@ More info at [this man7 page](http://man7.org/linux/man-pages/man3/dlopen.3.html
 
 Used to describe when code is organized such that all of the [source code](#source-code) is in the .hpp file such that:
 
--   Not cpp files need to be compiled
+-   No cpp files need to be compiled
 -   To use the library, no library needs to be linked (just [using `#include <the header>`](#include) is enough
+
+A well organized header-only library is rarely in a single header, but rather can be accessed by both:
+
+ - A single header that includes all other headers
+ - Public access to each individual header that implements descrete functionality with the aim of [zero cost design](#zero-cost-design).
+
+### zero cost design
+
+When library headers are organized in discrete parts such that downstream users can include just the functionality they need and nothing more. Zero cost design indicates there is no extra cost beyond the cost that is unavoidable. Zero cost design is [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns) applied to C++ libraries. It is particular important for [header-only libraries](#header-only-library) but also is relevant to [precompiled libraries](#precompiled-library).
+
+But really, what do we mean by "cost"?
+
+The motivation is to avoid two types of cost:
+
+ - adding extra compile time to downstream builds because major chunks of code are present in a header even when not used by consumers.
+ - having headers pull in other headers that might have external dependencies which are not needed.
 
 ### LLVM
 
