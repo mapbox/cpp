@@ -1064,6 +1064,31 @@ Because in our example it knows that `result` will always be `1`.
 
 When a compiler [inline-expands](#inline-expands) a function.
 
+### declaration
+
+A declaration represents signatures but not the actual implementation.
+
+A declaration for a function looks like:
+
+```c++
+int get();
+```
+
+A declaration for a class looks like:
+
+```c++
+class C;
+```
+
+A class declaration (also called forward declaration) is an [incomplete type](http://en.cppreference.com/w/cpp/language/type#Incomplete_type).
+
+The primary use-case for incomplete types is forward declaring classes in header files to speed up compilation by hiding implementation details from users including the header.
+
+In contrast to a declaration a [definition](#definition) consists of the implementation.
+
+Lean more at <http://en.cppreference.com/w/cpp/language/declarations>
+
+
 ### definition
 
 A definition is code that describes the types an object like a function, class, or template.
@@ -1071,14 +1096,19 @@ A definition is code that describes the types an object like a function, class, 
 A definition for a function looks like:
 
 ```c++
-int get();
+int get() {
+  return 1;
+}
 ```
 
-A pure definition has no [implementation](#implementation).
+Each definition is a [declaration](#declaration).
 
 When code is designed to be a [precompiled library](#precompiled-library) the definition is often included on its own in a header file (.hpp) and the [implementation](#implementation) is put in a `.cpp` file.
 
 It is also valid to have the entire [implementation](#implementation) in the header file. When only this is done then the library is called a [header-only library](#header-only-library)
+
+Learn more at <http://en.cppreference.com/w/cpp/language/definition>
+
 
 ### implementation
 
