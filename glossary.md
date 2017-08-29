@@ -620,11 +620,19 @@ An [optimization technique](#optimization-technique) that reduces the amount of 
 
 ### small size optimization
 
-Also known as SSO, this refers to when [stack allocation] is used to make data structures extremely fast. A data member is used to store data in a C++ class. That data member is not dynamically allocated unless the container needs to grow to a large size. This saves on many allocations which often end up being a bottleneck. This can be described as "hybrid data structures".
+Also known as SSO, this refers to when [stack allocation] is used to make data structures extremely fast. This strategy generally works by writing a custom class which:
+
+ - Has a data member is used to store data.
+ - That data member is not dynamically allocated unless the container needs to grow to a large size.
+ - This saves on many allocations which often end up being a bottleneck.
+
+This can be described as using "hybrid data structures".
 
 This is such an important optimization it is central to how the llvm compiler is written. See Chandler Carruth's talk at CppCon 2016 that covers this: “High Performance Code 201: Hybrid Data Structures" <https://youtu.be/vElZc6zSIXM?t=157>.
 
-See [this](https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring/10319672#10319672) and [this](https://akrzemi1.wordpress.com/2014/04/14/common-optimizations) for more about SSO.
+It is also central to why Javascript is fast in node.js and chrome. V8 uses SSO for objects like [SmallOrderedHashTable and more](https://github.com/v8/v8/blob/fe598532ec1317e8b85343133be9fb708e07bd2e/src/objects/hash-table.h#L613-L649).
+
+See also [this](https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring/10319672#10319672) and [this](https://akrzemi1.wordpress.com/2014/04/14/common-optimizations) for more about SSO.
 
 ### performant
 
