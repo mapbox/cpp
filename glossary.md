@@ -106,6 +106,7 @@ Contributions are welcome. To contribute, please:
     -   [dynamically loaded](#dynamically-loaded)
     -   [dlopen](#dlopen)
     -   [header-only library](#header-only-library)
+    -   [zero cost design](#zero-cost-design)
     -   [LLVM](#llvm)
     -   [gcc](#gcc)
     -   [clang](#clang)
@@ -172,6 +173,13 @@ Contributions are welcome. To contribute, please:
 
 -   [Language concepts and keywords](#language-concepts-and-keywords)
 
+    -   [inline keyword](#inline-keyword)
+    -   [one-definition rule](#one-definition-rule)
+    -   [inline-expands](#inline-expands)
+    -   [inlined](#inlined)
+    -   [declaration](#declaration)
+    -   [definition](#definition)
+    -   [implementation](#implementation)
     -   [pointer](#pointer)
     -   [reference](#reference)
     -   [noexcept](#noexcept)
@@ -547,8 +555,8 @@ Used to describe when code is organized such that all of the [source code](#sour
 
 A well organized header-only library is rarely in a single header, but rather can be accessed by both:
 
- - A single header that includes all other headers
- - Public access to each individual header that implements descrete functionality with the aim of [zero cost design](#zero-cost-design).
+-   A single header that includes all other headers
+-   Public access to each individual header that implements descrete functionality with the aim of [zero cost design](#zero-cost-design).
 
 ### zero cost design
 
@@ -558,8 +566,8 @@ But really, what do we mean by "cost"?
 
 The motivation is to avoid two types of cost:
 
- - adding extra compile time to downstream builds because major chunks of code are present in a header even when not used by consumers.
- - having headers pull in other headers that might have external dependencies which are not needed.
+-   adding extra compile time to downstream builds because major chunks of code are present in a header even when not used by consumers.
+-   having headers pull in other headers that might have external dependencies which are not needed.
 
 ### LLVM
 
@@ -622,9 +630,9 @@ An [optimization technique](#optimization-technique) that reduces the amount of 
 
 Also known as SSO, this refers to when [stack allocation] is used to make data structures extremely fast. This strategy generally works by writing a custom class which:
 
- - Has a data member is used to store data.
- - That data member is not dynamically allocated unless the container needs to grow to a large size.
- - This saves on many allocations which often end up being a bottleneck.
+-   Has a data member is used to store data.
+-   That data member is not dynamically allocated unless the container needs to grow to a large size.
+-   This saves on many allocations which often end up being a bottleneck.
 
 This can be described as using "hybrid data structures".
 
@@ -1009,11 +1017,9 @@ inline int get() {
 
 This asks the compiler to [inline-expand](#inline-expands) your code.
 
-In addition the `inline` keyword has to be used for [definitions](#definition) in headers to not violate the [One-Definition Rule (ODR)](#one-definition rule):
-
+In addition the `inline` keyword has to be used for [definitions](#definition) in headers to not violate the [One-Definition Rule (ODR)](#one-definition-rule):
 
 Learn more at <https://isocpp.org/wiki/faq/inline-functions#inline-member-fns>
-
 
 ### one-definition rule
 
@@ -1064,7 +1070,6 @@ int main() {
 The inline-expanded version would likely be seen/re-written internally by the compiler to be more like:
 
 ```c++
-
 int main() {
     int result = 1;
     return result;
@@ -1112,7 +1117,6 @@ In contrast to a declaration a [definition](#definition) consists of the impleme
 
 Lean more at <http://en.cppreference.com/w/cpp/language/declarations>
 
-
 ### definition
 
 A definition is code that describes the types an object like a function, class, or template.
@@ -1132,7 +1136,6 @@ When code is designed to be a [precompiled library](#precompiled-library) the de
 It is also valid to have the entire [implementation](#implementation) in the header file. When only this is done then the library is called a [header-only library](#header-only-library)
 
 Learn more at <http://en.cppreference.com/w/cpp/language/definition>
-
 
 ### implementation
 
