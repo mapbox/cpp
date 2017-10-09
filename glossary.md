@@ -179,6 +179,7 @@ Contributions are welcome. To contribute, please:
     -   [inlined](#inlined)
     -   [declaration](#declaration)
     -   [definition](#definition)
+    -   [Forward declaration](#forward-declaration)
     -   [implementation](#implementation)
     -   [pointer](#pointer)
     -   [reference](#reference)
@@ -1109,9 +1110,9 @@ A declaration for a class looks like:
 class C;
 ```
 
-A class declaration (also called forward declaration) is an [incomplete type](http://en.cppreference.com/w/cpp/language/type#Incomplete_type).
+A class declaration (also called [forward declaration](#forward-declaration)) is an [incomplete type](http://en.cppreference.com/w/cpp/language/type#Incomplete_type).
 
-The primary use-case for incomplete types is forward declaring classes in header files to speed up compilation by hiding implementation details from users including the header.
+The primary use-case for incomplete types is [forward declaring](#forward-declaration) classes in header files to speed up compilation by hiding implementation details from users including the header.
 
 In contrast to a declaration a [definition](#definition) consists of the implementation.
 
@@ -1135,7 +1136,18 @@ When code is designed to be a [precompiled library](#precompiled-library) the de
 
 It is also valid to have the entire [implementation](#implementation) in the header file. When only this is done then the library is called a [header-only library](#header-only-library)
 
-Learn more at <http://en.cppreference.com/w/cpp/language/definition>
+Learn more at:
+
+-   <http://www.goldsborough.me/c/c++/linker/2016/03/30/19-34-25-internal_and_external_linkage_in_c++/#declaration-vs-definition>
+-   <http://en.cppreference.com/w/cpp/language/definition>
+
+### Forward declaration
+
+Refers to when you provide a [declaration](#declaration) of a [symbol](#symbol) without a definition.
+
+Learn more at:
+
+-   <http://www.goldsborough.me/c/c++/linker/2016/03/30/19-34-25-internal_and_external_linkage_in_c++/#declaration-vs-definition>
 
 ### implementation
 
