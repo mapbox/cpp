@@ -1201,6 +1201,8 @@ Function built-in to C++ that can display the size, in [bytes](#bytes) of a type
 
 [C++ objects and alignment](http://en.cppreference.com/w/c/language/object)
 
+See also https://jonasdevlieghere.com/order-your-members/#alignmentpadding
+
 ### statically typed
 
 When a type is enforced at compile time.
