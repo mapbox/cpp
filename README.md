@@ -33,6 +33,7 @@ When we hit bottlenecks in JS/Node.js scripts that can be solved by high concurr
 - [Great runthrough of thread behavior in Node, and how to properly use UV_THREADPOOL_SIZE with some examples](https://www.future-processing.pl/blog/on-problems-with-threads-in-node-js/)
 - [How compilers and linkers work](http://www.lurklurk.org/linkers/linkers.html)
 - [Linear C++ tutorial](https://github.com/jesyspa/linear-cpp)
+- [Kate Gregory “10 Core Guidelines You Need to Start Using Now” - CppCon 2017](https://www.youtube.com/watch?v=XkDEzfpdcSg)
 
 Find existing real-world code:
 
