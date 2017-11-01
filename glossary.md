@@ -120,6 +120,7 @@ Contributions are welcome. To contribute, please:
 
     -   [performance](#performance-1)
     -   [efficiency](#efficiency)
+    -   [expressive](#expressive)
     -   [optimization technique](#optimization-technique)
     -   [memoization](#memoization)
     -   [small size optimization](#small-size-optimization)
@@ -618,6 +619,10 @@ How quickly a program does its work. Improving performance involves doing work f
 How much work is required by a task. Improving efficiency requires doing less work and results in [performance improvements](#performance). An efficient program is one which does the minimum (that we're aware of) amount of work to accomplish a given task.
 
 -   See also: CppCon 2014: Chandler Carruth "Efficiency with Algorithms, Performance with Data Structures" <https://youtu.be/fHNmRkzxHWs?t=754>
+
+### expressive 
+
+Exposing intent clearly through programming language constructs. Not resorting to boiler-plate code and/or over-commenting to achieve it.
 
 ### optimization technique
 
