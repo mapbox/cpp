@@ -647,9 +647,15 @@ See also [this](https://stackoverflow.com/questions/10315041/meaning-of-acronym-
 
 ### performant
 
-Not yet an official word in English. Usually meant to refer to a program that performs well enough by some measure. Prefer describing a program as either having acceptable [performance](#performance) or acceptable [efficiency](#efficiency). Or consider if a better described as fast or [low latency](#latency).
+Not yet an official word in English. Usually meant to refer to a program that performs well enough by some measure. Prefer describing a program as either having acceptable [performance](#performance) or acceptable [efficiency](#efficiency). Or consider if your program is better described as fast, [responsive](#responsive), or [low latency](#latency).
 
 See also <https://english.stackexchange.com/a/196609>
+
+### responsive
+
+A term used to describe when a program or API has a quick [response time](#response-time).
+
+See also <https://en.wikipedia.org/wiki/Responsiveness>
 
 ### latency
 
