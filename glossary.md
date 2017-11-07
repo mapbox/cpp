@@ -611,7 +611,9 @@ There are [a couple ways](https://stackoverflow.com/questions/21593/what-is-the-
 
 ### performance
 
-How quickly a program does its work. Improving performance involves doing work faster by optimizing code to be more [efficient](#efficiency) through code changes or [compiler optimizations](#compiler-optimization-level). But ultimately how fast a program runs is also constrainted by the system resources and how long certain operations take on a computer: <https://gist.github.com/jboner/2841832>.
+How quickly a program does its work. Improving performance involves doing work faster by optimizing code to be more [efficient](#efficiency) through code changes or [compiler optimizations](#compiler-optimization-level). But ultimately how fast a program runs is also constrained by the system resources and how long certain operations take on a computer: <https://gist.github.com/jboner/2841832>.
+
+Performance in concurrent systems usually refers to [response time](#response-time) for a single request. When we describe the performance of systems under load we usually are referring to [scalability](#scalability)
 
 ### efficiency
 
@@ -645,7 +647,27 @@ See also [this](https://stackoverflow.com/questions/10315041/meaning-of-acronym-
 
 ### performant
 
-A very dubious word, usually meant to refer to a program that performs well enough by some measure of enough. Prefer describing a program as either having acceptable [performance](#performance) or acceptable [efficiency](#efficiency).
+Not yet an official word in English. Usually meant to refer to a program that performs well enough by some measure. Prefer describing a program as either having acceptable [performance](#performance) or acceptable [efficiency](#efficiency). Or consider if a better described as fast or [low latency](#latency).
+
+See also <https://english.stackexchange.com/a/196609>
+
+### latency
+
+A term used to describe [response time](#response-time). A low latency system responds quickly. Systems that are low latency even under increased load (more requests) have the potential to be highly [scalable](#scalable).
+
+See also <https://en.wikipedia.org/wiki/Latency_(engineering)>
+
+### response time
+
+The time taken between a request and response.
+
+### scalable
+
+Systems where [performance](#performance) is maintained under increasing load.
+
+### scalability
+
+How [scalable](#scalable) a system is by some measure of load.
 
 ### compiler optimization level
 
@@ -742,7 +764,7 @@ A build like this should:
 -   Use the [highest compiler optimization level](#compiler-optimization-level)
 -   Enable [debug symbols](#debug-symbols) by passing `-g`.
 
-This is similar to a [profiling build](#profiling-build) but without any extra flags that might hurt performance.
+This is similar to a [profiling build](#profiling-build) but without any extra flags that might hurt [performance](#performance).
 
 Note: Developers that use cmake can automatically build this way by passing the `RelWithDebInfo` value to the [CMAKE_BUILD_TYPE](https://cmake.org/cmake/help/v3.0/variable/CMAKE_BUILD_TYPE.html) variable like: `-DCMAKE_BUILD_TYPE=RelWithDebInfo`
 
@@ -775,8 +797,8 @@ So, a profiling build generally should:
 -   Use the [highest compiler optimization level](#compiler-optimization-level)
 -   Disable `assert`s by enabling [DNDEBUG](#DNDEBUG)
 -   Disable key compiler optimizations or options that make [callstacks](#callstack) more detailed:
-    -   Add `-fno-omit-frame-pointer` (no significant performance cost)
-    -   Consider adding `-fno-inline-functions` (potentially significant performance cost, so test before adding this to an -O3 build)
+    -   Add `-fno-omit-frame-pointer` (no significant [performance](#performance) cost)
+    -   Consider adding `-fno-inline-functions` (potentially significant [performance](#performance) cost, so test before adding this to an -O3 build)
 -   Enable [debug symbols](#debug-symbols) by passing `-g`. Except when binary size is important and you want to keep it at a minimum the ideal solution is to only request the compiler to add debug metadata need for better [callstacks](#callstack). (This can be done when building with `clang++` by passing `-gline-tables-only` instead of `-g`)
 
 This boils down to:
@@ -789,9 +811,9 @@ clang++ -O3 -DNDEBUG -fno-omit-frame-pointer -gline-tables-only ...
 
 When production binaries crash the [callstacks](#callstack) in the [backtraces](#backtrace) will not likely contain line numbers for where, exactly, the code crashed. Instead the only clue for what happened is the name of last function called (that was not inlined by the compiler). If the function is simple and only a few lines of code, perhaps this will give you the programmer enough of the lead to see the potential problem and fix the bug that caused the crash. But more likely the function will be composed of many lines of code and/or it may call other functions that have been inlined away.
 
-So really you want the line number for where the crash happened. An ideal solution might be to run the [debug builds](#debug-build), replicate the crash, to get a more detailed backtrace. But more often than not it is difficult to impossible to replicate a crash with [debug builds](#debug-build). An example of this would be a rare race condition that only happens under load: it can't be replicated with a [debug build](#debug-build) because the code runs too slow. Or it can only be replicated under production load and [debug builds](#debug-build) can't be pushed into production since it would hurt performance too much.
+So really you want the line number for where the crash happened. An ideal solution might be to run the [debug builds](#debug-build), replicate the crash, to get a more detailed backtrace. But more often than not it is difficult to impossible to replicate a crash with [debug builds](#debug-build). An example of this would be a rare race condition that only happens under load: it can't be replicated with a [debug build](#debug-build) because the code runs too slow. Or it can only be replicated under production load and [debug builds](#debug-build) can't be pushed into production since it would hurt [performance](#performance) too much.
 
-The solution to this problem then is to build your [release builds](#release-build) with just enough debug information to get line numbers, without hurting performance. For details on how to do this see [debuggable release build](#debuggable-release-build).
+The solution to this problem then is to build your [release builds](#release-build) with just enough debug information to get line numbers, without hurting [performance](#performance). For details on how to do this see [debuggable release build](#debuggable-release-build).
 
 ### problem of profiling and compiler optimization levels
 
@@ -924,9 +946,9 @@ Note: when instantiating classes without the [new keyword](#new-keyword) you mig
 std::string a("hello");
 ```
 
-That is using [stack allocation](#stack-allocation) so you might thing that no dynamic memory is being allocated. However, dynamic memory is being allocated. This is because `std::string` is a container class that holds an arbitrary length array of characters inside. So to create space for this arbitrary array of characters it uses [dynamically allocated memory](#allocator) internally. It also cleans up this memory automatically by [deallocating](#deallcation) when the `std::string` goes out of scope. Both allocation and deallocation take time. So when performance is critical and you want to avoid dynamic allocations, always give consideration to how the class is implemented that you are instantiating.
+That is using [stack allocation](#stack-allocation) so you might thing that no dynamic memory is being allocated. However, dynamic memory is being allocated. This is because `std::string` is a container class that holds an arbitrary length array of characters inside. So to create space for this arbitrary array of characters it uses [dynamically allocated memory](#allocator) internally. It also cleans up this memory automatically by [deallocating](#deallcation) when the `std::string` goes out of scope. Both allocation and deallocation take time. So when [performance](#performance) is critical and you want to avoid dynamic allocations, always give consideration to how the class is implemented that you are instantiating.
 
-Note: We say above that `std::string` uses [dynamically allocated memory](#allocator) internally. This is true except when the `std::string` implementation itself has been optimized to reduce allocations. Many implementations are clever enough and care about performance enough to do this using an optimization internally that uses [stack allocation](#stack-allocation) for the array of characters. This only works for small strings and as such is called the [short/small size optimization](#small-size-optimization) or SSO.
+Note: We say above that `std::string` uses [dynamically allocated memory](#allocator) internally. This is true except when the `std::string` implementation itself has been optimized to reduce allocations. Many implementations are clever enough and care about [performance](#performance) enough to do this using an optimization internally that uses [stack allocation](#stack-allocation) for the array of characters. This only works for small strings and as such is called the [short/small size optimization](#small-size-optimization) or SSO.
 
 ### memory address
 
@@ -977,7 +999,7 @@ When an object is created without the `new` keyword, it is allocated on the [sta
 
 Generally stack allocation is faster than [heap allocation](#heap-allocation) because it does not require a call to the [dynamic memory allocator](#allocator).
 
-Often very tuned C++ programs find their remaining bottlenecks are memory allocation. In this case, to further increase performance, developers often look for ways to utilize stack allocation without the fear of [overflow](https://en.wikipedia.org/wiki/Stack_overflow). See [stack alloc](https://howardhinnant.github.io/stack_alloc.html) as well as "SmallVector" inside llvm which both allocate on the stack up for a limite number of elements. See [this talk](https://youtu.be/vElZc6zSIXM?t=135) or [this stack overflow (pun not intended) mention here](https://stackoverflow.com/a/42122275).
+Often very tuned C++ programs find their remaining bottlenecks are memory allocation. In this case, to further increase [performance](#performance), developers often look for ways to utilize stack allocation without the fear of [overflow](https://en.wikipedia.org/wiki/Stack_overflow). See [stack alloc](https://howardhinnant.github.io/stack_alloc.html) as well as "SmallVector" inside llvm which both allocate on the stack up for a limite number of elements. See [this talk](https://youtu.be/vElZc6zSIXM?t=135) or [this stack overflow (pun not intended) mention here](https://stackoverflow.com/a/42122275).
 
 Read more [here](https://stackoverflow.com/a/80113)
 
@@ -1038,7 +1060,7 @@ template <typename T> int put(int x) {
 }
 ```
 
-The definition for `get` in the header needs `inline` - not for performance reasons - but to make sure multiple translation units do not clash exposing the same definition.
+The definition for `get` in the header needs `inline` - not for [performance](#performance) reasons - but to make sure multiple translation units do not clash exposing the same definition.
 
 Except for fully specialized templates (`template <>`) templates are `inline` by default and do not require the `inline` keyword when defining them in headers.
 It's a good practice to just always specify the `inline` keyword for definitions in headers.
@@ -1201,7 +1223,7 @@ Function built-in to C++ that can display the size, in [bytes](#bytes) of a type
 
 [C++ objects and alignment](http://en.cppreference.com/w/c/language/object)
 
-See also https://jonasdevlieghere.com/order-your-members/#alignmentpadding
+See also <https://jonasdevlieghere.com/order-your-members/#alignmentpadding>
 
 ### statically typed
 
@@ -1390,7 +1412,7 @@ Node is made up of a combination of parts:
 -   Event Loop: A main process (or main thread) that responds to an event queue: grabs the top item in the event queue, executes it, and then grabs the next item.
 -   Threadpool and Event Loop Manager ([libuv](http://libuv.org/)): This library helps manage the threadpool and event loop, and helps handle asynchronous [I/O operations](https://github.com/mapbox/cpp/blob/master/glossary.md#io).
 
-See these articles to understand more about node performance:
+See these articles to understand more about node [performance](#performance):
 
 -   <https://www.dynatrace.com/blog/how-to-track-down-cpu-issues-in-node-js/>
 -   <https://www.dynatrace.com/blog/understanding-garbage-collection-and-hunting-memory-leaks-in-node-js/>
