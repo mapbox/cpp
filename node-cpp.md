@@ -1,7 +1,7 @@
 # Node.js C++ Addons
 
 * [Why create a node addon?](#why-create-a-node-addon)
-* [How is it different than a C++ project?](#how-is-an-node-addon-different-than-a-c-project)
+* [How is a Node addon different than a C++ project?](#how-is-a-node-addon-different-than-a-c-project)
 * [Native Abstractions for Node.js (NAN)](#native-abstractions-for-nodejs-nan)
 * [Examples](#examples)
 * [Developing addons](#developing-addons)
@@ -79,7 +79,7 @@ royal with cheese
 royal with cheese
 ```
 
-### How is an Node addon different than a C++ project?
+### How is a Node addon different than a C++ project?
 
 A Node.js addon is still a Node module. Users still interact with it as if they are writing Javascript (i.e. `var awesome = require('awesome')`), but the library will tend to pass much of the logic into C++ workers, which are highly performant, then return information back into a javascript interface. Bottom line, the user of your library never has to write or interact with C++.
 
@@ -109,8 +109,8 @@ Developing an addon requires Node.js, NPM, and a C++ compiler. Check out node-cp
 One big bonus of developing a Node.js addon is that you can include other C++ code in your project, even if this code wasn't intended to be used via a Node.js interface. C++ headers can be installed in a few ways:
 
 * Installed via [Mason](https://github.com/mapbox/cpp/blob/master/glossary.md#mason): use Mason to install a project, these can be installed into whichever folder you choose to host dependencies. Best practice is a `/deps` directory.
-* Installed via NPM: Publishing headers to NPM allows them to be included in addons easily, since we are already using the NPM ecosystem. Header paths will point to the `/node_modules` folder or can include dynamically with an [`include_dirs.js`](https://github.com/mapbox/protozero/blob/master/include_dirs.js) file. *Note: this practice is no longer recommended.*
 * Copied/pasted into a `/deps` directory (this is also referred to as "vendoring")
+* Installed via NPM: Publishing headers to NPM allows them to be included in addons easily, since we are already using the NPM ecosystem. Header paths will point to the `/node_modules` folder or can include dynamically with an [`include_dirs.js`](https://github.com/mapbox/protozero/blob/master/include_dirs.js) file. **Note: this practice is no longer recommended.**
 
 Depending on how a project is installed, the path to the header files will be different. These paths can be added to the `binding.gyp` file and will look like this:
 
