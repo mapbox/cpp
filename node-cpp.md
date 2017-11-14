@@ -27,11 +27,11 @@ royal with cheese
 // ... and so on
 ```
 
-[IMAGE]
+![not concurrent](https://mapbox.s3.amazonaws.com/cpp-assets/addon-hey-nonconcurrent.gif)
 
 But when we start printing from within the threadpool all of these can start executing simultaneously.
 
-[IMAGE]
+![not concurrent](https://mapbox.s3.amazonaws.com/cpp-assets/addon-hey-concurrent.gif)
 
 We run the following script node index.js. Here’s the output:
 
