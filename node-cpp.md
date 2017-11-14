@@ -1,6 +1,15 @@
 # Node.js C++ Addons
 
-The following document outlines Mapbox's general approach to writing C++ modules for Node.js (often referred to as _addons_), and they _why_. Check out node-cpp-skel, a skeleton library for creating a Node.js addon, to learn more about _how_ to create an addon.
+* [Why create a node addon?](#why-create-a-node-addon)
+* [How is it different than a C++ project?](#how-is-it-different-than-a-c-project)
+* [Native Abstractions for Node.js (NAN)](#native-abstractions-for-nodejs-nan)
+* [Examples](#examples)
+* [Developing addons](#developing-addons)
+* [Including other C++ headers into your project](#including-other-c-headers-into-your-project)
+* [Versioning](#versioning)
+* [Additional Resources](#additional-resources)
+
+The following document outlines Mapbox's general approach to writing C++ modules for Node.js (often referred to as _addons_), and they _why_. Check out [node-cpp-skel](https://github.com/mapbox/node-cpp-skel), a skeleton library for creating a Node.js addon, to learn more about _how_ to create an addon.
 
 Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a bottleneck for performance. Node is single-threaded, which blocks execution. C++ on the other hand allows you to execute operations without clogging up the event loop (learn more about the node event loop [here](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)). Passing heavy operations into C++ and subsequently into C++ workers can greatly improve the overall runtime of the code.
 
@@ -31,7 +40,7 @@ royal with cheese
 
 But when we start printing from within the threadpool all of these can start executing simultaneously.
 
-![not concurrent](https://mapbox.s3.amazonaws.com/cpp-assets/addon-hey-concurrent.gif)
+![concurrent](https://mapbox.s3.amazonaws.com/cpp-assets/addon-hey-concurrent.gif)
 
 We run the following script node index.js. Here’s the output:
 
@@ -197,15 +206,6 @@ Another way to look at it:
 | `0.1.0` | node-mapnik   node-gdal | `3.5.x`   `0.8.x` | we had to upgrade node-mapnik to it's latest and greatest, but node-gdal stayed the same
 | `0.2.0` | node-mapnik   node-gdal | `3.4.x`   `0.9.x` | we ran into an issue with the `0.8.x` version of node-gdal, which is a dependency of node-mapnik - had to update node-gdal and therefore update an older version of node-mapnik for the fix, which required us to downgrade node-mapnik in this repo. This means we have flipped versions and can lead to duplicate C++ binaries. Instead of a `0.0.1` release of this repo, we can publish a quick, one-off in `0.2.0` that takes into account the flipped dependencies without hurting other repos. |
 | `0.3.0` | node-mapnik   node-gdal | `3.5.x`   `0.9.x` | Now we can get back on track, with both modules updated.
-
-### Naming Repositories
-
-Depending on the reason why you are creating an addon library, your naming scheme should follow these general guidelines:
-
-* If your project is a Node.js port (originally a C++ project), name it `node-{project name}`
-* If your project is originally written in pure Node.js and you are porting to start using addons, name it `{project}-cpp`.
-
-Example: Mapnik is a C++ library, named `mapnik`. Its Node.js interface is named `node-mapnik`.
 
 ### Additional Resources
 
