@@ -1,15 +1,15 @@
 # Node.js C++ Addons
 
 * [Why create a node addon?](#why-create-a-node-addon)
-* [How is it different than a C++ project?](#how-is-it-different-than-a-c-project)
+* [How is it different than a C++ project?](#how-is-an-node-addon-different-than-a-c-project)
 * [Native Abstractions for Node.js (NAN)](#native-abstractions-for-nodejs-nan)
 * [Examples](#examples)
 * [Developing addons](#developing-addons)
-* [Including other C++ headers into your project](#including-other-c-headers-into-your-project)
+* [Where do I include other C++ libraries?](#where-do-i-include-other-c-libraries)
 * [Versioning](#versioning)
 * [Additional Resources](#additional-resources)
 
-The following document outlines Mapbox's general approach to writing C++ modules for Node.js (often referred to as _addons_), and they _why_. Check out [node-cpp-skel](https://github.com/mapbox/node-cpp-skel), a skeleton library for creating a Node.js addon, to learn more about _how_ to create an addon.
+The following document outlines Mapbox's general approach to writing C++ modules for [Node.js](https://github.com/mapbox/cpp/blob/master/glossary.md#node) (often referred to as _addons_), and the _why_. Check out [node-cpp-skel](https://github.com/mapbox/node-cpp-skel), a skeleton library for creating a Node.js addon, to learn more about _how_ to create an addon.
 
 Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a bottleneck for performance. Node is single-threaded, which blocks execution. C++ on the other hand allows you to execute operations without clogging up the event loop (learn more about the node event loop [here](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)). Passing heavy operations into C++ and subsequently into C++ workers can greatly improve the overall runtime of the code.
 
@@ -20,7 +20,7 @@ Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a 
 
 **Concurrency**
 
-Concurrency is the process of executing different pieces of the same process to allow for parallel execution of these pieces [[wikipedia](https://en.wikipedia.org/wiki/Concurrency_(computer_science))]. Node.js addons allow us to take advantage of concurrent operations within our node applications by reaching into more than just the v8 thread, but this can result in a few surprises. In the example below, we’ve passed data from our node application, into the v8 thread, and subsequently into our worker threadpool. Here there are multiple workers executing code at the same time. In our worker, we have the following line:
+Concurrency is the process of executing different pieces of the same process to allow for parallel execution of these pieces [[wikipedia](https://en.wikipedia.org/wiki/Concurrency_(computer_science))]. Node.js addons allow us to take advantage of concurrent operations within our node applications by reaching into more than just the [v8](https://github.com/mapbox/cpp/blob/master/glossary.md#v8) thread, but this can result in a few surprises. In the example below, we’ve passed data from our node application, into the v8 thread, and subsequently into our worker threadpool. Here there are multiple workers executing code at the same time. In our worker, we have the following line:
 
 ```
 std::cout << "royal with cheese" << std::endl;
@@ -42,7 +42,7 @@ But when we start printing from within the threadpool all of these can start exe
 
 ![concurrent](https://mapbox.s3.amazonaws.com/cpp-assets/addon-hey-concurrent.gif)
 
-We run the following script node index.js. Here’s the output:
+When we run the script again from within the threadpool, here's the output:
 
 ```
 royal with cheese
@@ -64,7 +64,7 @@ oeeys
 raeol
 ```
 
-That’s a messy burger! 🍔 std::cout is logging at the same time and space is being filled concurrently. We’re literally seeing concurrency happen here–awesome! This makes testing pretty hard though. There are a few options to get your logs in order, such as adding a mutex to keep things straight. Since we’re just testing, we can tell our computer to only run this script with a single thread - forcing our application to run non-concurrently. We pass the following before running our script:
+That’s a messy burger! 🍔 std::cout is logging at the same time and space is being filled concurrently. We’re literally seeing concurrency happen here–awesome! This makes testing pretty hard though. There are a few options to get your logs in order, such as adding a [mutex](http://en.cppreference.com/w/cpp/thread/mutex) to keep things straight. Since we’re just testing, we can tell our computer to only run this script with a single thread - forcing our application to run non-concurrently. We pass the following before running our script:
 
 ```shell
 UV_THREADPOOL_SIZE=1 node index.js
@@ -79,7 +79,7 @@ royal with cheese
 royal with cheese
 ```
 
-### How is it different than a C++ project?
+### How is an Node addon different than a C++ project?
 
 A Node.js addon is still a Node module. Users still interact with it as if they are writing Javascript (i.e. `var awesome = require('awesome')`), but the library will tend to pass much of the logic into C++ workers, which are highly performant, then return information back into a javascript interface. Bottom line, the user of your library never has to write or interact with C++.
 
@@ -102,15 +102,15 @@ All of the following libraries are installable in a Node.js environment, but exe
 
 ### Developing addons
 
-Developing an addon requires Node.js, NPM, and a C++ compiler. Check out node-cpp-skel's "extended tour" for an up-to-date and opinionated approach to developing an addon. Additinally, the repository has docs on [running benchmarks](https://github.com/mapbox/node-cpp-skel/blob/master/docs/benchmarking.md), [publishing binaries](https://github.com/mapbox/node-cpp-skel/blob/master/docs/publishing-binaries.md), and a breakdown of all the [necessary components](https://github.com/mapbox/node-cpp-skel/blob/master/docs/extended-tour.md#configuration-files) to make it run.
+Developing an addon requires Node.js, NPM, and a C++ compiler. Check out node-cpp-skel's ["extended tour"](https://github.com/mapbox/node-cpp-skel/blob/master/docs/extended-tour.md) for an up-to-date and opinionated approach to developing an addon. Additinally, the repository has docs on [running benchmarks](https://github.com/mapbox/node-cpp-skel/blob/master/docs/benchmarking.md), [publishing binaries](https://github.com/mapbox/node-cpp-skel/blob/master/docs/publishing-binaries.md), and a breakdown of all the [necessary components](https://github.com/mapbox/node-cpp-skel/blob/master/docs/extended-tour.md#configuration-files) to make it run.
 
-### Including other C++ headers into your project
+### Where do I include other C++ libraries?
 
 One big bonus of developing a Node.js addon is that you can include other C++ code in your project, even if this code wasn't intended to be used via a Node.js interface. C++ headers can be installed in a few ways:
 
-* Installed via Mason: use Mason to install a project, these can be installed into whichever folder you choose to host dependencies. Best practice is a `/deps` directory.
+* Installed via [Mason](https://github.com/mapbox/cpp/blob/master/glossary.md#mason): use Mason to install a project, these can be installed into whichever folder you choose to host dependencies. Best practice is a `/deps` directory.
 * Installed via NPM: Publishing headers to NPM allows them to be included in addons easily, since we are already using the NPM ecosystem. Header paths will point to the `/node_modules` folder or can include dynamically with an [`include_dirs.js`](https://github.com/mapbox/protozero/blob/master/include_dirs.js) file. *Note: this practice is no longer recommended.*
-* Copied/pasted into a `/deps` directory.
+* Copied/pasted into a `/deps` directory (this is also referred to as "vendoring")
 
 Depending on how a project is installed, the path to the header files will be different. These paths can be added to the `binding.gyp` file and will look like this:
 
