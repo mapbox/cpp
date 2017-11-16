@@ -1,25 +1,93 @@
 # Node.js C++ Addons
 
-The following document outlines Mapbox's approach to writing C++ modules for Node.js (often referred to as _addons_).
+* [Why create a node addon?](#why-create-a-node-addon)
+* [How is a Node addon different than a C++ project?](#how-is-a-node-addon-different-than-a-c-project)
+* [Native Abstractions for Node.js (NAN)](#native-abstractions-for-nodejs-nan)
+* [Examples](#examples)
+* [Developing addons](#developing-addons)
+* [Where do I include other C++ libraries?](#where-do-i-include-other-c-libraries)
+* [Versioning](#versioning)
+* [Additional Resources](#additional-resources)
+
+The following document outlines Mapbox's general approach to writing C++ modules for [Node.js](https://github.com/mapbox/cpp/blob/master/glossary.md#node) (often referred to as _addons_), and the _why_. Check out [node-cpp-skel](https://github.com/mapbox/node-cpp-skel), a skeleton library for creating a Node.js addon, to learn more about _how_ to create an addon.
 
 Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a bottleneck for performance. Node is single-threaded, which blocks execution. C++ on the other hand allows you to execute operations without clogging up the event loop (learn more about the node event loop [here](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)). Passing heavy operations into C++ and subsequently into C++ workers can greatly improve the overall runtime of the code.
+
+### Why create a node addon?
+
+1. To port a C++ project to Node to expose a new interface for the tool (like Mapnik & Node Mapnik)
+1. Improve performance at scale where Node becomes the bottleneck (i.e. concurrency)
+
+**Concurrency**
+
+Concurrency is the process of executing different pieces of the same process to allow for parallel execution of these pieces [[wikipedia](https://en.wikipedia.org/wiki/Concurrency_(computer_science))]. Node.js addons allow us to take advantage of concurrent operations within our node applications by reaching into more than just the [v8](https://github.com/mapbox/cpp/blob/master/glossary.md#v8) thread, but this can result in a few surprises. In the example below, we’ve passed data from our node application, into the v8 thread, and subsequently into our worker threadpool. Here there are multiple workers executing code at the same time. In our worker, we have the following line:
+
+```
+std::cout << "royal with cheese" << std::endl;
+```
+
+This will print `royal with cheese` to the terminal. In an application running this multiple times we’d expect the output to look like this:
+
+```
+royal with cheese
+royal with cheese
+royal with cheese
+royal with cheese
+// ... and so on
+```
+
+![not concurrent](https://mapbox.s3.amazonaws.com/cpp-assets/addon-hey-nonconcurrent.gif)
+
+But when we start printing from within the threadpool all of these can start executing simultaneously.
+
+![concurrent](https://mapbox.s3.amazonaws.com/cpp-assets/addon-hey-concurrent.gif)
+
+When we run the script again from within the threadpool, here's the output:
+
+```
+royal with cheese
+royraolry roawoyliya talwhl i  wtcwihhit ethceh hs ceeche
+heseeeres
+oseye
+r
+aolry oawrylioa tylwha i lwtc ihhwt eihcet hshcee he
+cesheeres
+oeeys
+raeol
+ry oawrylioa tylwha i lwtc ihhwt eihcet hshcee he
+cesheeres
+oeeys
+raeol
+ry oawrylioa tylwha i lwtc ihhwt eihcet hshcee he
+cesheeres
+oeeys
+raeol
+```
+
+That’s a messy burger! 🍔 std::cout is logging at the same time and space is being filled concurrently. We’re literally seeing concurrency happen here–awesome! This makes testing pretty hard though. There are a few options to get your logs in order, such as adding a [mutex](http://en.cppreference.com/w/cpp/thread/mutex) to keep things straight. Since we’re just testing, we can tell our computer to only run this script with a single thread - forcing our application to run non-concurrently. We pass the following before running our script:
+
+```shell
+UV_THREADPOOL_SIZE=1 node index.js
+```
+
+And the output is
+
+```
+royal with cheese
+royal with cheese
+royal with cheese
+royal with cheese
+```
+
+### How is a Node addon different than a C++ project?
+
+A Node.js addon is still a Node module. Users still interact with it as if they are writing Javascript (i.e. `var awesome = require('awesome')`), but the library will tend to pass much of the logic into C++ workers, which are highly performant, then return information back into a javascript interface. Bottom line, the user of your library never has to write or interact with C++.
 
 ### Native Abstractions for Node.js (NAN)
 
 To swing between Node and C++, the Node community maintains a project called [_NAN_](https://github.com/nodejs/nan) (Native Abstractions for Node.js) that simplifies running different versions of Node and, subsequently, v8. NAN is a header-only C++ library that provides a set of Macros for developing Node.js addons. Check out the [usage](https://github.com/nodejs/nan#usage) guidelines.
 
 More examples of how to port C++ libraries to node can be found at [nodejs.org/api/addons](http://nodejs.org/api/addons.html). See https://nodesource.com/blog/c-add-ons-for-nodejs-v4/ for a detailed summary of the origins of Nan. And see http://blog.reverberate.org/2016/10/17/native-extensions-memory-management-part2-javascript-v8.html for a good introduction to v8 that is not specific to node.js.
-
-### Why create an addon?
-
-An addon is a viable solution for the following reasons:
-
-1. To port a C++ project to Node to expose a new interface for the tool (like Mapnik & Node Mapnik)
-1. Improve performance at scale where Node becomes the bottleneck.
-
-### How is it different than a C++ project?
-
-A Node.js addon is still a Node module. Users still interact with it as if they are writing Javascript (i.e. `var awesome = require('awesome')`), but the library will tend to pass much of the logic into C++ workers, which are highly performant, then return information back into a javascript interface. Bottom line, the user of your library never has to write or interact with C++.
 
 ### Examples
 
@@ -28,40 +96,21 @@ All of the following libraries are installable in a Node.js environment, but exe
 * [Node Mapnik](https://github.com/mapnik/node-mapnik) - creating map tiles
 * [Node OSRM](https://github.com/Project-OSRM/node-osrm) - directions & routing
 * [sqlite](https://github.com/mapbox/node-sqlite3) - asynchronous, non-blocking SQLite3 bindings
-* [vtinfo](https://github.com/mapbox/vtinfo) - reads and returns general information about a vector tile buffer
 * [Node GDAL](https://github.com/naturalatlas/node-gdal) - geographic operations
+* [vtquery](https://github.com/mapbox/vtquery) - query vector tiles
+* [vtinfo](https://github.com/mapbox/vtinfo) - reads and returns general information about a vector tile buffer
 
 ### Developing addons
 
-Developing an addon requires Node.js, NPM, and a C++ compiler.
+Developing an addon requires Node.js, NPM, and a C++ compiler. Check out node-cpp-skel's ["extended tour"](https://github.com/mapbox/node-cpp-skel/blob/master/docs/extended-tour.md) for an up-to-date and opinionated approach to developing an addon. Additinally, the repository has docs on [running benchmarks](https://github.com/mapbox/node-cpp-skel/blob/master/docs/benchmarking.md), [publishing binaries](https://github.com/mapbox/node-cpp-skel/blob/master/docs/publishing-binaries.md), and a breakdown of all the [necessary components](https://github.com/mapbox/node-cpp-skel/blob/master/docs/extended-tour.md#configuration-files) to make it run.
 
-* makefile: home to all of the development commands for building binaries, installing dependencies, and running tests
+### Where do I include other C++ libraries?
 
-* [node-pre-gyp](https://github.com/mapbox/node-pre-gyp): a module installed via NPM, tool that allows us to install and publish addons
+One big bonus of developing a Node.js addon is that you can include other C++ code in your project, even if this code wasn't intended to be used via a Node.js interface. C++ headers can be installed in a few ways:
 
-* package.json `binary` object: sets the specific paths for bindings and remote publishing. Here's an example from @mapbox/vtinfo:
-
-        "binary": {
-          "module_name": "vtinfo",
-          "module_path": "./lib/binding/",
-          "host": "https://mapbox-node-binary.s3.amazonaws.com",
-          "remote_path": "./{name}/v{version}/{configuration}/",
-          "package_name": "{node_abi}-{platform}-{arch}.tar.gz"
-        },
-
-* common.gyp: sets your default configurations for building C++ binaries
-
-* binding.gyp: sets your custom configurations for developing the library, including paths to dependencies, flags, and binding destinations       
-
-All binaries are generated with node-pre-gyp's `build` command, which detects the system architecture automatically.
-
-##### Including other C++ headers into your project
-
-C++ headers can be installed in a few ways:
-
-* Installed via Mason: use Mason to install a project, these can be installed into whichever folder you choose to host dependencies. Best practice is a `/deps` directory.
-* Installed via NPM: Publishing headers to NPM allows them to be included in addons easily, since we are already using the NPM ecosystem. Header paths will point to the `/node_modules` folder or can include dynamically with an [`include_dirs.js`](https://github.com/mapbox/protozero/blob/master/include_dirs.js) file.
-* Copied/pasted into a `/deps` directory.
+* Installed via [Mason](https://github.com/mapbox/cpp/blob/master/glossary.md#mason): use Mason to install a project, these can be installed into whichever folder you choose to host dependencies. Best practice is a `/deps` directory.
+* Copied/pasted into a `/deps` directory (this is also referred to as "vendoring")
+* Installed via NPM: Publishing headers to NPM allows them to be included in addons easily, since we are already using the NPM ecosystem. Header paths will point to the `/node_modules` folder or can include dynamically with an [`include_dirs.js`](https://github.com/mapbox/protozero/blob/master/include_dirs.js) file. **Note: this practice is no longer recommended.**
 
 Depending on how a project is installed, the path to the header files will be different. These paths can be added to the `binding.gyp` file and will look like this:
 
@@ -80,42 +129,85 @@ Depending on how a project is installed, the path to the header files will be di
 }
 ```
 
-### Publishing
-
-##### Create binaires with node-pre-gyp
-
-An addon can be published to NPM just like any other Node module. Unlike a standard Node module, an addon requires binaries to execute the code. If the binaries don't exist, they need to be built. User's may not have the tools necessary to compile C++ binaries on their system, like `gcc` or `clang`, so it's considered best practice to publish binaries to a public location. This greatly improves the speed at which they can install a module and use it. 
-
-Node-pre-gyp does a lot of the heavy lifting for publishing binaries, using the `node-pre-gyp publish` command.
-
-##### Publish binaries to AWS S3 with TravisCI
-
-Check out [node-pre-gyp's docs](https://github.com/mapbox/node-pre-gyp#s3-hosting) about hosting and publishing binaries to s3.
-
 ### Versioning
 
 When developing addons, versioning is extremely important. The NPM ecosystem allows modules to install different versions of modules depending on their dependencies, which works fine for javascript, but not great for binaries. **It's very important to ensure a project has only ONE version of a node addon** to prevent mismatching binaries from running simultaneously. This can be accomplished by making an addon a dependency of the main application, which lets NPM dedupe correctly.
 
-Here's an example project that shows the potential disasters of running two binaries, [node-cpp-snafu](https://github.com/mapbox/versioning-node-snafu).
+Following this convention will make it easier to know:
+  - when a module might be affected by any of its newly published dependencies
+  - how to version your module and its dependencies
 
-Check out or docs about [versioning a Node C++ library](https://github.com/mapbox/versioning-node-cpp).
+##### Convention
 
-### Miscellaneous
+*Using node-mapnik as an example*
 
-##### Naming Repositories
+1. To avoid installing older versions: **favor using tilde `~` over x-range `0.x` for your module's dependencies**
+2. If a module *does* directly depend on node-mapnik as a library (and the module is *not* an app or service): **leave patch version flexible by using a tilde `~`.** This ensures that the module is flexible to patch-level node-mapnik updates automatically
+3. If a module *does not* directly depend on node-mapnik, but instead depends on other node-mapnik-dependent modules: **use tilde `~` for those dependencies**
+4. If a module *does not* directly depend on node-mapnik, but instead depends on other node-mapnik-dependent modules, and you want the node-mapnik-dependent modules to automatically increment on the minor-level: **you must also increment your module's version on the minor-level even if there are no API-breaking changes**
 
-Depending on the reason why you are creating an addon library, your naming scheme should follow these general guidelines:
+##### Example downstream application
 
-* If your project is a Node.js port (originally a C++ project), name it `node-{project name}`
-* If your project is originally written in pure Node.js and you are porting to start using addons, name it `{project}-cpp`.
+The following scenario uses a Node.js application that relies on node addons (node-gdal and node-mapnik). Specifically, we need to upgrade one addon and downgrade another at the same time, due to breaking changes.
+- The first addon includes bug fixes that we want (node-gdal).
+- The second addon has breaking changes that we want to revert and stabilize (node-mapnik).
 
-Example
+For example, this is the `package.json` for your app, Nacho, at breakage:
 
-Mapnik is a C++ library, named `mapnik`. Its Node.js interface is named `node-mapnik`.
+```
+"name": "Nacho",
+"version": "0.1.0",
+"dependencies":
+"mapnik": "3.5.x",
+"gdal": "0.8.x"
+```
 
-## [Glossary](https://github.com/mapbox/cpp/blob/master/glossary.md#nodejs--c)
+You want to revert mapnik, but want to upgrade gdal. You would then change `package.json` to:
 
-## Performance
+```
+"name": "Nacho",
+"version": "0.2.0",
+"dependencies":
+"mapnik": "3.4.x",
+"gdal": "0.9.x"
+```
+
+We want to release new **minor** tags in this case, instead of **patch** tags. For instance:
+- If instead of a minor release of Nacho, you tagged a patch release, it could lead to unexpected surprises for other apps that requires Nacho...
+- Jane has an app that requires Nacho `"nacho": "0.1.x"`
+- Jane automatically updates based on patch versions. This means she would get a new set of binaries within node-gdal `0.9.x` without knowing it, potentially causing breakages.
+
+Best solution in this case:
+Release a new Nacho **minor** version `0.2.0` containing the reverted stable node-mapnik and the updated node-gdal.
+
+```
+"name": "Nacho",
+"version": "0.2.0",
+"dependencies":
+"mapnik": "3.4.x",
+"gdal": "0.9.x"
+```
+
+Immediately after, release a new Nacho minor version `0.3.0` containing the newest debugged node-mapnik `3.5.x` and the updated node-gdal `0.9.x`:
+
+```
+"name": "Nacho",
+"version": "0.3.0",
+"dependencies":
+"mapnik": "3.5.x",
+"gdal": "0.9.x"
+```
+
+Another way to look at it:
+
+| version  | dependency | dep version | description |
+|---|---|---|---|
+| `0.0.0` | node-mapnik   node-gdal | `3.4.x`   `0.8.x` | start here, with previous versions of these node C++ dependencies
+| `0.1.0` | node-mapnik   node-gdal | `3.5.x`   `0.8.x` | we had to upgrade node-mapnik to it's latest and greatest, but node-gdal stayed the same
+| `0.2.0` | node-mapnik   node-gdal | `3.4.x`   `0.9.x` | we ran into an issue with the `0.8.x` version of node-gdal, which is a dependency of node-mapnik - had to update node-gdal and therefore update an older version of node-mapnik for the fix, which required us to downgrade node-mapnik in this repo. This means we have flipped versions and can lead to duplicate C++ binaries. Instead of a `0.0.1` release of this repo, we can publish a quick, one-off in `0.2.0` that takes into account the flipped dependencies without hurting other repos. |
+| `0.3.0` | node-mapnik   node-gdal | `3.5.x`   `0.9.x` | Now we can get back on track, with both modules updated.
+
+### Additional Resources
 
  - https://nodejs.org/en/docs/guides/simple-profiling/
  - https://www.dynatrace.com/blog/understanding-garbage-collection-and-hunting-memory-leaks-in-node-js/

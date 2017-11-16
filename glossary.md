@@ -125,6 +125,7 @@ Contributions are welcome. To contribute, please:
     -   [small size optimization](#small-size-optimization)
     -   [performant](#performant)
     -   [compiler optimization level](#compiler-optimization-level)
+    -   [concurrency](#concurrency)
 
 -   [Build modes](#build-modes)
 
@@ -142,6 +143,7 @@ Contributions are welcome. To contribute, please:
 
 -   [Debugging and Profiling](#debugging-and-profiling)
 
+    -   [profiling](#profiling)
     -   [debug symbols](#debug-symbols)
     -   [Debugger](#debugger)
     -   [Tracer](#tracer)
@@ -217,6 +219,7 @@ Contributions are welcome. To contribute, please:
 
     -   [Node](#node)
     -   [V8](#v8)
+    -   [Node addon](#node-addon)
     -   [event loop](#event-loop)
     -   [libuv](#libuv)
     -   [I/O](#io)
@@ -274,7 +277,7 @@ Learn more [at the mason homepage](https://github.com/mapbox/mason).
 
 ### node-pre-gyp
 
-node-pre-gyp is a package manager for node addons written in C++. It is able to install [precompiled loadable modules](#loadable-modules) (aka `.node` files) from binaries.
+node-pre-gyp is a package manager for [node addons](https://github.com/mapbox/cpp/blob/master/node-cpp.md) written in C++. It is able to install [precompiled loadable modules](#loadable-modules) (aka `.node` files) from binaries.
 
 Learn more [at the node-pre-gyp homepage](https://github.com/mapbox/node-pre-gyp).
 
@@ -723,6 +726,10 @@ Compilers are rapidly adding more and more optimizations and shifting around whi
 -   [a listing](http://llvm.org/docs/Passes.html) of all the internal compiler optimizations in clang++ which you don't need to know specifically, but which are under-the-hood of the "O" levels.
 -   [a detailed summary](http://stackoverflow.com/a/15548189) of which internal optimizations are grouped in which "O" level across clang++ releases.
 
+### concurrency
+
+Concurrency is the process of executing different pieces of the same process to allow for parallel execution of these pieces [[wikipedia](https://en.wikipedia.org/wiki/Concurrency_(computer_science))]. See [more info here](https://github.com/mapbox/cpp/blob/master/node-cpp.md#why-create-a-node-addon).
+
 ## Build modes
 
 ### DNDEBUG
@@ -823,7 +830,7 @@ The solution to this problem then is to build your [release builds](#release-bui
 
 ### problem of profiling and compiler optimization levels
 
-Profiling is a great strategy for learning why and where a program is slow. But caution must be used in interpreting the results when profiling because:
+[Profiling](#profiling) is a great strategy for learning why and where a program is slow. But caution must be used in interpreting the results when profiling because:
 
 -   If you are profiling [release builds](#release-build) then your profiling output is likely not showing inline functions which may mislead you about where time is spent in the program. Profilers generally aggregate timing results in a [calltree](#calltree) composed of multiple times sampling the [callstack](#callstack). If the [callstack](#callstack) is not showing you all the functions because some have been inlined away, you may not be able to see the whole picture.
 
@@ -832,6 +839,12 @@ Profiling is a great strategy for learning why and where a program is slow. But 
 There is no perfect solution, other than only relying on profiling output to guide your understanding of a program and not letting it be the end-all word. But consider profiling a [profile build](#profile-build) for a binary that should give more trustworthy results than a debug builds](#debug-build) and more detailed [callstacks](#callstack) than a [release builds](#release-build).
 
 ## Debugging and Profiling
+
+### Profiling
+
+Profiling is a way to analyze or measure the performance of a program, to give you a better idea of what your program is actually doing when you run a process. Profiling can help measure things like memory usage, how often a particular function is called within a process, or how many threads are running. It is especially useful for determining how to best optimize a program. 
+
+Check out [this guide](https://github.com/springmeyer/profiling-guide) for more information on how to profile.
 
 ### debug symbols
 
@@ -1427,6 +1440,10 @@ See these articles to understand more about node [performance](#performance):
 
 V8 is a Javascript "engine", or a Javascript interpreter. It translates Javascript into more efficient machine code (native assembly code), then executes it. V8 gives developers access to functionality (networking, DOM handling, external events, HTML5 video, canvas and data storage) needed to control the web browser, and access to server-side/system functionality within Node.js. V8 is [open source and written in C++](https://github.com/v8/v8).
 
+### Node Addon
+
+See [node addon docs](https://github.com/mapbox/cpp/blob/master/node-cpp.md)
+
 ### event loop
 
 TODO
@@ -1451,4 +1468,4 @@ I/O stands for "input/output".
 
 ### non-blocking/blocking
 
-### [NAN](https://github.com/mapbox/cpp/blob/master/node-cpp.md#nodejs-c-addons)
+### [NAN](https://github.com/mapbox/cpp/blob/master/node-cpp.md#native-abstractions-for-nodejs-nan)
