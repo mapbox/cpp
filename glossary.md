@@ -274,7 +274,7 @@ Learn more [at the mason homepage](https://github.com/mapbox/mason).
 
 ### node-pre-gyp
 
-node-pre-gyp is a package manager for node addons written in C++. It is able to install [precompiled loadable modules](#loadable-modules) (aka `.node` files) from binaries.
+node-pre-gyp is a package manager for [node addons](https://github.com/mapbox/cpp/blob/master/node-cpp.md) written in C++. It is able to install [precompiled loadable modules](#loadable-modules) (aka `.node` files) from binaries.
 
 Learn more [at the node-pre-gyp homepage](https://github.com/mapbox/node-pre-gyp).
 
@@ -1427,6 +1427,10 @@ See these articles to understand more about node [performance](#performance):
 
 V8 is a Javascript "engine", or a Javascript interpreter. It translates Javascript into more efficient machine code (native assembly code), then executes it. V8 gives developers access to functionality (networking, DOM handling, external events, HTML5 video, canvas and data storage) needed to control the web browser, and access to server-side/system functionality within Node.js. V8 is [open source and written in C++](https://github.com/v8/v8).
 
+### Node Addon
+
+See [node addon docs](https://github.com/mapbox/cpp/blob/master/node-cpp.md)
+
 ### event loop
 
 TODO
@@ -1451,4 +1455,4 @@ I/O stands for "input/output".
 
 ### non-blocking/blocking
 
-### [NAN](https://github.com/mapbox/cpp/blob/master/node-cpp.md#nodejs-c-addons)
+### [NAN](https://github.com/mapbox/cpp/blob/master/node-cpp.md#native-abstractions-for-nodejs-nan)
