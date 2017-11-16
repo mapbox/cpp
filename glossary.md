@@ -125,6 +125,7 @@ Contributions are welcome. To contribute, please:
     -   [small size optimization](#small-size-optimization)
     -   [performant](#performant)
     -   [compiler optimization level](#compiler-optimization-level)
+    -   [concurrency](#concurrency)
 
 -   [Build modes](#build-modes)
 
@@ -724,6 +725,10 @@ Compilers are rapidly adding more and more optimizations and shifting around whi
 -   [discussion by clang devs](http://clang-developers.42468.n3.nabble.com/Meaning-of-LLVM-optimization-levels-td4032493.html)
 -   [a listing](http://llvm.org/docs/Passes.html) of all the internal compiler optimizations in clang++ which you don't need to know specifically, but which are under-the-hood of the "O" levels.
 -   [a detailed summary](http://stackoverflow.com/a/15548189) of which internal optimizations are grouped in which "O" level across clang++ releases.
+
+### concurrency
+
+Concurrency is the process of executing different pieces of the same process to allow for parallel execution of these pieces [[wikipedia](https://en.wikipedia.org/wiki/Concurrency_(computer_science))]. See [more info here](https://github.com/mapbox/cpp/blob/master/node-cpp.md#why-create-a-node-addon).
 
 ## Build modes
 
