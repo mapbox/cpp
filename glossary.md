@@ -142,6 +142,7 @@ Contributions are welcome. To contribute, please:
 
 -   [Debugging and Profiling](#debugging-and-profiling)
 
+    -   [profiling](#profiling)
     -   [debug symbols](#debug-symbols)
     -   [Debugger](#debugger)
     -   [Tracer](#tracer)
@@ -824,7 +825,7 @@ The solution to this problem then is to build your [release builds](#release-bui
 
 ### problem of profiling and compiler optimization levels
 
-Profiling is a great strategy for learning why and where a program is slow. But caution must be used in interpreting the results when profiling because:
+[Profiling](https://github.com/springmeyer/profiling-guide) is a great strategy for learning why and where a program is slow. But caution must be used in interpreting the results when profiling because:
 
 -   If you are profiling [release builds](#release-build) then your profiling output is likely not showing inline functions which may mislead you about where time is spent in the program. Profilers generally aggregate timing results in a [calltree](#calltree) composed of multiple times sampling the [callstack](#callstack). If the [callstack](#callstack) is not showing you all the functions because some have been inlined away, you may not be able to see the whole picture.
 
@@ -833,6 +834,12 @@ Profiling is a great strategy for learning why and where a program is slow. But 
 There is no perfect solution, other than only relying on profiling output to guide your understanding of a program and not letting it be the end-all word. But consider profiling a [profile build](#profile-build) for a binary that should give more trustworthy results than a debug builds](#debug-build) and more detailed [callstacks](#callstack) than a [release builds](#release-build).
 
 ## Debugging and Profiling
+
+### Profiling
+
+Profiling is a way to analyze or measure the performance of a program, to give you a better idea of what your program is actually doing when you run a process. Profiling can help measure things like memory usage, how often a particular function is called within a process, or how many threads are running. It is especially useful for determining how to best optimize a program. 
+
+Check out [this guide](https://github.com/springmeyer/profiling-guide) for more information on how to profile.
 
 ### debug symbols
 
