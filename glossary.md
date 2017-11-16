@@ -217,6 +217,7 @@ Contributions are welcome. To contribute, please:
 
     -   [Node](#node)
     -   [V8](#v8)
+    -   [Node addon](#node-addon)
     -   [event loop](#event-loop)
     -   [libuv](#libuv)
     -   [I/O](#io)
