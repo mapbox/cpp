@@ -830,7 +830,7 @@ The solution to this problem then is to build your [release builds](#release-bui
 
 ### problem of profiling and compiler optimization levels
 
-[Profiling](https://github.com/springmeyer/profiling-guide) is a great strategy for learning why and where a program is slow. But caution must be used in interpreting the results when profiling because:
+[Profiling](#profiling) is a great strategy for learning why and where a program is slow. But caution must be used in interpreting the results when profiling because:
 
 -   If you are profiling [release builds](#release-build) then your profiling output is likely not showing inline functions which may mislead you about where time is spent in the program. Profilers generally aggregate timing results in a [calltree](#calltree) composed of multiple times sampling the [callstack](#callstack). If the [callstack](#callstack) is not showing you all the functions because some have been inlined away, you may not be able to see the whole picture.
 
