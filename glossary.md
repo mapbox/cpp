@@ -625,7 +625,7 @@ How much work is required by a task. Improving efficiency requires doing less wo
 
 -   See also: CppCon 2014: Chandler Carruth "Efficiency with Algorithms, Performance with Data Structures" <https://youtu.be/fHNmRkzxHWs?t=754>
 
-### expressive 
+### expressive
 
 Exposing intent clearly through programming language constructs. Not resorting to boiler-plate code and/or over-commenting to achieve it.
 
@@ -733,7 +733,7 @@ Compilers are rapidly adding more and more optimizations and shifting around whi
 
 ### concurrency
 
-Concurrency is the process of executing different pieces of the same process to allow for parallel execution of these pieces [[wikipedia](https://en.wikipedia.org/wiki/Concurrency_(computer_science))]. See [more info here](https://github.com/mapbox/cpp/blob/master/node-cpp.md#why-create-a-node-addon).
+Concurrency is the process of executing different pieces of the same process to allow for parallel execution of these pieces \[[wikipedia](https://en.wikipedia.org/wiki/Concurrency_(computer_science))]. See [more info here](https://github.com/mapbox/cpp/blob/master/node-cpp.md#why-create-a-node-addon).
 
 ## Build modes
 
@@ -1049,6 +1049,12 @@ The heap is [address space](#addres-space) in RAM.
 ### custom allocator
 
 A custom allocator may be able to allocate memory faster, or use memory more efficiently. An example of such an allocator is [jemalloc](https://github.com/jemalloc/jemalloc).
+
+### memory locality
+
+A term used to describe when the location of data ([memory address](#memory-address)) is coincident enough (often because layout is contiguous) such that repeated access of that data results in a high cpu cache hit ratio.
+
+Also known as [`locality of reference`](https://en.wikipedia.org/wiki/Locality_of_reference).
 
 ## Language concepts and keywords
 
