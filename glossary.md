@@ -1056,6 +1056,8 @@ A term used to describe when the location of data ([memory address](#memory-addr
 
 Also known as [`locality of reference`](https://en.wikipedia.org/wiki/Locality_of_reference).
 
+See <https://deplinenoise.wordpress.com/2013/12/28/optimizable-code> for an example of how memory locality relates to performance.
+
 ## Language concepts and keywords
 
 ### inline keyword
