@@ -1,5 +1,5 @@
 * [Standard compiler](#standard-compiler)
-* [Standard C++ Library](#standard-c++-library)
+* [Standard C++ Library](#standard-c-library)
 
 # Standard compiler
 

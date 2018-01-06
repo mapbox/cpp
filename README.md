@@ -4,8 +4,8 @@ The C++ language and projects built on top of it are essential to the Mapbox pla
 
 ### Table of contents
 
-- [General C++ @ Mapbox](docs/general.md) (standard compilers & libraries)
-- [Installing & packaging C++](setup-and-packaging.md) (Mason, travis, etc)
+- [General C++ Setup @ Mapbox](docs/general.md) (standard compilers & libraries)
+- [Packaging](packaging.md) (Mason, deploying code)
 - [Node.js addons](node-cpp.md) (writing C++ for Node.js modules)
 - [Testing](docs/testing.md)
 - [Code coverage](docs/coverage.md)
