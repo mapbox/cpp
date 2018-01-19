@@ -350,7 +350,7 @@ But cmake is not a build system in the traditional sense: it does not directly c
 
 The configuration for cmake is `CMakeLists.txt`. It uses a very custom syntax that takes a while to learn, may bring about anger, but works and will scale to large projects.
 
-The `cmake` project is written in C++ so it needs to be compiled itself. Often needs to be upgraded since you will encounter projects using `CMakelists.txt` that need specific `cmake` features only available in recent versions.
+The `cmake` project is written in C++ so it needs to be compiled itself. Often needs to be upgraded since you will encounter projects using `CMakeLists.txt` that need specific `cmake` features only available in recent versions.
 
 Learn more [at the cmake homepage](https://cmake.org/).
 
