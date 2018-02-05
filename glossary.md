@@ -458,6 +458,8 @@ This would work:
 
 Because it would tell the compiler to try looking for undefined symbols across the entire group rather than just in order. Note: technically you are supposed to denote the end of the group of libraries with `-Wl,--end-group`, but I've found that is optional.
 
+See the `Static Libraries` section of <http://www.evanjones.ca/build-c.html> for another mention of how linking order matters.
+
 ### translation unit
 
 The input to a compiler from which an [object file](#object-file) is created. Normally this is one or more files with the extension of `.cpp`, `c++`, or `.cc`.
