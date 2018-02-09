@@ -9,7 +9,7 @@
 * [Versioning](#versioning)
 * [Additional Resources](#additional-resources)
 
-The following document outlines Mapbox's general approach to writing C++ modules for [Node.js](https://github.com/mapbox/cpp/blob/master/glossary.md#node) (often referred to as _addons_), and the _why_. Check out [node-cpp-skel](https://github.com/mapbox/node-cpp-skel), a skeleton library for creating a Node.js addon, to learn more about _how_ to create an addon.
+The following document outlines Mapbox's general approach to writing C++ modules for [Node.js](https://github.com/mapbox/cpp/blob/master/glossary.md#node) (often referred to as _addons_), and the _why_. Check out [node-cpp-skel](https://github.com/mapbox/node-cpp-skel), a skeleton library for creating a Node.js addon, to learn more about _how_ to create an addon. When we hit bottlenecks in JS/Node.js scripts that can be solved by high concurrency we will consider porting node modules to C++ to leverage the threadpool - https://www.joyent.com/blog/node-js-on-the-road-dc-young-hahn
 
 Node is integral to the Mapbox APIs. Sometimes at scale, though, Node becomes a bottleneck for performance. Node is single-threaded, which blocks execution. C++ on the other hand allows you to execute operations without clogging up the event loop (learn more about the node event loop [here](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)). Passing heavy operations into C++ and subsequently into C++ workers can greatly improve the overall runtime of the code.
 
