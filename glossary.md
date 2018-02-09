@@ -1446,7 +1446,7 @@ Node.js is a JavaScript runtime built on Chrome's [V8](#v8) JavaScript engine.
 
 It is a command line tool that can execute Javascript files and C++ code compiled as [a node addon](#node-addon).
 
-Node builds on top of [V8](#v8) by providing ways to do evented, non-blocking [I/O](#io). What this means in practice is that node runs your code on an [event loop](#event-loop) and provides an API for deferring work through asynchronous function callbacks which execute in a [threadpool](#node-threadpool). This "work" might be traditional [I/O](#io) like accessing the filesystem or a data on a network, or it could be any kind of intensive computations.
+Node builds on top of [V8](#v8) by providing ways to do evented, non-blocking [I/O](#io). What this means in practice is that node runs your code on an [event loop](#event-loop) and provides an API for deferring work through asynchronous function callbacks which execute in a [threadpool](#threadpool). This "work" might be traditional [I/O](#io) like accessing the filesystem or a data on a network, or it could be any kind of intensive computations.
 
 This functionality in node is internally using a C library called [libuv](#libuv).
 
@@ -1460,7 +1460,7 @@ V8 is [open source and written in C++](https://github.com/v8/v8).
 
 Node provides some "addons" built in, like the `zlib` module, which is implemented [in C++ inside node core](https://github.com/nodejs/node/blob/df63e534584a54dcf02b37446e1e821382e3cef3/src/node_zlib.cc).
 
-You can also write your own [a node addon](#node-addon) and include it dynamically within your application. If you write a [node addon](#node-addon) you can get access to all lower-level operations available in C++ like like working with threads and custom memory allocation.
+You can also write your own addon and include it dynamically within your application.
 
 See [node addon docs for more details](https://github.com/mapbox/cpp/blob/master/node-cpp.md)
 
@@ -1480,7 +1480,7 @@ To learn how to control the threadpool size with `UV_THREADPOOL_SIZE` and much m
 
 ### libuv
 
-A library that provides a cross-platform API for asynchronous [I/O](#io). Most importantly libuv provides access, for [node addons](#node-addon), to the [Node Threadpool](#node-threadpool).
+A library that provides a cross-platform API for asynchronous [I/O](#io). Most importantly libuv provides access, for [node addons](#node-addon), to the [Node Threadpool](#threadpool).
 
 Libuv stands for "lib-ultra-event" and [is open source and written in C](http://libuv.org)
 
