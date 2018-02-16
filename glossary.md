@@ -248,6 +248,12 @@ To know the exit code of a signal you add the `<signal id> + 128`. You can find 
 
 More info at <https://en.wikipedia.org/wiki/Unix_signal>
 
+### I/O
+
+An I/O operation that "calls out" from the process to the underlying system. For example, accessing the file system, reading/writing to memory, or sending something over the network
+
+I/O stands for "input/output".
+
 ### crash
 
 A crash is a general term to describe when execution of the program exits in an unintended and unrecoverable way. There are a variety of reasons a program may crash, ranging from a bug that created a fatal error condition to another program killing your program. Each crash can be described by one of a known set of [signals](#signal) which map to a return code.
@@ -1436,51 +1442,46 @@ Often static is used in combination with [constexpr](#constexpr) to ask for a va
 
 ### Node
 
-A command line tool that consists of a set of bindings to V8 Javascript. These bindings allow you to use Javascript for implementing "lower-level" operations like working with the file system, threads, and scripting servers. More specifically, Node allows you to interact with the [POSIX api](#posix) (and POSIX-like api for Windows), using Javascript.
+Node.js is a JavaScript runtime built on Chrome's [V8](#v8) JavaScript engine.
 
-Node is made up of a combination of parts:
+It is a command line tool that can execute Javascript files and C++ code compiled as [a node addon](#node-addon).
 
--   V8: to interpret Javscript
--   C++ Node bindings: Expose the low-level interface to non-blocking POSIX calls
--   Threadpool: To do [file I/O](https://github.com/mapbox/cpp/blob/master/glossary.md#io) or any other blocking system call
--   Event Loop: A main process (or main thread) that responds to an event queue: grabs the top item in the event queue, executes it, and then grabs the next item.
--   Threadpool and Event Loop Manager ([libuv](http://libuv.org/)): This library helps manage the threadpool and event loop, and helps handle asynchronous [I/O operations](https://github.com/mapbox/cpp/blob/master/glossary.md#io).
+Node builds on top of [V8](#v8) by providing ways to do evented, non-blocking [I/O](#io). What this means in practice is that node runs your code on an [event loop](#event-loop) and provides an API for deferring work through asynchronous function callbacks which execute in a [threadpool](#threadpool). This "work" might be traditional [I/O](#io) like accessing the filesystem or a data on a network, or it could be any kind of intensive computations.
 
-See these articles to understand more about node [performance](#performance):
-
--   <https://www.dynatrace.com/blog/how-to-track-down-cpu-issues-in-node-js/>
--   <https://www.dynatrace.com/blog/understanding-garbage-collection-and-hunting-memory-leaks-in-node-js/>
+This functionality in node is internally using a C library called [libuv](#libuv).
 
 ### V8
 
-V8 is a Javascript "engine", or a Javascript interpreter. It translates Javascript into more efficient machine code (native assembly code), then executes it. V8 gives developers access to functionality (networking, DOM handling, external events, HTML5 video, canvas and data storage) needed to control the web browser, and access to server-side/system functionality within Node.js. V8 is [open source and written in C++](https://github.com/v8/v8).
+V8 is a Javascript "engine", or a Javascript interpreter. It translates Javascript into more efficient machine code (native assembly code), then executes it. V8 gives developers access to functionality (networking, DOM handling, external events, HTML5 video, canvas and data storage) needed to control the web browser. V8 does not allow access to the filesystem (or provide other features you'd normally associate with a scripting language used on the serverside). Therefore [Node](#node) implements features like filesystem access on top of V8.
+
+V8 is [open source and written in C++](https://github.com/v8/v8).
 
 ### Node Addon
 
-See [node addon docs](https://github.com/mapbox/cpp/blob/master/node-cpp.md)
+Node provides some "addons" built in, like the `zlib` module, which is implemented [in C++ inside node core](https://github.com/nodejs/node/blob/df63e534584a54dcf02b37446e1e821382e3cef3/src/node_zlib.cc).
 
-### event loop
+You can also write your own addon and include it dynamically within your application.
 
-TODO
+See [node addon docs for more details](https://github.com/mapbox/cpp/blob/master/node-cpp.md)
+
+### Event loop
+
+The event loop is what allows Node.js to perform non-blocking [I/O](#io) operations — despite the fact that JavaScript is single-threaded — by offloading operations to the system kernel whenever possible.
+
+The event loop runs in the main process (or main thread) and responds to an event queue: grabs the top item in the event queue, executes it, and then grabs the next item.
+
+Learn more at <https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick>
+
+### Threadpool
+
+In Node.js this is a queue of threads - of fixed size - that are launched at started and ready to execute work.
+
+To learn how to control the threadpool size with `UV_THREADPOOL_SIZE` and much more see the [node addon docs](https://github.com/mapbox/cpp/blob/master/node-cpp.md)
 
 ### libuv
 
-A library that handles threadpool, event loop, and uses the threading implementation native to the given operating system (for example: Unix uses `pthread`). It is open source, written in C, and is a standalone library most useful as a multithreading interface. Before libuv was available, developers had to manually manage and write threads based on what was provided by the operating system.
+A library that provides a cross-platform API for asynchronous [I/O](#io). Most importantly libuv provides access, for [node addons](#node-addon), to the [Node Threadpool](#threadpool).
 
-Libuv stands for "lib-ultra-event".
+Libuv stands for "lib-ultra-event" and [is open source and written in C](http://libuv.org)
 
-### I/O
-
-An I/O operation that "calls out" from the process to the underlying system. For example, accessing the file system, reading/writing to memory, or sending something over the network
-
-I/O stands for "input/output".
-
-### threadpool
-
-### worker
-
-### C++ bindings
-
-### non-blocking/blocking
-
-### [NAN](https://github.com/mapbox/cpp/blob/master/node-cpp.md#native-abstractions-for-nodejs-nan)
+See [node addon docs for more details](https://github.com/mapbox/cpp/blob/master/node-cpp.md)
