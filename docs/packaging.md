@@ -22,7 +22,21 @@ sudo apt-get update -y
 sudo apt-get install -y libstdc++-5-dev
 ```
 
-NOTE: To upgrade apt packages you type `apt-get install <package name>` and not `apt-get upgrade <package name>`. In `apt` terms `upgrade` relates to upgrading all packages per https://linux.die.net/man/8/apt-get. This is not what you want. So to upgrade a single package you do as above and run `apt-get upgrade -y` (to get access to new packages) and then `apt-get install <package name>` to upgrade that single package.
+##### Update vs upgrade?
+
+Note that the above lines use `update` and `install <package name>` not `upgrade`. 
+
+The `apt-get upgrade` command will upgrade every package on your system and does not accept arguments.
+
+Usually what you want is to upgrade a single package. The way to do that is using `update` not `upgrade` like:
+
+```
+apt-get update -y
+apt-get install -y <package name>
+```
+
+See https://linux.die.net/man/8/apt-get for more details.
+
 
 ##### Upgrade libstdc++ On Travis:
 
