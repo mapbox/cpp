@@ -28,7 +28,7 @@ Note that the above lines use `update` and `install <package name>` not `upgrade
 
 The `apt-get upgrade` command will upgrade every package on your system and does not accept arguments.
 
-Usually what you want is to upgrade a single package. The way to do that is using `update` not `upgrade` like:
+Usually what you want is to upgrade a single package. The way to do that is using `update + install` like:
 
 ```
 apt-get update -y
