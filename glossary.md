@@ -612,11 +612,13 @@ A file with the `.hpp` or `.h` file extension.
 
 ### include
 
-Using `#include` at the beginning of a file is very similar to "importing". Including a header allows you to utilize the code defined in the included header file. Literally speaking, [the compiler will "replace" the #include line with the actual contents of the file you're including when it compiles the file.](http://www.cplusplus.com/forum/articles/10627/).
+Pronounced "hash include". This is the line of source code that looks like `#include <iostream>` at the top of a C++ file. This syntax includes a header and allows you to utilize the code defined in the included header file.
+
+Literally speaking, [the compiler will "replace" the #include line with the actual contents of the file you're including when it compiles the file.](http://www.cplusplus.com/forum/articles/10627/).
 
 There are [a couple ways](https://stackoverflow.com/questions/21593/what-is-the-difference-between-include-filename-and-include-filename/21594#21594) to include headers:
 
--   Using carrots, ex: `<nan.h>` --> look for header in global
+-   Using carrots, ex: `<nan.h>` --> look for header in the compiler search paths
 -   Using quotes, ex: `"hello.hpp"` --> look for header in location relative to this file
 
 ## Performance
