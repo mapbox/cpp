@@ -52,6 +52,7 @@ Contributions are welcome. To contribute, please:
     -   [posix](#posix)
     -   [API](#api)
     -   [signal](#signal)
+    -   [I/O](#io)
     -   [crash](#crash)
     -   [libstdc++](#libstdc)
     -   [libc++](#libc)
@@ -91,6 +92,7 @@ Contributions are welcome. To contribute, please:
     -   [linked](#linked)
     -   [linking](#linking)
     -   [linking order](#linking-order)
+    -   [link time optimization](#link-time-optimization)
     -   [translation unit](#translation-unit)
     -   [object file](#object-file)
     -   [symbol](#symbol)
@@ -125,6 +127,11 @@ Contributions are welcome. To contribute, please:
     -   [memoization](#memoization)
     -   [small size optimization](#small-size-optimization)
     -   [performant](#performant)
+    -   [responsive](#responsive)
+    -   [latency](#latency)
+    -   [response time](#response-time)
+    -   [scalable](#scalable)
+    -   [scalability](#scalability)
     -   [compiler optimization level](#compiler-optimization-level)
     -   [concurrency](#concurrency)
 
@@ -144,7 +151,7 @@ Contributions are welcome. To contribute, please:
 
 -   [Debugging and Profiling](#debugging-and-profiling)
 
-    -   [profiling](#profiling)
+    -   [Profiling](#profiling)
     -   [debug symbols](#debug-symbols)
     -   [Debugger](#debugger)
     -   [Tracer](#tracer)
@@ -173,6 +180,7 @@ Contributions are welcome. To contribute, please:
     -   [heap allocation](#heap-allocation)
     -   [heap](#heap)
     -   [custom allocator](#custom-allocator)
+    -   [memory locality](#memory-locality)
 
 -   [Language concepts and keywords](#language-concepts-and-keywords)
 
@@ -220,15 +228,10 @@ Contributions are welcome. To contribute, please:
 
     -   [Node](#node)
     -   [V8](#v8)
-    -   [Node addon](#node-addon)
-    -   [event loop](#event-loop)
+    -   [Node Addon](#node-addon)
+    -   [Event loop](#event-loop)
+    -   [Threadpool](#threadpool)
     -   [libuv](#libuv)
-    -   [I/O](#io)
-    -   [threadpool](#threadpool)
-    -   [worker](#worker)
-    -   [C++ bindings](#c-bindings)
-    -   [non-blocking/blocking](#non-blockingblocking)
-    -   [NAN](#nan)
 
 ## Core concepts
 
@@ -476,17 +479,17 @@ To understand what this means we need to know that the compiler, by default, onl
 
 Enabling LTO is done by:
 
- - adding `-flto` to your compiler (aka [cxxflags](#cxxflags)) and link flags (aka [ldflags](#ldflags))
- - ensuring that your linker supports the compilers LTO format (on linux this means installing `binutils-gold`)
- - ensuring you use the same compiler to compile all your code (no mixing of compiler versions)
+-   adding `-flto` to your compiler (aka [cxxflags](#cxxflags)) and link flags (aka [ldflags](#ldflags))
+-   ensuring that your linker supports the compilers LTO format (on linux this means installing `binutils-gold`)
+-   ensuring you use the same compiler to compile all your code (no mixing of compiler versions)
 
 Then your code should run as fast as possible, despite modularization into separate `.cpp` files.
 
 One downside exists however: LTO requires your compiler and linker to do more work and will slow down your build. For small projects this is unimportant. But when building complex projects this might cause your machine to run out of memory or your builds to take forever. This is the reason that significant effort has gone into a variety of implementations for LTO in compilers. In particular, Google engineers have worked hard on a [technology called "Thin LTO"](https://clang.llvm.org/docs/ThinLTO.html) in [LLVM](#llvm). Thin LTO is enabled with `-flto=thin` and is designed to unlock intermodular optimizations without slowing down builds as much as other LTO implementations.
 
-Learn more about Thin LTO via Teresa Johnson's presentation at cppcon: https://www.youtube.com/watch?v=p9nH2vZ2mNo
+Learn more about Thin LTO via Teresa Johnson's presentation at cppcon: <https://www.youtube.com/watch?v=p9nH2vZ2mNo>
 
-Learn more about LTO in LLVM at https://llvm.org/docs/LinkTimeOptimization.html
+Learn more about LTO in LLVM at <https://llvm.org/docs/LinkTimeOptimization.html>
 
 ### translation unit
 
