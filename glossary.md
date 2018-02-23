@@ -466,6 +466,28 @@ Because it would tell the compiler to try looking for undefined symbols across t
 
 See the `Static Libraries` section of <http://www.evanjones.ca/build-c.html> for another mention of how linking order matters.
 
+### link time optimization
+
+Link time optimization (LTO) describes a method for "intermodular" optimizations on code (also known as "cross program" or "whole program optimization").
+
+LTO describes when optimizations are applied across [translation units](#translation-unit) through coordination between the compiler and the linker.
+
+To understand what this means we need to know that the compiler, by default, only applies [optimizations](#compiler-optimization-level) on code it sees and normally this is a single [translation unit](#translation-unit). So, if you have all your code in a single `cpp` file you are essentially already benefiting from "whole program optimization". But we want modular code for best maintainability and readability, so when we split a single `.cpp` into multiple `.cpp` and effectively spread our code across multiple [translation units](#translation-unit), LTO is the way we can keep our code running as fast as possible.
+
+Enabling LTO is done by:
+
+ - adding `-flto` to your compiler (aka [cxxflags](#cxxflags)) and link flags (aka [ldflags](#ldflags))
+ - ensuring that your linker supports the compilers LTO format (on linux this means installing `binutils-gold`)
+ - ensuring you use the same compiler to compile all your code (no mixing of compiler versions)
+
+Then your code should run as fast as possible, despite modularization into separate `.cpp` files.
+
+One downside exists however: LTO requires your compiler and linker to do more work and will slow down your build. For small projects this is unimportant. But when building complex projects this might cause your machine to run out of memory or your builds to take forever. This is the reason that significant effort has gone into a variety of implementations for LTO in compilers. In particular, Google engineers have worked hard on a [technology called "Thin LTO"](https://clang.llvm.org/docs/ThinLTO.html) in [LLVM](#llvm). Thin LTO is enabled with `-flto=thin` and is designed to unlock intermodular optimizations without slowing down builds as much as other LTO implementations.
+
+Learn more about Thin LTO via Teresa Johnson's presentation at cppcon: https://www.youtube.com/watch?v=p9nH2vZ2mNo
+
+Learn more about LTO in LLVM at https://llvm.org/docs/LinkTimeOptimization.html
+
 ### translation unit
 
 The input to a compiler from which an [object file](#object-file) is created. Normally this is one or more files with the extension of `.cpp`, `c++`, or `.cc`.
