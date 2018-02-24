@@ -471,7 +471,7 @@ See the `Static Libraries` section of <http://www.evanjones.ca/build-c.html> for
 
 ### link time optimization
 
-Link time optimization (LTO) describes a method for "intermodular" optimizations on code (also known as "cross program" or "whole program optimization").
+Link time optimization (LTO) describes a method for "intermodular" optimizations on code (also known as "interprocedural", cross program",  or "whole program" optimization).
 
 LTO describes when optimizations are applied across [translation units](#translation-unit) through coordination between the compiler and the linker.
 
