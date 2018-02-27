@@ -857,7 +857,7 @@ There is no perfect solution, other than only relying on profiling output to gui
 
 ### Profiling
 
-Profiling is a way to analyze or measure the performance of a program, to give you a better idea of what your program is actually doing when you run a process. Profiling can help measure things like memory usage, how often a particular function is called within a process, or how many threads are running. It is especially useful for determining how to best optimize a program. 
+Profiling is a way to analyze or measure the [efficiency] of a program: the work it is doing when run. Profiling can help measure things like memory usage, how often a particular function is called within a process, or how many threads are running. It is especially useful for determining how to best optimize a program.
 
 Check out [this guide](https://github.com/springmeyer/profiling-guide) for more information on how to profile.
 
