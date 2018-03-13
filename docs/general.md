@@ -3,7 +3,7 @@
 
 # Standard compiler
 
-Clang++ is the primary compiler we use to build binaries (in mason) and test C++ code at Mapbox. Clang++ v3.9 is the latest stable version that we should be targeting.
+Clang++ is the primary compiler we use to build binaries (in mason) and test C++ code at Mapbox. Clang++ v5.0.1 is the latest stable version that we should be targeting.
 
 ## Installing clang++
 
@@ -19,20 +19,18 @@ On OS X Apple ships frequent XCode updates, so staying up to date with latest cl
 
 ### Mason
 
-You can install clang++ v3.9 using [mason](https://github.com/mapbox/mason), which works the same on both OS X and Linux:
+You can install clang++ v5.0.1 using [mason](https://github.com/mapbox/mason), which works the same on both OS X and Linux:
 
 ```
-CLANG_VERSION="3.9.1"
-mkdir ./mason
-curl -sSfL https://github.com/mapbox/mason/archive/v0.9.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
-./mason/mason install clang++ ${CLANG_VERSION}
-export PATH=$(./mason/mason prefix clang++ ${CLANG_VERSION})/bin:${PATH}
+CLANG_VERSION="5.0.1"
+mason install clang++ ${CLANG_VERSION}
+export PATH=$(mason prefix clang++ ${CLANG_VERSION})/bin:${PATH}
 which clang++
 ```
 
 Notes:
 
-  - `export CXX=clang++-3.9` also works
+  - `export CXX=clang++-5.0` also works
 
 To compile C++ programs with this version of clang you'll need to have the libstdc++ headers available. These can be fetched by installing `libstdc++-5-dev (which are a sub-package of g++)`.
 
@@ -47,7 +45,7 @@ matrix:
   include:
     - os: osx
       # https://docs.travis-ci.com/user/languages/objective-c/#Supported-OS-X-iOS-SDK-versions
-      osx_image: xcode8
+      osx_image: xcode9.2
       compiler: clang
 ```
 
@@ -67,7 +65,7 @@ matrix:
     - os: linux
       sudo: false
       compiler: "clang-release"
-      env: CXX=clang++ CLANG_VERSION="3.9.1"
+      env: CXX=clang++ CLANG_VERSION="5.0.1"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
@@ -75,7 +73,7 @@ matrix:
     - os: linux
       sudo: false
       compiler: "clang-debug"
-      env: CXX=clang++ CLANG_VERSION="3.9.1"
+      env: CXX=clang++ CLANG_VERSION="5.0.1"
       addons:
         apt:
           sources: [ 'ubuntu-toolchain-r-test' ]
@@ -83,17 +81,13 @@ matrix:
 
 install:
   - mkdir ./mason
-curl -sSfL https://github.com/mapbox/mason/archive/v0.9.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
+curl -sSfL https://github.com/mapbox/mason/archive/v0.18.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
   - ./mason/mason install clang++ ${CLANG_VERSION}
   - export PATH=$(./mason/mason prefix clang++ ${CLANG_VERSION})/bin:${PATH}
   - which clang++
 ```
 
-Note: Mason also provides a `clang++` v3.5.2 package. Request is by setting `CLANG_VERSION=3.5.2` above instead of `3.9.1`
-
-All the available `clang++` packages can be seen at: https://github.com/mapbox/mason/tree/master/scripts/clang
-
-Public documentation on this is also available at https://github.com/mapbox/mason/blob/master/scripts/clang/3.9.1/README.md
+Note: see all the versions of clang++ available in Mason at https://github.com/mapbox/mason/tree/master/scripts/clang%2B%2B
 
 ### Installing other llvm tools
 
@@ -105,9 +99,10 @@ Installing clang-format via mason can be done like:
 
 ```bash
 mkdir ./mason
-curl -sSfL https://github.com/mapbox/mason/archive/v0.9.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
-./mason/mason install clang-format 3.9.1
-export PATH=$(./mason/mason prefix clang-format 3.9.1)/bin:${PATH}
+curl -sSfL https://github.com/mapbox/mason/archive/v0.18.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
+CLANG_VERSION="5.0.1"
+./mason/mason install clang-format ${CLANG_VERSION}
+export PATH=$(./mason/mason prefix clang-format ${CLANG_VERSION})/bin:${PATH}
 which clang-format
 ```
 
