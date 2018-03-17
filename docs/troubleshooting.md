@@ -51,6 +51,23 @@ For `cmake`-based systems it may be harder to pass these flags, so consult with 
 
 A listing of errors and solutions.
 
+### Linking error of 'file not recognized: File format not recognized'
+
+Error:
+
+```
+Debug/obj.target/module/src/module.o: file not recognized: File format not recognized
+clang-5.0: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+#### Solution
+
+Install binutils from mason and put its `bin` directory on your `PATH` such that the `ld` command is found.
+
+#### Context
+
+You are building C++ code with [Link Time Optimization, aka LTO](https://github.com/mapbox/cpp/blob/master/glossary.md#link-time-optimization) on Linux. Your build compiles okay but fails a linking with this obscure error about `File format not recognized`. This is because the default [linker](https://github.com/mapbox/cpp/blob/master/glossary.md#linker) on linux does not support LTO object files. But the linker from the latest binutils does, so upgrading the linker fixes the problem.
+
 ### This version of node/NAN/v8 requires a C++11 compiler
 
 Error:
