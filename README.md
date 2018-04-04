@@ -7,7 +7,6 @@ The C++ language and projects built on top of it are essential to the Mapbox pla
 - [General C++ Setup @ Mapbox](docs/general.md) (standard compilers & libraries)
 - [Packaging](docs/packaging.md) (Mason, deploying code)
 - [Node.js addons](node-cpp.md) (writing C++ for Node.js modules)
-- [Testing](docs/testing.md)
 - [Code coverage](docs/coverage.md)
 - [Troubleshooting](docs/troubleshooting.md) (profiling, debugging)
 - [External learning resources](docs/learning-resources.md) (skeleton libraries, reading, videos)
