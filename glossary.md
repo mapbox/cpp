@@ -471,11 +471,9 @@ See the `Static Libraries` section of <http://www.evanjones.ca/build-c.html> for
 
 ### link time optimization
 
-Link time optimization (LTO) describes a method for "intermodular" optimizations on code (also known as "interprocedural", cross program",  or "whole program" optimization).
+Link Time Pptimization (LTO) describes a method for "intermodular" optimizations on code: which is when optimizations are applied across [translation units](#translation-unit) through coordination between the compiler and the linker. You'll also hear the term "interprocedural", "cross program", or "whole program" optimization which generally refer to the same concept: being able to optimize across [translation units](#translation-unit).
 
-LTO describes when optimizations are applied across [translation units](#translation-unit) through coordination between the compiler and the linker.
-
-To understand what this means we need to know that the compiler, by default, only applies [optimizations](#compiler-optimization-level) on code it sees and normally this is a single [translation unit](#translation-unit). So, if you have all your code in a single `cpp` file you are essentially already benefiting from "whole program optimization". But we want modular code for best maintainability and readability, so when we split a single `.cpp` into multiple `.cpp` and effectively spread our code across multiple [translation units](#translation-unit), LTO is the way we can keep our code running as fast as possible.
+To understand why this is important we need to know that the compiler, by default, only applies [optimizations](#compiler-optimization-level) on code it sees and normally this is a single [translation unit](#translation-unit). So, if you have all your code in a single `cpp` file you are essentially already benefiting from "whole program optimization". But we want modular code for best maintainability and readability, so when we split a single `.cpp` into multiple `.cpp` and effectively spread our code across multiple [translation units](#translation-unit), LTO is the way we can keep our code running as fast as possible.
 
 Enabling LTO is done by:
 
