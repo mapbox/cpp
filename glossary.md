@@ -682,6 +682,8 @@ This can be described as using "hybrid data structures".
 
 This is such an important optimization it is central to how the llvm compiler is written. See Chandler Carruth's talk at CppCon 2016 that covers this: “High Performance Code 201: Hybrid Data Structures" <https://youtu.be/vElZc6zSIXM?t=157>.
 
+This optimization was applied to `std::string` in libstdc++ (https://gcc.gnu.org/ml/libstdc++/2014-11/msg00111.html)
+
 It is also central to why Javascript is fast in node.js and chrome. V8 uses SSO for objects like [SmallOrderedHashTable and more](https://github.com/v8/v8/blob/fe598532ec1317e8b85343133be9fb708e07bd2e/src/objects/hash-table.h#L613-L649).
 
 See also [this](https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring/10319672#10319672) and [this](https://akrzemi1.wordpress.com/2014/04/14/common-optimizations) for more about SSO.
