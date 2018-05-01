@@ -601,11 +601,11 @@ Used to describe when code is organized such that all of the [source code](#sour
 A well organized header-only library is rarely in a single header, but rather can be accessed by both:
 
 -   A single header that includes all other headers
--   Public access to each individual header that implements descrete functionality with the aim of [zero cost design](#zero-cost-design).
+-   Public access to each individual header that implements discrete functionality with the aim of [zero cost design](#zero-cost-design).
 
 ### zero cost design
 
-When library headers are organized in discrete parts such that downstream users can include just the functionality they need and nothing more. Zero cost design indicates there is no extra cost beyond the cost that is unavoidable. Zero cost design is [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns) applied to C++ libraries. It is particular important for [header-only libraries](#header-only-library) but also is relevant to [precompiled libraries](#precompiled-library).
+When library headers are organized in discrete parts such that downstream users can include just the functionality they need and nothing more. Zero cost design indicates there is no extra cost beyond the cost that is unavoidable. Zero cost design is [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns) applied to C++ libraries. It is particularly important for [header-only libraries](#header-only-library) but also is relevant to [precompiled libraries](#precompiled-library).
 
 But really, what do we mean by "cost"?
 
