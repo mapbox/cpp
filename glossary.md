@@ -78,6 +78,7 @@ Contributions are welcome. To contribute, please:
     -   [make](#make)
     -   [cmake](#cmake)
     -   [gyp](#gyp)
+    -   [bazel](#bazel)
     -   [visual studio](#visual-studio)
     -   [ninja](#ninja)
     -   [out of source build](#out-of-source-build)
@@ -287,7 +288,9 @@ Learn more [at the mason homepage](https://github.com/mapbox/mason).
 
 ### node-pre-gyp
 
-node-pre-gyp is a package manager for [node addons](https://github.com/mapbox/cpp/blob/master/node-cpp.md) written in C++. It is able to install [precompiled loadable modules](#loadable-modules) (aka `.node` files) from binaries.
+node-pre-gyp is a package manager for [node C++ addons](https://github.com/mapbox/cpp/blob/master/node-cpp.md). It is able to install [pre-compiled loadable modules](#loadable-modules) (aka `.node` files) from binaries.
+
+It is called `node-pre-gyp` because it stands in-front of [gyp](#gyp), the default build system used for node core and node c++ addons. When `node-pre-gyp` is used to download a pre-compiled module it skips needing to invoke [gyp](#gyp) for a source compile.
 
 Learn more [at the node-pre-gyp homepage](https://github.com/mapbox/node-pre-gyp).
 
@@ -365,9 +368,15 @@ Learn more [at the cmake homepage](https://cmake.org/).
 
 ### gyp
 
-Also modern and cross-platform like [cmake](#cmake). The advantage is that `gyp` is written in `python` and is therefore easier to install and upgrade. The disadvantage is that google, the original maintainer of `gyp`, is no longer maintaining `gyp` actively. For this reason we recommend porting most projects written in `gyp` to [cmake](#cmake).
+Also modern and cross-platform like [cmake](#cmake). The advantage is that `gyp` is written in `python` and is therefore easier to install and upgrade. The disadvantage is that google, the original maintainer of `gyp`, is no longer maintaining `gyp` actively. For this reason we recommend porting most projects written in `gyp` to [cmake](#cmake). Google, in the meantime, is porting projects to [bazel](#bazel).
+
+The `gyp` build system is currently the default build system used by node.js (and therefore node-addons). See also [node-pre-gyp](#node-pre-gyp) which provides binary distribution support in front of `gyp`.
 
 Learn more about gyp [here](https://gyp.gsrc.io)
+
+### bazel
+
+A build system, written in java, from Google: <https://bazel.build>. At this time (mid 2018) it appears rarely used outside Google, however one projects using it is [envoy](https://github.com/envoyproxy/envoy).
 
 ### visual studio
 
@@ -682,7 +691,7 @@ This can be described as using "hybrid data structures".
 
 This is such an important optimization it is central to how the llvm compiler is written. See Chandler Carruth's talk at CppCon 2016 that covers this: “High Performance Code 201: Hybrid Data Structures" <https://youtu.be/vElZc6zSIXM?t=157>.
 
-This optimization was applied to `std::string` in libstdc++ (https://gcc.gnu.org/ml/libstdc++/2014-11/msg00111.html)
+This optimization was applied to `std::string` in libstdc++ (<https://gcc.gnu.org/ml/libstdc++/2014-11/msg00111.html>)
 
 It is also central to why Javascript is fast in node.js and chrome. V8 uses SSO for objects like [SmallOrderedHashTable and more](https://github.com/v8/v8/blob/fe598532ec1317e8b85343133be9fb708e07bd2e/src/objects/hash-table.h#L613-L649).
 
