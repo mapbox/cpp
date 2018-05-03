@@ -482,7 +482,7 @@ See the `Static Libraries` section of <http://www.evanjones.ca/build-c.html> for
 
 Link Time Optimization (LTO) describes a method for "intermodular" optimizations on code: which is when optimizations are applied across [translation units](#translation-unit) through coordination between the compiler and the linker. You'll also hear the term "interprocedural", "cross program", or "whole program" optimization which generally refer to the same concept: being able to optimize across [translation units](#translation-unit).
 
-To understand why this is important we need to know that the compiler, by default, only applies [optimizations](#compiler-optimization-level) on code it sees and normally this is a single [translation unit](#translation-unit). So, if you have all your code in a single `cpp` file you are essentially already benefiting from "whole program optimization". But we want modular code for best maintainability and readability, so when we split a single `.cpp` into multiple `.cpp` and effectively spread our code across multiple [translation units](#translation-unit), LTO is the way we can keep our code running as fast as possible.
+To understand why this is important we need to know that the compiler, by default, only applies [optimizations](#compiler-optimization-level) on code it sees and normally this is a single [translation unit](#translation-unit). So, if you have all your code in a single `cpp` file (and you are not statically linking any third-party libraries) you are essentially already benefiting from "whole program optimization". But we want modular code for best maintainability and readability, so when we split a single `.cpp` into multiple `.cpp` and effectively spread our code across multiple [translation units](#translation-unit), LTO is the way we can keep our code running as fast as possible.
 
 Enabling LTO is done by:
 
@@ -490,7 +490,7 @@ Enabling LTO is done by:
 -   ensuring that your linker supports the compilers LTO format (on linux this means installing `binutils-gold`)
 -   ensuring you use the same compiler to compile all your code (no mixing of compiler versions)
 
-Then your code should run as fast as possible, despite modularization into separate `.cpp` files.
+Then your code should run as fast as possible, despite modularization into separate `.cpp` files. If you are linking third-party static libraries then you'll also want to compile them with `-flto`.
 
 One downside exists however: LTO requires both your compiler and linker to do more work and this may slow down your build. For small projects this is unimportant. But when building complex projects this might cause your machine to run out of memory or your builds to take forever. This is the reason that significant effort has gone into a variety of different implementations for LTO in compilers. In particular, Google engineers have worked hard on a [technology called "Thin LTO"](https://clang.llvm.org/docs/ThinLTO.html) in [LLVM](#llvm). Thin LTO is enabled with `-flto=thin` and is designed to unlock intermodular optimizations without slowing down builds as much as other LTO implementations.
 
