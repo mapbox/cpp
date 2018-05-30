@@ -681,13 +681,15 @@ An [optimization technique](#optimization-technique) that reduces the amount of 
 
 ### small size optimization
 
-Also known as SSO, this refers to when [stack allocation] is used to make data structures extremely fast. This strategy generally works by writing a custom class which:
+Also known as SSO, this refers to when [stack allocation](#stack-allocation) is used to make data structures extremely fast. This strategy generally works by writing a custom class which:
 
 -   Has a data member is used to store data.
 -   That data member is not dynamically allocated unless the container needs to grow to a large size.
 -   This saves on many allocations which often end up being a bottleneck.
 
 This can be described as using "hybrid data structures".
+
+This is also sometimes referred to as SBO (Small Buffer Optimization).
 
 This is such an important optimization it is central to how the llvm compiler is written. See Chandler Carruth's talk at CppCon 2016 that covers this: “High Performance Code 201: Hybrid Data Structures" <https://youtu.be/vElZc6zSIXM?t=157>.
 
