@@ -346,7 +346,7 @@ More info [here](https://stackoverflow.com/a/3544343).
 
 A venerable build system only compatible with unix systems. Usually available by default on most unix systems without needing to be installed or upgraded. In this sense `make` is a bit like `bash`. It is the first tool many developers reach for when starting a project.
 
-The configuration for make is a `Makefile`. It uses `tab` indentation. It is rare that you will ever encounter a `Makefile` that needs a specific version of `make`. This is likely because what `make` does is pretty simple and was hammered out a long time ago and has not changed much in recent versions.
+The configuration for make is a `Makefile`. It uses `tab` indentation. It is rare that you will ever encounter a `Makefile` that needs a specific version of `make`. This is likely because what `make` does is pretty simple and was hammered out a long time ago and has not changed much in recent versions. (But note that most `Makefile`s rely on [GNU Make](https://www.gnu.org/software/make/) features and will not work with a standard [POSIX Make](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/make.html).)
 
 For a project that only needs to build a few files `make` can be a good choice. For projects that need to build libraries or many files, [cmake](#cmake) is the better choice.
 
