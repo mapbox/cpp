@@ -51,6 +51,7 @@ Contributions are welcome. To contribute, please:
 
     -   [posix](#posix)
     -   [API](#api)
+    -   [ABI](#abi)
     -   [signal](#signal)
     -   [I/O](#io)
     -   [crash](#crash)
@@ -243,6 +244,10 @@ A set of standards for maintaining compatibility between unix-like operating sys
 ### API
 
 Application programming interface. This term is used broadly to describe how software and code can and should interact. In C++ programs an API describes a public set of functions that can be called, classes that can be [instantiated](#instantiate), or [static data](#static-data) that can be used.
+
+### ABI
+
+Application binary interface. This term refers to specific details of how an [API](#API) defintion is compiled by the [compiler](#compiler): for instance the size, order, alignment, and padding of structure members, or the definition of constants. Identical source code that uses identical APIs is not compatible at the ABI level when these definitions or implementation-defined details change.
 
 ### signal
 
