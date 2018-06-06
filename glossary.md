@@ -534,7 +534,7 @@ A loadable module is similar to a [shared library](#dynamicshared-library). Just
 
 -   created by [linking](#linking)
 -   [pre-compiled](#precompiled)
--   [dynamically loaded](<#dynamically loaded>).
+-   [dynamically loaded](#dynamically-loaded).
 
 But, whereas a [shared library](#dynamicshared-library) is [dynamically linked](#dynamically-linked) at startup, a loadable module is designed to be loaded sometime after startup, by the [calling application](#calling-application), with [dlopen](#dlopen).
 
