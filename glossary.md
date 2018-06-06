@@ -1381,7 +1381,17 @@ In computer science, a deterministic algorithm is an algorithm which, given a pa
 
 ### fits into register
 
-Okay to pass by value.
+The "registers" are storage directly within the CPU rather than in main memory. They are faster than memory,
+but few in number, so they are usually used (by the compiler's optimizer) for local variables and for passing
+parameters when calling functions.
+
+If a data type fits into a register (i.e., it is a single number or a very small structure) it is as efficient
+to pass it directly by value as it is to pass a pointer/reference to it, so it is usually okay and encouraged
+to pass such data by value.
+
+Larger data structures that don't fit into a register must be copied into memory on the stack if they are
+to be passed by value, so it is usually much faster to pass a reference to the structure rather than passing
+the structure itself.
 
 ### constexpr
 
