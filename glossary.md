@@ -1340,7 +1340,13 @@ Same as a [class](#class) except all members are default public.
 
 ### assembly
 
-An ascii output able to be produced by a [compiler](#compiler). It is fully optimized and can be 1-to-1 translated to [machine code](#machine-code). It can be viewed to understand what compiler optimizations were made.
+The ASCII textual representation of [machine code](#machine-code).
+It can be 1-to-1 translated to machine code, but is in text form
+to provide a way to read the output of the [compiler](#compiler), after optimization,
+to understand what compiler optimizations were made.
+
+(It can also be written manually instead of produced by a compiler,
+but this is now rare.)
 
 ### machine code
 
