@@ -91,6 +91,7 @@ Contributions are welcome. To contribute, please:
     -   [compiler](#compiler)
     -   [Front-end](#front-end)
     -   [linker](#linker)
+    -   [dynamic linker](#dynamic-linker)
     -   [linked](#linked)
     -   [linking](#linking)
     -   [linking order](#linking-order)
@@ -433,7 +434,19 @@ The term front-end refers to when a command line tool `A` can be used in place o
 
 ### linker
 
-A program that combines [object files](#object-file) into a single [executable](#executable) or [library](#library). Typically a step enacted by the [compiler](#compiler). The linker on unix systems is usually the `ld` command. Type `man ld` for more info or visit [the ld linux man page](https://linux.die.net/man/1/ld)
+A program that combines [object files](#object-file) into a single [executable](#executable) or [library](#library). Typically a step enacted by the [compiler](#compiler). The linker on unix systems is usually the `ld` command. Type `man ld` for more info or visit [the ld linux man page](https://linux.die.net/man/1/ld).
+
+### dynamic linker
+
+The dynamic linker, aka the loader, is responsible for performing symbol resolution during runtime, either when a program starts (load-time linking) or when an undefined symbol is used (lazy linking).
+
+`ld.so`, or `dyld` if you're on macos, is the dynamic linker that runs at runtime. Type `man ld.so`, or `man dyld` if you're on macos, for more info.
+
+You can specify when you want the dynamic linker to resolve symbols by supplying `-z,<keyword>`. There are a couple different keywords you can use:
+
+* `lazy` - when you want the dynamic linker to to defer symbol resolution to the point when the symbol is used. This is called **lazy linking**.
+
+* `now` - when you want the dynamic linker to resolve symbols when the program is started or when the shared library is linked to using `dlopen`. This is called **load-time linking**.
 
 ### linked
 
@@ -1282,7 +1295,7 @@ Learn more at <http://en.cppreference.com/w/cpp/language/reference>.
 
 ### noexcept
 
-See <http://en.cppreference.com/w/cpp/keyword/noexcept> 
+See <http://en.cppreference.com/w/cpp/keyword/noexcept>
 
 ### bytes
 
@@ -1291,7 +1304,7 @@ See <http://en.cppreference.com/w/cpp/keyword/noexcept>
 
 ### bits
 
-<https://en.wikipedia.org/wiki/Bit> 
+<https://en.wikipedia.org/wiki/Bit>
 
 ### structure packing
 
@@ -1324,7 +1337,7 @@ Languages is dynamically typed (or just  dynamic) when type checking happens at 
 
 ### private member
 
-<http://en.cppreference.com/w/cpp/language/access> 
+<http://en.cppreference.com/w/cpp/language/access>
 
 ### protected member
 
@@ -1376,7 +1389,7 @@ When we write in a compiled language, like C++, our main target audience is the 
 
 ### deterministic
 
-Definition of deterministic in English: 
+Definition of deterministic in English:
 
 "Relating to the philosophical doctrine that all events, including human action, are ultimately determined by causes regarded as external to the will.
 ‘a deterministic theory’"
@@ -1429,7 +1442,7 @@ They can be created like:
 static int one = 1;
 
 int main() {
-    std::cout << one << "\n";    
+    std::cout << one << "\n";
 }
 ```
 
