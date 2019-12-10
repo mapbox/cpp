@@ -905,7 +905,7 @@ The solution to this problem then is to build your [release builds](#release-bui
 
 -   If you are profiling [debug builds](#debug-build) then you should be able to see the entire [callstack](#callstack) and therefore [calltree](#calltree) should be very detailed. However you can't trust the timing results because they represent how much time was spent for unoptimized code.
 
-There is no perfect solution, other than only relying on profiling output to guide your understanding of a program and not letting it be the end-all word. But consider profiling a [profile build](#profile-build) for a binary that should give more trustworthy results than a debug builds](#debug-build) and more detailed [callstacks](#callstack) than a [release builds](#release-build).
+There is no perfect solution, other than only relying on profiling output to guide your understanding of a program and not letting it be the end-all word. But consider profiling a [profile build](#profiling-build) for a binary that should give more trustworthy results than a debug builds](#debug-build) and more detailed [callstacks](#callstack) than a [release builds](#release-build).
 
 ## Debugging and Profiling
 
